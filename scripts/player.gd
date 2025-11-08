@@ -1,28 +1,37 @@
 extends CharacterBody3D
 
+@export_group("Movement")
+@export var move_speed:= 8.0
+@export var acceleration := 20.0
 
-const SPEED = 5.0
-const JUMP_VELOCITY = 4.5
+@onready var hallway_camera: Camera3D = $"../hallway_camera"
+@onready var vault_camera: Camera3D = $"../vault_camera"
 
+var active_camera: Camera3D = hallway_camera
+
+func _ready() -> void:
+	hallway_camera.make_current()
+	active_camera = hallway_camera
 
 func _physics_process(delta: float) -> void:
-	# Add the gravity.
-	if not is_on_floor():
-		velocity += get_gravity() * delta
+	var raw_input := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+	var forward := active_camera.global_basis.z
+	var right := active_camera.global_basis.x
 
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+	var move_direction := forward * raw_input.y + right * raw_input.x
+	move_direction.y = 0.0
+	move_direction = move_direction.normalized()
 
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
-
+	velocity = velocity.move_toward(move_direction * move_speed, acceleration * delta)
 	move_and_slide()
+
+
+func _on_area_3d_body_entered(body: Node3D) -> void:
+	if body == self:
+		active_camera = vault_camera
+		active_camera.make_current()
+
+func _on_area_3d_body_exited(body: Node3D) -> void:
+	if body == self:
+		active_camera = hallway_camera
+		active_camera.make_current()

@@ -1,0 +1,134 @@
+[gd_scene load_steps=16 format=3 uid="uid://bab57487xo37b"]
+
+[ext_resource type="Script" uid="uid://d3k1sb5tuwtbc" path="res://scenes/world.gd" id="1_8iqx6"]
+[ext_resource type="Texture2D" uid="uid://c8upf6osvdwx5" path="res://assets/textures/grids/Orange/texture_05.png" id="2_5fq5j"]
+[ext_resource type="Texture2D" uid="uid://c8arnlq67qi7" path="res://assets/textures/grids/Dark/texture_05.png" id="3_skwyo"]
+[ext_resource type="Texture2D" uid="uid://does8rpwjdh1r" path="res://assets/textures/grids/Red/texture_05.png" id="4_pjayo"]
+[ext_resource type="PackedScene" uid="uid://butv4eka18auv" path="res://scenes/player.tscn" id="5_g0dvk"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sgp6g"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_o5qli"]
+sky_material = SubResource("ProceduralSkyMaterial_sgp6g")
+
+[sub_resource type="Environment" id="Environment_0wfyh"]
+background_mode = 2
+sky = SubResource("Sky_o5qli")
+tonemap_mode = 2
+sdfgi_enabled = true
+glow_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.644337, 0.675688, 0.724948, 1)
+fog_density = 0.001
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sugp2"]
+albedo_texture = ExtResource("2_5fq5j")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tbgi4"]
+albedo_texture = ExtResource("2_5fq5j")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0wfyh"]
+albedo_texture = ExtResource("3_skwyo")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jyhfs"]
+albedo_texture = ExtResource("4_pjayo")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tefeu"]
+albedo_texture = ExtResource("4_pjayo")
+uv1_triplanar = true
+
+[sub_resource type="GDScript" id="GDScript_jyhfs"]
+script/source = "extends Camera3D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jyhfs"]
+size = Vector3(6.6862183, 2.6971436, 7.756836)
+
+[node name="Vault" type="Node3D"]
+script = ExtResource("1_8iqx6")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_0wfyh")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.245308, 0.553276, -0.796059, 1.39791e-08, 0.821149, 0.570714, 0.969445, 0.14, -0.201434, -10.6018, 12.7278, 0)
+shadow_enabled = true
+
+[node name="vault_complex" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="north_wall" type="CSGBox3D" parent="vault_complex"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.4, 0)
+size = Vector3(1, 6.8, 10.8)
+material = SubResource("StandardMaterial3D_sugp2")
+
+[node name="vault_door_subtraction" type="CSGCylinder3D" parent="vault_complex/north_wall"]
+transform = Transform3D(-1.18021e-07, -2.7, 0, 2.7, -1.18021e-07, 0, 0, 0, 2.7, -0.007281661, -3.3, 0)
+layers = 2
+operation = 2
+radius = 0.8
+height = 0.4888916
+sides = 12
+material = SubResource("StandardMaterial3D_tbgi4")
+
+[node name="east_wall" type="CSGBox3D" parent="vault_complex"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.25, 3.4, 5.41)
+size = Vector3(23.5, 6.9, 0.2)
+material = SubResource("StandardMaterial3D_sugp2")
+
+[node name="floor" type="CSGBox3D" parent="vault_complex"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.8, -0.05, 0)
+size = Vector3(36.6, 0.1, 29.3)
+material = SubResource("StandardMaterial3D_0wfyh")
+
+[node name="west_wall" type="CSGBox3D" parent="vault_complex"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.2, 3.4, -5.48)
+size = Vector3(23.5, 6.9, 0.2)
+material = SubResource("StandardMaterial3D_sugp2")
+
+[node name="vault" type="CSGBox3D" parent="vault_complex"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.45, 1.4, 0)
+size = Vector3(5.9, 3, 7.8)
+material = SubResource("StandardMaterial3D_jyhfs")
+
+[node name="vault_subtraction" type="CSGBox3D" parent="vault_complex/vault"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.099999905, -0.05000007, -2.38419e-07)
+operation = 2
+size = Vector3(5.9, 2.7, 7.6)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="Player" parent="." instance=ExtResource("5_g0dvk")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -19.3531, 0, 0)
+
+[node name="hallway_camera" type="Camera3D" parent="."]
+transform = Transform3D(-0.6659867, 0.5582364, -0.49480698, 0.03967631, 0.6888816, 0.7237871, 0.74490774, 0.46240053, -0.4809349, -19.215944, 7.571836, -4.4398465)
+script = SubResource("GDScript_jyhfs")
+
+[node name="vault_camera" type="Camera3D" parent="."]
+transform = Transform3D(-0.8642046, -0.17474684, 0.47181988, 0, 0.93774956, 0.34731215, -0.5031407, 0.30014873, -0.8104075, 5.7843285, 2.0505004, -3.604949)
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2479479, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.00589, 0.058532715, 0)
+shape = SubResource("BoxShape3D_jyhfs")
+
+[connection signal="body_entered" from="Area3D" to="Player" method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="Player" method="_on_area_3d_body_exited"]
