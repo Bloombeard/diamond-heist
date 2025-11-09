@@ -1,8 +1,8 @@
 extends CharacterBody3D
 
 @export_group("Movement")
-@export var move_speed:= 8.0
-@export var acceleration := 20.0
+@export var move_speed:= 2.4
+@export var acceleration := 200.0
 
 var last_movement_direction := Vector3.BACK
 

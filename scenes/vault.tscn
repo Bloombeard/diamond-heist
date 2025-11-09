@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bab57487xo37b"]
+[gd_scene load_steps=17 format=3 uid="uid://bab57487xo37b"]
 
 [ext_resource type="Script" uid="uid://d3k1sb5tuwtbc" path="res://scenes/world.gd" id="1_8iqx6"]
 [ext_resource type="Texture2D" uid="uid://c8upf6osvdwx5" path="res://assets/textures/grids/Orange/texture_05.png" id="2_5fq5j"]
@@ -30,6 +30,9 @@ uv1_triplanar = true
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tbgi4"]
 albedo_texture = ExtResource("2_5fq5j")
 uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8iqx6"]
+albedo_texture = ExtResource("2_5fq5j")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0wfyh"]
 albedo_texture = ExtResource("3_skwyo")
@@ -87,6 +90,17 @@ height = 0.4888916
 sides = 12
 material = SubResource("StandardMaterial3D_tbgi4")
 
+[node name="south_wall" type="CSGBox3D" parent="vault_complex"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.735786, 3.4, 0)
+size = Vector3(0.46875, 6.8, 10.8)
+material = SubResource("StandardMaterial3D_sugp2")
+
+[node name="south_wall_subtraction" type="CSGBox3D" parent="vault_complex/south_wall"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.032470703, -2.4726324, 0)
+operation = 2
+size = Vector3(1.0649414, 2.6102295, 1.9064941)
+material = SubResource("StandardMaterial3D_8iqx6")
+
 [node name="east_wall" type="CSGBox3D" parent="vault_complex"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.25, 3.4, 5.41)
 size = Vector3(23.5, 6.9, 0.2)
@@ -114,7 +128,7 @@ size = Vector3(5.9, 2.7, 7.6)
 material = SubResource("StandardMaterial3D_tefeu")
 
 [node name="Player" parent="." instance=ExtResource("5_g0dvk")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -19.3531, 0, 0)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2.6569986, 0, 7.298099e-07)
 
 [node name="hallway_camera" type="Camera3D" parent="."]
 transform = Transform3D(-0.6659867, 0.5582364, -0.49480698, 0.03967631, 0.6888816, 0.7237871, 0.74490774, 0.46240053, -0.4809349, -19.215944, 7.571836, -4.4398465)
