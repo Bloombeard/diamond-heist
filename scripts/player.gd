@@ -6,22 +6,16 @@ extends CharacterBody3D
 
 var last_movement_direction := Vector3.BACK
 
-@onready var hallway_camera: Camera3D = $"../hallway_camera"
-@onready var vault_camera: Camera3D = $"../vault_camera"
+@onready var camera: Camera3D = $"../Camera3D"
 @onready var player_skin: Node3D = %player_skin
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 
-var active_camera: Camera3D = hallway_camera
 var rotation_speed := 12.0
-
-func _ready() -> void:
-	hallway_camera.make_current()
-	active_camera = hallway_camera
 
 func _physics_process(delta: float) -> void:
 	var raw_input := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
-	var forward := active_camera.global_basis.z
-	var right := active_camera.global_basis.x
+	var forward := camera.global_basis.z
+	var right := camera.global_basis.x
 
 	var move_direction := forward * raw_input.y + right * raw_input.x
 	move_direction.y = 0.0
@@ -43,14 +37,3 @@ func _physics_process(delta: float) -> void:
 	var target_angle := Vector3.BACK.signed_angle_to(last_movement_direction, Vector3.UP)
 
 	player_skin.global_rotation.y = lerp_angle(player_skin.global_rotation.y, target_angle, rotation_speed * delta)
-
-
-func _on_area_3d_body_entered(body: Node3D) -> void:
-	if body == self:
-		active_camera = vault_camera
-		active_camera.make_current()
-
-func _on_area_3d_body_exited(body: Node3D) -> void:
-	if body == self:
-		active_camera = hallway_camera
-		active_camera.make_current()
