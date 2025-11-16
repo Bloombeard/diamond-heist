@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://dru8rednjjldl"]
+
+[ext_resource type="Script" uid="uid://dvu1241r73k63" path="res://scripts/slasher.gd" id="1_1mbkm"]
+[ext_resource type="Texture2D" uid="uid://cyai8yluepg72" path="res://assets/textures/slashhoz.png" id="2_thp67"]
+[ext_resource type="Texture2D" uid="uid://cgtl7fist8a8o" path="res://assets/textures/slashvert.png" id="3_lg7p3"]
+[ext_resource type="Texture2D" uid="uid://bn28rpxkish52" path="res://assets/textures/slashbotleft.png" id="4_u7d34"]
+[ext_resource type="Texture2D" uid="uid://d21ju40jytfpy" path="res://assets/textures/slashbotright.png" id="5_4md7a"]
+[ext_resource type="Texture2D" uid="uid://duar4vvm37gqg" path="res://assets/textures/slashtopleft.png" id="6_hhtb2"]
+[ext_resource type="Texture2D" uid="uid://c6idd4cq8ssis" path="res://assets/textures/slashtopright.png" id="7_kxyhc"]
+
+[node name="Slasher" type="Node3D"]
+script = ExtResource("1_1mbkm")
+
+[node name="hoz" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.4660709)
+visible = false
+pixel_size = 0.005
+texture = ExtResource("2_thp67")
+
+[node name="vert" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.41052043)
+visible = false
+pixel_size = 0.005
+texture = ExtResource("3_lg7p3")
+
+[node name="botleft" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.41052043)
+visible = false
+pixel_size = 0.005
+texture = ExtResource("4_u7d34")
+
+[node name="botright" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.41052043)
+visible = false
+pixel_size = 0.005
+texture = ExtResource("5_4md7a")
+
+[node name="topleft" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.41052043)
+visible = false
+pixel_size = 0.005
+texture = ExtResource("6_hhtb2")
+
+[node name="topright" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.41052043)
+visible = false
+pixel_size = 0.005
+texture = ExtResource("7_kxyhc")

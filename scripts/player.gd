@@ -28,9 +28,12 @@ func _physics_process(delta: float) -> void:
 	move_direction = move_direction.normalized()
 
 	velocity = velocity.move_toward(move_direction * move_speed, acceleration * delta)
+	if $player_skin/Slasher.counter < $player_skin/Slasher.max_counter:
+		velocity = velocity.move_toward(Vector3(0,0,0), acceleration * 2 * delta)
+	
 	move_and_slide()
 
-	if move_direction.length() > 0.2:
+	if velocity.length() > 0.2:
 		last_movement_direction = move_direction
 		# TODO: Turn this into a state machine.
 		if animation_player.current_animation != "walking":
