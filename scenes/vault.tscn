@@ -1,10 +1,24 @@
-[gd_scene load_steps=17 format=3 uid="uid://bab57487xo37b"]
+[gd_scene load_steps=20 format=3 uid="uid://bab57487xo37b"]
 
-[ext_resource type="Script" uid="uid://d3k1sb5tuwtbc" path="res://scenes/world.gd" id="1_8iqx6"]
 [ext_resource type="Texture2D" uid="uid://c8upf6osvdwx5" path="res://assets/textures/grids/Orange/texture_05.png" id="2_5fq5j"]
 [ext_resource type="Texture2D" uid="uid://c8arnlq67qi7" path="res://assets/textures/grids/Dark/texture_05.png" id="3_skwyo"]
 [ext_resource type="Texture2D" uid="uid://does8rpwjdh1r" path="res://assets/textures/grids/Red/texture_05.png" id="4_pjayo"]
 [ext_resource type="PackedScene" uid="uid://butv4eka18auv" path="res://scenes/player.tscn" id="5_g0dvk"]
+[ext_resource type="PackedScene" uid="uid://boc7uld8h3ora" path="res://scenes/camera_on_rails.tscn" id="6_5fq5j"]
+
+[sub_resource type="GDScript" id="GDScript_8iqx6"]
+script/source = "extends Node3D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sgp6g"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -49,6 +63,7 @@ uv1_triplanar = true
 [sub_resource type="GDScript" id="GDScript_jyhfs"]
 script/source = "extends Camera3D
 
+@export var target: Node3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -57,14 +72,21 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	var target_position = target.position
+	look_at(target_position)
 "
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jyhfs"]
 size = Vector3(6.6862183, 2.6971436, 7.756836)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_5fq5j"]
+size = Vector3(23.31569, 2.763733, 10.842773)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_skwyo"]
+size = Vector3(1, 2.3504639, 2.2167969)
+
 [node name="Vault" type="Node3D"]
-script = ExtResource("1_8iqx6")
+script = SubResource("GDScript_8iqx6")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_0wfyh")
@@ -82,7 +104,7 @@ size = Vector3(1, 6.8, 10.8)
 material = SubResource("StandardMaterial3D_sugp2")
 
 [node name="vault_door_subtraction" type="CSGCylinder3D" parent="vault_complex/north_wall"]
-transform = Transform3D(-1.18021e-07, -2.7, 0, 2.7, -1.18021e-07, 0, 0, 0, 2.7, -0.007281661, -3.3, 0)
+transform = Transform3D(-1.18021e-07, -2.7, 0, 2.7, -1.18021e-07, 0, 0, 0, 2.7, -0.07313812, -3.3, 0)
 layers = 2
 operation = 2
 radius = 0.8
@@ -107,8 +129,8 @@ size = Vector3(23.5, 6.9, 0.2)
 material = SubResource("StandardMaterial3D_sugp2")
 
 [node name="floor" type="CSGBox3D" parent="vault_complex"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.8, -0.05, 0)
-size = Vector3(36.6, 0.1, 29.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.783056, -0.05, 0)
+size = Vector3(28.566113, 0.1, 29.3)
 material = SubResource("StandardMaterial3D_0wfyh")
 
 [node name="west_wall" type="CSGBox3D" parent="vault_complex"]
@@ -128,21 +150,44 @@ size = Vector3(5.9, 2.7, 7.6)
 material = SubResource("StandardMaterial3D_tefeu")
 
 [node name="Player" parent="." instance=ExtResource("5_g0dvk")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2.6569986, 0, 7.298099e-07)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -19.581772, 0, 7.298099e-07)
 
-[node name="hallway_camera" type="Camera3D" parent="."]
-transform = Transform3D(-0.6659867, 0.5582364, -0.49480698, 0.03967631, 0.6888816, 0.7237871, 0.74490774, 0.46240053, -0.4809349, -19.215944, 7.571836, -4.4398465)
+[node name="hallway_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(-0.6659867, 0.5582364, -0.4948069, 0.03967631, 0.6888816, 0.7237873, 0.74490774, 0.46240056, -0.48093477, -12.490963, 7.571836, -4.4398465)
 script = SubResource("GDScript_jyhfs")
+target = NodePath("../Player")
 
 [node name="vault_camera" type="Camera3D" parent="."]
 transform = Transform3D(-0.8642046, -0.17474684, 0.47181988, 0, 0.93774956, 0.34731215, -0.5031407, 0.30014873, -0.8104075, 5.7843285, 2.0505004, -3.604949)
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="vault_area" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2479479, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="vault_area"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.00589, 0.058532715, 0)
 shape = SubResource("BoxShape3D_jyhfs")
 
-[connection signal="body_entered" from="Area3D" to="Player" method="_on_area_3d_body_entered"]
-[connection signal="body_exited" from="Area3D" to="Player" method="_on_area_3d_body_exited"]
+[node name="outside_follow_camera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("6_5fq5j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3651495, 0)
+target = NodePath("../Player")
+
+[node name="hallway_area" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.076374, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="hallway_area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.019172668, 1.4402949, 0)
+shape = SubResource("BoxShape3D_5fq5j")
+
+[node name="outside_area" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.711834, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="outside_area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4340134, 1.1886638, 0)
+shape = SubResource("BoxShape3D_skwyo")
+
+[connection signal="body_entered" from="vault_area" to="." method="_on_vault_area_body_entered"]
+[connection signal="body_entered" from="vault_area" to="Player" method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="vault_area" to="." method="_on_vault_area_body_exited"]
+[connection signal="body_exited" from="vault_area" to="Player" method="_on_area_3d_body_exited"]
+[connection signal="body_entered" from="hallway_area" to="Player" method="_on_hallway_area_body_entered"]
+[connection signal="body_entered" from="outside_area" to="Player" method="_on_outside_area_body_entered"]
