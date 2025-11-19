@@ -6,6 +6,11 @@ extends CharacterBody3D
 @export var acceleration := 200.0
 @export var camera_switch_input_change_delay := 0.3
 
+@export_group("Jump")
+@export var jump_impulse := 12.0
+
+@export_group("Jump")
+
 var last_movement_direction := Vector3.BACK
 
 @onready var hallway_camera: Camera3D = $"../hallway_camera"
@@ -21,6 +26,8 @@ var move_speed := walk_speed
 var walk_animation_name := "walking"
 var run_animation_name := "running"
 var current_move_animation := "walking"
+var target_velocity = Vector3.ZERO
+var gravity := -30.0
 
 func _ready() -> void:
 	hallway_camera.make_current()
@@ -37,6 +44,10 @@ func _input(event) -> void:
 		current_move_animation = walk_animation_name
 
 func _physics_process(delta: float) -> void:	
+	# JUMP
+
+	
+	# MOVEMENT, relative to camera
 	var raw_input := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var forward := active_movement_camera.global_basis.z
 	var right := active_movement_camera.global_basis.x
@@ -44,8 +55,16 @@ func _physics_process(delta: float) -> void:
 	var move_direction := forward * raw_input.y + right * raw_input.x
 	move_direction.y = 0.0
 	move_direction = move_direction.normalized()
-
+	
+	var y_velocity := velocity.y
+	velocity.y = 0.0
+	velocity.move_toward
 	velocity = velocity.move_toward(move_direction * move_speed, acceleration * delta)
+	velocity.y = y_velocity + gravity * delta
+	
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		velocity.y += jump_impulse
+	
 	move_and_slide()
 
 	if move_direction.length() > 0.2:
@@ -61,7 +80,6 @@ func _physics_process(delta: float) -> void:
 	var target_angle := Vector3.BACK.signed_angle_to(last_movement_direction, Vector3.UP)
 
 	player_skin.global_rotation.y = lerp_angle(player_skin.global_rotation.y, target_angle, rotation_speed * delta)
-
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if body == self:
