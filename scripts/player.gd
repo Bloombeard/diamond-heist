@@ -7,7 +7,9 @@ extends CharacterBody3D
 @export var camera_switch_input_change_delay := 0.3
 
 @export_group("Jump")
-@export var jump_impulse := 12.0
+@export var jump_height := 5
+@export var jump_time_to_peak := 0.5
+@export var jump_time_to_descent := 0.4
 
 @export_group("Jump")
 
@@ -18,6 +20,9 @@ var last_movement_direction := Vector3.BACK
 @onready var outside_follow_camera: Camera3D = $"../outside_follow_camera/PathFollow3D/Camera3D"
 @onready var player_skin: Node3D = %player_skin
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
+@onready var jump_velocity : float = ((2.0 * jump_height) / jump_time_to_peak)
+@onready var jump_gravity : float = ((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak))
+@onready var fall_gravity : float = ((-2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent))
 
 var active_view_camera: Camera3D = hallway_camera
 var active_movement_camera: Camera3D = hallway_camera
@@ -43,10 +48,16 @@ func _input(event) -> void:
 		move_speed = walk_speed
 		current_move_animation = walk_animation_name
 
-func _physics_process(delta: float) -> void:	
-	# JUMP
-
+func get_player_gravity() -> float:
+	if velocity.y > 0.0:
+		print("using jump_gravity")
+		return jump_gravity
+	else:
+		print("using fall_gravity")
+		return fall_gravity
 	
+
+func _physics_process(delta: float) -> void:	
 	# MOVEMENT, relative to camera
 	var raw_input := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var forward := active_movement_camera.global_basis.z
@@ -58,12 +69,11 @@ func _physics_process(delta: float) -> void:
 	
 	var y_velocity := velocity.y
 	velocity.y = 0.0
-	velocity.move_toward
 	velocity = velocity.move_toward(move_direction * move_speed, acceleration * delta)
-	velocity.y = y_velocity + gravity * delta
+	velocity.y = y_velocity + get_player_gravity() * delta
 	
 	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y += jump_impulse
+		velocity.y += jump_velocity
 	
 	move_and_slide()
 
