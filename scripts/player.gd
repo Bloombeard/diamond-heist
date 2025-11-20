@@ -10,8 +10,8 @@ extends CharacterBody3D
 @export var jump_height := 3.5
 @export var jump_time_to_peak := 0.5
 @export var jump_time_to_descend := 0.4
-
-@export_group("Jump")
+@export var coyote_time := 0.1
+@export var jump_buffer_time := 0.1
 
 var last_movement_direction := Vector3.BACK
 
@@ -23,6 +23,7 @@ var last_movement_direction := Vector3.BACK
 @onready var jump_velocity : float = ((2.0 * jump_height) / jump_time_to_peak)
 @onready var jump_gravity : float = ((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak))
 @onready var fall_gravity : float = ((-2.0 * jump_height) / (jump_time_to_descend * jump_time_to_descend))
+@onready var coyote_timer_node: Timer = $Coyote_Timer
 
 var active_view_camera: Camera3D = hallway_camera
 var active_movement_camera: Camera3D = hallway_camera
@@ -33,6 +34,8 @@ var run_animation_name := "running"
 var current_move_animation := "walking"
 var target_velocity = Vector3.ZERO
 var gravity := -30.0
+var is_jump_available := true
+var jump_buffer := false
 
 func _ready() -> void:
 	hallway_camera.make_current()
@@ -50,12 +53,15 @@ func _input(event) -> void:
 
 func get_player_gravity() -> float:
 	if velocity.y > 0.0:
-		print("using jump_gravity")
 		return jump_gravity
 	else:
-		print("using fall_gravity")
 		return fall_gravity
 	
+func jump() -> void:
+	velocity.y = jump_velocity
+	
+func coyote_timeout() -> void:
+	is_jump_available = false
 
 func _physics_process(delta: float) -> void:	
 	# MOVEMENT, relative to camera
@@ -72,8 +78,17 @@ func _physics_process(delta: float) -> void:
 	velocity = velocity.move_toward(move_direction * move_speed, acceleration * delta)
 	velocity.y = y_velocity + get_player_gravity() * delta
 	
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y += jump_velocity
+	if not is_on_floor():
+		if is_jump_available:
+			if coyote_timer_node.is_stopped():
+				coyote_timer_node.start(coyote_time)
+	else:
+		is_jump_available = true
+		coyote_timer_node.stop()
+	
+	if Input.is_action_just_pressed("jump") and is_jump_available:
+		jump()
+		is_jump_available = false
 	
 	move_and_slide()
 
