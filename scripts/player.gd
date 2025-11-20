@@ -9,7 +9,7 @@ extends CharacterBody3D
 @export_group("Jump")
 @export var jump_height := 3.5
 @export var jump_time_to_peak := 0.5
-@export var jump_time_to_descent := 0.4
+@export var jump_time_to_descend := 0.4
 
 @export_group("Jump")
 
@@ -22,7 +22,7 @@ var last_movement_direction := Vector3.BACK
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var jump_velocity : float = ((2.0 * jump_height) / jump_time_to_peak)
 @onready var jump_gravity : float = ((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak))
-@onready var fall_gravity : float = ((-2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent))
+@onready var fall_gravity : float = ((-2.0 * jump_height) / (jump_time_to_descend * jump_time_to_descend))
 
 var active_view_camera: Camera3D = hallway_camera
 var active_movement_camera: Camera3D = hallway_camera
