@@ -59,9 +59,13 @@ func get_player_gravity() -> float:
 	
 func jump() -> void:
 	velocity.y = jump_velocity
+	is_jump_available = false
 	
 func coyote_timeout() -> void:
 	is_jump_available = false
+
+func on_jump_buffer_timeout() -> void:
+	jump_buffer = false
 
 func _physics_process(delta: float) -> void:	
 	# MOVEMENT, relative to camera
@@ -85,10 +89,16 @@ func _physics_process(delta: float) -> void:
 	else:
 		is_jump_available = true
 		coyote_timer_node.stop()
+		if jump_buffer:
+			jump()
+			jump_buffer = false
 	
-	if Input.is_action_just_pressed("jump") and is_jump_available:
-		jump()
-		is_jump_available = false
+	if Input.is_action_just_pressed("jump"):
+		if is_jump_available:
+			jump()
+		else:
+			jump_buffer = true
+			get_tree().create_timer(jump_buffer_time).timeout.connect(on_jump_buffer_timeout)
 	
 	move_and_slide()
 
