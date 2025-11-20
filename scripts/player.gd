@@ -2,6 +2,7 @@ extends CharacterBody3D
 
 @export_group("Movement")
 @export var move_speed:= 2.4
+var current_speed := move_speed
 @export var acceleration := 200.0
 
 var last_movement_direction := Vector3.BACK
@@ -27,13 +28,20 @@ func _physics_process(delta: float) -> void:
 	var move_direction := forward * raw_input.y + right * raw_input.x
 	move_direction.y = 0.0
 	move_direction = move_direction.normalized()
-
-	velocity = velocity.move_toward(move_direction * move_speed, acceleration * delta)
-	if slasher.counter < slasher.max_counter or Input.is_action_pressed("block"):
-		velocity = velocity.move_toward(Vector3(0,0,0), acceleration * 2 * delta)
+	
+	if Input.is_action_pressed("block"):
+		current_speed = 0
+	else:
+		current_speed = move_speed
+	
+	velocity = velocity.move_toward(move_direction * current_speed, acceleration * delta)
+	if slasher.current_state == slasher.attack_state.ACTIVE or slasher.current_state == slasher.attack_state.STARTUP:
+		velocity = velocity.move_toward(last_movement_direction * current_speed*1.5, acceleration * delta)
+	elif slasher.current_state != slasher.attack_state.NONE:
+		velocity = Vector3.ZERO
 	move_and_slide()
 
-	if velocity.length() > 0.2:
+	if velocity.length() > 0.2 and slasher.current_state == slasher.attack_state.NONE:
 		last_movement_direction = move_direction
 		# TODO: Turn this into a state machine.
 		if animation_player.current_animation != "walking":
