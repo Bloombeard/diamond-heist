@@ -7,7 +7,7 @@ extends CharacterBody3D
 @export var camera_switch_input_change_delay := 0.3
 
 @export_group("Jump")
-@export var jump_height := 5
+@export var jump_height := 3.5
 @export var jump_time_to_peak := 0.5
 @export var jump_time_to_descent := 0.4
 
