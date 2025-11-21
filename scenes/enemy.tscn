@@ -12,6 +12,8 @@ albedo_color = Color(1, 0, 0, 1)
 [node name="Enemy" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_7p1mj")
+player_path = null
+move_speed = null
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 material_override = SubResource("StandardMaterial3D_md0e3")

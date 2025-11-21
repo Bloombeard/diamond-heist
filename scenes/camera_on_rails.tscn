@@ -14,5 +14,6 @@ curve = SubResource("Curve3D_7cqpm")
 script = ExtResource("1_o801y")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="."]
+transform = Transform3D(0.012157216, 0, 0.9999261, 0, 1, 0, -0.9999261, 0, 0.012157216, -2.241619, 0, -15.79621)
 
 [node name="Camera3D" type="Camera3D" parent="PathFollow3D"]
