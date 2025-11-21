@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://does8rpwjdh1r" path="res://assets/textures/grids/Red/texture_05.png" id="4_pjayo"]
 [ext_resource type="PackedScene" uid="uid://butv4eka18auv" path="res://scenes/player.tscn" id="5_g0dvk"]
 [ext_resource type="PackedScene" uid="uid://boc7uld8h3ora" path="res://scenes/camera_on_rails.tscn" id="6_5fq5j"]
+[ext_resource type="Script" uid="uid://calcf0bm026jd" path="res://scripts/static_tracking_camera.gd" id="6_skwyo"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sgp6g"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -46,22 +47,6 @@ uv1_triplanar = true
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tefeu"]
 albedo_texture = ExtResource("4_pjayo")
 uv1_triplanar = true
-
-[sub_resource type="GDScript" id="GDScript_jyhfs"]
-script/source = "extends Camera3D
-
-@export var target: Node3D
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	var target_position = target.position
-	look_at(target_position)
-"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jyhfs"]
 size = Vector3(6.6862183, 2.6971436, 7.756836)
@@ -141,7 +126,7 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -19.58
 
 [node name="hallway_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
 transform = Transform3D(-0.6659867, 0.5582364, -0.4948069, 0.03967631, 0.6888816, 0.7237873, 0.74490774, 0.46240056, -0.48093477, -12.490963, 7.571836, -4.4398465)
-script = SubResource("GDScript_jyhfs")
+script = ExtResource("6_skwyo")
 target = NodePath("../Player")
 
 [node name="vault_camera" type="Camera3D" parent="."]

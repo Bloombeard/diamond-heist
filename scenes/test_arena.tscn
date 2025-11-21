@@ -1,10 +1,30 @@
-[gd_scene load_steps=11 format=3 uid="uid://bbqb1452qr6nu"]
+[gd_scene load_steps=19 format=3 uid="uid://bbqb1452qr6nu"]
 
 [ext_resource type="PackedScene" uid="uid://butv4eka18auv" path="res://scenes/player.tscn" id="1_4brrt"]
+[ext_resource type="Script" uid="uid://b8lei0hxcl2d5" path="res://scenes/test_arena.gd" id="1_htu68"]
 [ext_resource type="Texture2D" uid="uid://c8arnlq67qi7" path="res://assets/textures/grids/Dark/texture_05.png" id="2_i8g6w"]
 [ext_resource type="Texture2D" uid="uid://c8upf6osvdwx5" path="res://assets/textures/grids/Orange/texture_05.png" id="3_htu68"]
 [ext_resource type="Texture2D" uid="uid://dqgbgrchvfwve" path="res://assets/textures/grids/Green/texture_05.png" id="4_gq0uu"]
 [ext_resource type="Texture2D" uid="uid://does8rpwjdh1r" path="res://assets/textures/grids/Red/texture_05.png" id="5_ica0y"]
+[ext_resource type="Script" uid="uid://calcf0bm026jd" path="res://scripts/static_tracking_camera.gd" id="6_i8g6w"]
+[ext_resource type="Script" uid="uid://dwqmq55dpp5tw" path="res://scripts/camera_on_rails.gd" id="8_gq0uu"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_htu68"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_o5qli"]
+sky_material = SubResource("ProceduralSkyMaterial_htu68")
+
+[sub_resource type="Environment" id="Environment_gq0uu"]
+background_mode = 2
+sky = SubResource("Sky_o5qli")
+tonemap_mode = 2
+sdfgi_enabled = true
+glow_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.644337, 0.675688, 0.724948, 1)
+fog_density = 0.001
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tgj8j"]
 albedo_texture = ExtResource("2_i8g6w")
@@ -26,7 +46,26 @@ uv1_triplanar = true
 albedo_texture = ExtResource("3_htu68")
 uv1_triplanar = true
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ica0y"]
+radius = 14.2
+
+[sub_resource type="Curve3D" id="Curve3D_tgj8j"]
+closed = true
+_data = {
+"points": PackedVector3Array(-31.349998, 0, 0.22999999, 31.349998, 0, -0.22999999, 0.049211062, 0.021133423, -31.036346, 0, 0, 0, 0, 0, 0, 31.149035, -7.247925e-05, 0.10279417, 31.21, 0, -0.21, -31.21, 0, 0.21, -0.05842203, -0.022743225, 31.571693, 0, 0, 0, 0, 0, 0, -31.2, -0.100000024, -0.1),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+
 [node name="TestArena" type="Node3D"]
+script = ExtResource("1_htu68")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_gq0uu")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.24530806, 0.5532758, -0.79605895, 1.3979103e-08, 0.821149, 0.5707139, 0.9694452, 0.14000069, -0.20143448, -10.6018, 18.2278, 0)
+shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("1_4brrt")]
 
@@ -186,3 +225,29 @@ material = SubResource("StandardMaterial3D_edgg4")
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -10.5, 0, 12.05)
 size = Vector3(3.9, 1, 1)
 material = SubResource("StandardMaterial3D_edgg4")
+
+[node name="center_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+fov = 50.0
+script = ExtResource("6_i8g6w")
+target = NodePath("../Player")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CylinderShape3D_ica0y")
+
+[node name="orbit_camera" type="Path3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+curve = SubResource("Curve3D_tgj8j")
+script = ExtResource("8_gq0uu")
+target = NodePath("../Player")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="orbit_camera"]
+transform = Transform3D(0.0073359637, 0, -0.9999316, 0, 0.9999997, 0, 0.9999316, 0, 0.0073359637, 0.049211062, 0.021133423, -31.036346)
+
+[node name="Camera3D" type="Camera3D" parent="orbit_camera/PathFollow3D"]
+fov = 40.0
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
