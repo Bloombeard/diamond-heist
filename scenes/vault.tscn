@@ -1,24 +1,11 @@
 [gd_scene load_steps=20 format=3 uid="uid://bab57487xo37b"]
 
+[ext_resource type="Script" uid="uid://du4uc3ndia0o6" path="res://scripts/vault.gd" id="1_5fq5j"]
 [ext_resource type="Texture2D" uid="uid://c8upf6osvdwx5" path="res://assets/textures/grids/Orange/texture_05.png" id="2_5fq5j"]
 [ext_resource type="Texture2D" uid="uid://c8arnlq67qi7" path="res://assets/textures/grids/Dark/texture_05.png" id="3_skwyo"]
 [ext_resource type="Texture2D" uid="uid://does8rpwjdh1r" path="res://assets/textures/grids/Red/texture_05.png" id="4_pjayo"]
 [ext_resource type="PackedScene" uid="uid://butv4eka18auv" path="res://scenes/player.tscn" id="5_g0dvk"]
 [ext_resource type="PackedScene" uid="uid://boc7uld8h3ora" path="res://scenes/camera_on_rails.tscn" id="6_5fq5j"]
-
-[sub_resource type="GDScript" id="GDScript_8iqx6"]
-script/source = "extends Node3D
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-"
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sgp6g"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -86,7 +73,7 @@ size = Vector3(23.31569, 2.763733, 10.842773)
 size = Vector3(1, 2.3504639, 2.2167969)
 
 [node name="Vault" type="Node3D"]
-script = SubResource("GDScript_8iqx6")
+script = ExtResource("1_5fq5j")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_0wfyh")
@@ -160,16 +147,16 @@ target = NodePath("../Player")
 [node name="vault_camera" type="Camera3D" parent="."]
 transform = Transform3D(-0.8642046, -0.17474684, 0.47181988, 0, 0.93774956, 0.34731215, -0.5031407, 0.30014873, -0.8104075, 5.7843285, 2.0505004, -3.604949)
 
+[node name="outside_follow_camera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("6_5fq5j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3651495, 0)
+target = NodePath("../Player")
+
 [node name="vault_area" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2479479, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="vault_area"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.00589, 0.058532715, 0)
 shape = SubResource("BoxShape3D_jyhfs")
-
-[node name="outside_follow_camera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("6_5fq5j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3651495, 0)
-target = NodePath("../Player")
 
 [node name="hallway_area" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.076374, 0, 0)
@@ -189,5 +176,7 @@ shape = SubResource("BoxShape3D_skwyo")
 [connection signal="body_entered" from="vault_area" to="Player" method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="vault_area" to="." method="_on_vault_area_body_exited"]
 [connection signal="body_exited" from="vault_area" to="Player" method="_on_area_3d_body_exited"]
+[connection signal="body_entered" from="hallway_area" to="." method="_on_hallway_area_body_entered"]
 [connection signal="body_entered" from="hallway_area" to="Player" method="_on_hallway_area_body_entered"]
+[connection signal="body_entered" from="outside_area" to="." method="_on_outside_area_body_entered"]
 [connection signal="body_entered" from="outside_area" to="Player" method="_on_outside_area_body_entered"]
