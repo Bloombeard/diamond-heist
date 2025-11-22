@@ -31,11 +31,6 @@ var target_velocity = Vector3.ZERO
 var gravity := -30.0
 var is_jump_available := true
 var jump_buffer := false
-
-func _ready() -> void:
-	hallway_camera.make_current()
-	active_view_camera = hallway_camera
-	active_movement_camera = hallway_camera
 	
 func _input(event) -> void:
 	if event.is_action_pressed("run"):
@@ -110,28 +105,3 @@ func _physics_process(delta: float) -> void:
 	var target_angle := Vector3.BACK.signed_angle_to(last_movement_direction, Vector3.UP)
 
 	player_skin.global_rotation.y = lerp_angle(player_skin.global_rotation.y, target_angle, rotation_speed * delta)
-
-func _on_area_3d_body_entered(body: Node3D) -> void:
-	if body == self:
-		active_view_camera = vault_camera
-		active_view_camera.make_current()
-		# switch which camera movement relates to at a delay to account for player reaction time.
-		await get_tree().create_timer(camera_switch_input_change_delay).timeout
-		active_movement_camera = vault_camera
-
-func _on_hallway_area_body_entered(body: Node3D) -> void:
-	if body == self:
-		active_view_camera = hallway_camera
-		active_view_camera.make_current()
-		# switch which camera movement relates to at a delay to account for player reaction time.
-		await get_tree().create_timer(camera_switch_input_change_delay).timeout
-		active_movement_camera = hallway_camera
-
-
-func _on_outside_area_body_entered(body: Node3D) -> void:
-	if body == self:
-		active_view_camera = outside_follow_camera
-		active_view_camera.make_current()
-		# switch which camera movement relates to at a delay to account for player reaction time.
-		await get_tree().create_timer(camera_switch_input_change_delay).timeout
-		active_movement_camera = outside_follow_camera
