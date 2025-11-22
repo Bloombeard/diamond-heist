@@ -1,8 +1,9 @@
-[gd_scene load_steps=20 format=3 uid="uid://bab57487xo37b"]
+[gd_scene load_steps=22 format=3 uid="uid://bab57487xo37b"]
 
 [ext_resource type="Script" uid="uid://du4uc3ndia0o6" path="res://scripts/vault.gd" id="1_5fq5j"]
 [ext_resource type="Texture2D" uid="uid://c8upf6osvdwx5" path="res://assets/textures/grids/Orange/texture_05.png" id="2_5fq5j"]
 [ext_resource type="Texture2D" uid="uid://c8arnlq67qi7" path="res://assets/textures/grids/Dark/texture_05.png" id="3_skwyo"]
+[ext_resource type="Texture2D" uid="uid://bj2tjclvfiove" path="res://assets/textures/grids/Purple/texture_05.png" id="4_5fq5j"]
 [ext_resource type="Texture2D" uid="uid://does8rpwjdh1r" path="res://assets/textures/grids/Red/texture_05.png" id="4_pjayo"]
 [ext_resource type="PackedScene" uid="uid://butv4eka18auv" path="res://scenes/player.tscn" id="5_g0dvk"]
 [ext_resource type="PackedScene" uid="uid://boc7uld8h3ora" path="res://scenes/camera_on_rails.tscn" id="6_5fq5j"]
@@ -47,6 +48,26 @@ uv1_triplanar = true
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tefeu"]
 albedo_texture = ExtResource("4_pjayo")
 uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_skwyo"]
+albedo_texture = ExtResource("4_5fq5j")
+uv1_triplanar = true
+
+[sub_resource type="GDScript" id="GDScript_jyhfs"]
+script/source = "extends Camera3D
+
+@export var target: Node3D
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	var target_position = target.position
+	look_at(target_position)
+"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jyhfs"]
 size = Vector3(6.6862183, 2.6971436, 7.756836)
@@ -120,6 +141,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.099999905, -0.05000007, -2
 operation = 2
 size = Vector3(5.9, 2.7, 7.6)
 material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="lower_platform" type="CSGBox3D" parent="vault_complex"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.01184, 0.58719635, -10.428116)
+size = Vector3(1, 0.18139648, 1)
+material = SubResource("StandardMaterial3D_skwyo")
+
+[node name="middle_platform" type="CSGBox3D" parent="vault_complex"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.742207, 1.3599969, -10.428116)
+size = Vector3(1, 0.18139648, 1)
+material = SubResource("StandardMaterial3D_skwyo")
+
+[node name="upper_platform" type="CSGBox3D" parent="vault_complex"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.846906, 1.9533741, -10.428116)
+size = Vector3(2.5395508, 0.18139648, 1)
+material = SubResource("StandardMaterial3D_skwyo")
 
 [node name="Player" parent="." instance=ExtResource("5_g0dvk")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -19.581772, 0, 7.298099e-07)
