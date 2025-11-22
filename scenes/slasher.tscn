@@ -1,0 +1,83 @@
+[gd_scene load_steps=11 format=3 uid="uid://dru8rednjjldl"]
+
+[ext_resource type="Script" uid="uid://dvu1241r73k63" path="res://scripts/slasher.gd" id="1_1mbkm"]
+[ext_resource type="ArrayMesh" uid="uid://cgg4y5jbufu47" path="res://assets/models/slash.obj" id="2_lg7p3"]
+[ext_resource type="Texture2D" uid="uid://cyai8yluepg72" path="res://assets/textures/slashhoz.png" id="2_thp67"]
+[ext_resource type="Texture2D" uid="uid://cgtl7fist8a8o" path="res://assets/textures/slashvert.png" id="3_lg7p3"]
+[ext_resource type="Texture2D" uid="uid://bn28rpxkish52" path="res://assets/textures/slashbotleft.png" id="4_u7d34"]
+[ext_resource type="Texture2D" uid="uid://d21ju40jytfpy" path="res://assets/textures/slashbotright.png" id="5_4md7a"]
+[ext_resource type="Texture2D" uid="uid://duar4vvm37gqg" path="res://assets/textures/slashtopleft.png" id="6_hhtb2"]
+[ext_resource type="Texture2D" uid="uid://c6idd4cq8ssis" path="res://assets/textures/slashtopright.png" id="7_kxyhc"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_lg7p3"]
+radius = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u7d34"]
+shading_mode = 0
+grow_amount = -0.368
+stencil_flags = 2
+
+[node name="Slasher" type="Node3D"]
+script = ExtResource("1_1mbkm")
+
+[node name="hitbox" type="Area3D" parent="."]
+
+[node name="hitbox_shape" type="CollisionShape3D" parent="hitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+shape = SubResource("SphereShape3D_lg7p3")
+disabled = true
+debug_color = Color(0.99621826, 0, 0.18194953, 0.78431374)
+
+[node name="slash_effect" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 0.1, 0, 0.1, 0, -0.1, 0, 0, 0, 0, 0.5)
+visible = false
+mesh = ExtResource("2_lg7p3")
+surface_material_override/0 = SubResource("StandardMaterial3D_u7d34")
+
+[node name="hoz" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+visible = false
+pixel_size = 0.005
+billboard = 1
+no_depth_test = true
+texture = ExtResource("2_thp67")
+
+[node name="vert" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+visible = false
+pixel_size = 0.005
+billboard = 1
+no_depth_test = true
+texture = ExtResource("3_lg7p3")
+
+[node name="botleft" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+visible = false
+pixel_size = 0.005
+billboard = 1
+no_depth_test = true
+texture = ExtResource("4_u7d34")
+
+[node name="botright" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+visible = false
+pixel_size = 0.005
+billboard = 1
+no_depth_test = true
+texture = ExtResource("5_4md7a")
+
+[node name="topleft" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+visible = false
+pixel_size = 0.005
+billboard = 1
+no_depth_test = true
+texture = ExtResource("6_hhtb2")
+
+[node name="topright" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+visible = false
+pixel_size = 0.005
+billboard = 1
+no_depth_test = true
+texture = ExtResource("7_kxyhc")

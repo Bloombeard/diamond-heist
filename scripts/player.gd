@@ -16,6 +16,7 @@ var last_movement_direction := Vector3.BACK
 
 @onready var player_skin: Node3D = %player_skin
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
+@onready var slasher := $player_skin/Slasher
 @onready var jump_velocity : float = ((2.0 * jump_height) / jump_time_to_peak)
 @onready var jump_gravity : float = ((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak))
 @onready var fall_gravity : float = ((-2.0 * jump_height) / (jump_time_to_descend * jump_time_to_descend))
@@ -67,6 +68,16 @@ func _physics_process(delta: float) -> void:
 	move_direction.y = 0.0
 	move_direction = move_direction.normalized()
 	
+	if Input.is_action_pressed("block"):
+		current_speed = 0
+	else:
+		current_speed = move_speed
+	
+	velocity = velocity.move_toward(move_direction * current_speed, acceleration * delta)
+	if slasher.current_state == slasher.attack_state.ACTIVE or slasher.current_state == slasher.attack_state.STARTUP:
+		velocity = velocity.move_toward(last_movement_direction * current_speed*1.5, acceleration * delta)
+	elif slasher.current_state != slasher.attack_state.NONE:
+		velocity = Vector3.ZERO
 	var y_velocity := velocity.y
 	velocity.y = 0.0
 	velocity = velocity.move_toward(move_direction * move_speed, acceleration * delta)
@@ -92,7 +103,7 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 
-	if move_direction.length() > 0.2:
+	if velocity.length() > 0.2 and slasher.current_state == slasher.attack_state.NONE:
 		last_movement_direction = move_direction
 		# TODO: Turn this into a state machine.
 		if animation_player.current_animation != "walking" || animation_player.current_animation != "running":
