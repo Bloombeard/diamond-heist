@@ -111,4 +111,3 @@ func slash_display() -> void:
 			Vector2(-1,1):
 				pattern.set("botleft",true)
 				$botleft.visible = true
-		
