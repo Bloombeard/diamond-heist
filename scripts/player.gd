@@ -17,6 +17,8 @@ var last_movement_direction := Vector3.BACK
 @onready var player_skin: Node3D = %player_skin
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var slasher := $player_skin/Slasher
+@onready var statem = $state_machine
+
 @onready var jump_velocity : float = ((2.0 * jump_height) / jump_time_to_peak)
 @onready var jump_gravity : float = ((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak))
 @onready var fall_gravity : float = ((-2.0 * jump_height) / (jump_time_to_descend * jump_time_to_descend))
@@ -24,10 +26,10 @@ var last_movement_direction := Vector3.BACK
 
 var active_movement_camera: Camera3D
 var rotation_speed := 12.0
-var move_speed := walk_speed
+var move_speed := run_speed
 var walk_animation_name := "walking"
 var run_animation_name := "running"
-var current_move_animation := "walking"
+var current_move_animation := "running"
 var target_velocity = Vector3.ZERO
 var gravity := -30.0
 var is_jump_available := true
@@ -69,14 +71,14 @@ func _physics_process(delta: float) -> void:
 	move_direction = move_direction.normalized()
 	
 	if Input.is_action_pressed("block"):
-		current_speed = 0
+		move_speed = walk_speed
 	else:
-		current_speed = move_speed
+		move_speed = run_speed
 	
-	velocity = velocity.move_toward(move_direction * current_speed, acceleration * delta)
-	if slasher.current_state == slasher.attack_state.ACTIVE or slasher.current_state == slasher.attack_state.STARTUP:
-		velocity = velocity.move_toward(last_movement_direction * current_speed*1.5, acceleration * delta)
-	elif slasher.current_state != slasher.attack_state.NONE:
+	velocity = velocity.move_toward(move_direction * move_speed, acceleration * delta)
+	if statem.atk_state == statem.ATK_ACTIVE or statem.atk_state == statem.ATK_STARTUP:
+		velocity = velocity.move_toward(last_movement_direction * move_speed*1.5, acceleration * delta)
+	elif statem.atk_state != statem.ATK_NONE:
 		velocity = Vector3.ZERO
 	var y_velocity := velocity.y
 	velocity.y = 0.0
@@ -103,7 +105,7 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 
-	if velocity.length() > 0.2 and slasher.current_state == slasher.attack_state.NONE:
+	if velocity.length() > 0.2 and statem.atk_state == statem.ATK_NONE:
 		last_movement_direction = move_direction
 		# TODO: Turn this into a state machine.
 		if animation_player.current_animation != "walking" || animation_player.current_animation != "running":

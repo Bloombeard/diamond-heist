@@ -2,10 +2,11 @@ extends Node
 
 @onready var slash_effect = $slash_effect
 @onready var hitbox_shape = $hitbox/hitbox_shape
-enum attack_state {NONE, STARTUP, ACTIVE, RECOVERY}
-var current_state := attack_state.NONE
-var max_counter := 30
-var counter
+@onready var statem = $"../../state_machine"
+
+@export var attack_length := 30
+var attack_counter = attack_length
+
 var direction: Vector2
 var current_hit: Vector2
 var last_hit: Vector2
@@ -15,7 +16,6 @@ var pattern_result := "none"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	counter = max_counter
 	current_hit = direction
 	last_hit = direction
 
@@ -23,32 +23,32 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	
 	# base the attack state on the counter
-	if counter == 0:
-		current_state = attack_state.NONE
-	elif counter < floor(max_counter/2):
-		current_state = attack_state.RECOVERY
-	elif counter < floor((max_counter/4)*3):
-		current_state = attack_state.ACTIVE
-	elif counter < max_counter:
-		current_state = attack_state.STARTUP
+	if attack_counter == 0:
+		statem.atk_state = statem.ATK_NONE
+	elif attack_counter < floor(attack_length/2):
+		statem.atk_state = statem.ATK_RECOVERY
+	elif attack_counter < floor((attack_length/4)*3):
+		statem.atk_state = statem.ATK_ACTIVE
+	elif attack_counter < attack_length:
+		statem.atk_state = statem.ATK_STARTUP
 	else:
-		current_state = attack_state.NONE
+		statem.atk_state = statem.ATK_NONE
 	
 	# run the counter
-	if counter == 0:
-		counter = max_counter
-	elif counter < max_counter:
-		counter -= 1
+	if attack_counter == 0:
+		attack_counter = attack_length
+	elif attack_counter < attack_length:
+		attack_counter -= 1
 	
 	# state machinery
-	if current_state == attack_state.RECOVERY or current_state == attack_state.NONE:
+	if statem.atk_state == statem.ATK_RECOVERY or statem.atk_state == statem.ATK_NONE:
 		direction = floor(Input.get_vector("slash_left", "slash_right", "slash_up", "slash_down"))
-	elif current_state == attack_state.STARTUP:
+	elif statem.atk_state == statem.ATK_STARTUP:
 		direction = Vector2(0,0)
-	elif current_state == attack_state.ACTIVE:
+	elif statem.atk_state == statem.ATK_ACTIVE:
 		hitbox_shape.set_deferred("disabled", false)
 		slash_effect.visible = true
-	if current_state == attack_state.RECOVERY:
+	if statem.atk_state == statem.ATK_RECOVERY:
 		hitbox_shape.set_deferred("disabled", true)
 		slash_effect.visible = false
 	
@@ -75,9 +75,9 @@ func _physics_process(delta: float) -> void:
 			slash = last_hit + current_hit
 		else:
 			slash = current_hit
-		counter = max_counter-1
+		attack_counter = attack_length-1
 		slash_display()
-	slash_effect.position.z = 1 + (float(counter)/-40)
+	slash_effect.position.z = 1 + (float(attack_counter)/-40)
 
 func slash_display() -> void:
 	match slash:
