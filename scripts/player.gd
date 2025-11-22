@@ -4,7 +4,6 @@ extends CharacterBody3D
 @export var walk_speed := 2.4
 @export var run_speed := 5
 @export var acceleration := 200.0
-@export var camera_switch_input_change_delay := 0.3
 
 @export_group("Jump")
 @export var jump_height := 3.5
@@ -15,9 +14,6 @@ extends CharacterBody3D
 
 var last_movement_direction := Vector3.BACK
 
-@onready var hallway_camera: Camera3D = $"../hallway_camera"
-@onready var vault_camera: Camera3D = $"../vault_camera"
-@onready var outside_follow_camera: Camera3D = $"../outside_follow_camera/PathFollow3D/Camera3D"
 @onready var player_skin: Node3D = %player_skin
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var jump_velocity : float = ((2.0 * jump_height) / jump_time_to_peak)
@@ -25,8 +21,7 @@ var last_movement_direction := Vector3.BACK
 @onready var fall_gravity : float = ((-2.0 * jump_height) / (jump_time_to_descend * jump_time_to_descend))
 @onready var coyote_timer_node: Timer = $Coyote_Timer
 
-var active_view_camera: Camera3D = hallway_camera
-var active_movement_camera: Camera3D = hallway_camera
+var active_movement_camera: Camera3D
 var rotation_speed := 12.0
 var move_speed := walk_speed
 var walk_animation_name := "walking"
@@ -36,11 +31,6 @@ var target_velocity = Vector3.ZERO
 var gravity := -30.0
 var is_jump_available := true
 var jump_buffer := false
-
-func _ready() -> void:
-	hallway_camera.make_current()
-	active_view_camera = hallway_camera
-	active_movement_camera = hallway_camera
 	
 func _input(event) -> void:
 	if event.is_action_pressed("run"):
@@ -115,28 +105,3 @@ func _physics_process(delta: float) -> void:
 	var target_angle := Vector3.BACK.signed_angle_to(last_movement_direction, Vector3.UP)
 
 	player_skin.global_rotation.y = lerp_angle(player_skin.global_rotation.y, target_angle, rotation_speed * delta)
-
-func _on_area_3d_body_entered(body: Node3D) -> void:
-	if body == self:
-		active_view_camera = vault_camera
-		active_view_camera.make_current()
-		# switch which camera movement relates to at a delay to account for player reaction time.
-		await get_tree().create_timer(camera_switch_input_change_delay).timeout
-		active_movement_camera = vault_camera
-
-func _on_hallway_area_body_entered(body: Node3D) -> void:
-	if body == self:
-		active_view_camera = hallway_camera
-		active_view_camera.make_current()
-		# switch which camera movement relates to at a delay to account for player reaction time.
-		await get_tree().create_timer(camera_switch_input_change_delay).timeout
-		active_movement_camera = hallway_camera
-
-
-func _on_outside_area_body_entered(body: Node3D) -> void:
-	if body == self:
-		active_view_camera = outside_follow_camera
-		active_view_camera.make_current()
-		# switch which camera movement relates to at a delay to account for player reaction time.
-		await get_tree().create_timer(camera_switch_input_change_delay).timeout
-		active_movement_camera = outside_follow_camera
