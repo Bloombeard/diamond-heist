@@ -31,11 +31,11 @@ func _physics_process(delta: float) -> void:
 	var attack_direction = $"../..".attack_direction
 	
 	# do the hitbox (and slash effects)
-	if statem.atk_state == statem.ATK_ACTIVE and statem.state == statem.ATTACKING:
+	if statem.atk_state == statem.ATK_ACTIVE:
 		hitbox_shape.set_deferred("disabled", false)
 		slash_effect.visible = true
 		slash_effect.position.z = 1 + (float(statem.atk_counter)/40)
-	elif statem.atk_state == statem.ATK_RECOVERY or statem.atk_state == statem.ATK_STARTUP  and statem.state == statem.ATTACKING:
+	elif statem.atk_state == statem.ATK_RECOVERY or statem.atk_state == statem.ATK_STARTUP:
 		hitbox_shape.set_deferred("disabled", true)
 		slash_effect.visible = false
 	
@@ -69,7 +69,7 @@ func _physics_process(delta: float) -> void:
 		statem.atk_active = fast_first_active_frame
 		statem.atk_recovery = fast_first_recovery_frame
 		if last_hit == current_hit:
-			statem.state = statem.STAGGERED
+			pass # this should break the rune probably?
 		
 		if last_hit + current_hit != Vector2.ZERO: # vert/hoz slashes register 0,0 always
 			slash = last_hit + current_hit
@@ -78,7 +78,7 @@ func _physics_process(delta: float) -> void:
 		draw_display()
 	
 	# rune pattern processing
-	if Input.is_action_just_released("block") or Input.is_action_just_pressed("block"):
+	if Input.is_action_just_released("block") or Input.is_action_just_pressed("block") or last_hit == current_hit:
 		if pattern.size() == 4 and pattern.has_all(["vert", "topleft", "topright", "hoz"]):
 			pattern_result = "launch"
 			print("LAUNCH")

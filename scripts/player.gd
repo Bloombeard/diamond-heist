@@ -4,6 +4,7 @@ extends CharacterBody3D
 @export var walk_speed := 2.4
 @export var run_speed := 5
 @export var acceleration := 200.0
+var stagger_timer := 120
 
 @export_group("Jump")
 @export var jump_height := 3.5
@@ -73,6 +74,7 @@ func _physics_process(delta: float) -> void:
 		var current_attack = floor(Input.get_vector("slash_left", "slash_right", "slash_up", "slash_down"))
 		if current_attack != Vector2.ZERO:
 			attack_buffer = current_attack
+	
 	if statem.atk_state == statem.ATK_NONE or statem.atk_state == statem.ATK_RECOVERY:
 		attack_direction = attack_buffer
 		attack_buffer = Vector2.ZERO
@@ -84,6 +86,9 @@ func _physics_process(delta: float) -> void:
 		if is_jump_available:
 			if coyote_timer_node.is_stopped():
 				coyote_timer_node.start(coyote_time)
+	elif statem.atk_state == statem.ATK_RECOVERY:
+		if coyote_timer_node.is_stopped():
+			coyote_timer_node.start(coyote_time)
 	else:
 		is_jump_available = true
 		coyote_timer_node.stop()
@@ -99,26 +104,35 @@ func _physics_process(delta: float) -> void:
 			statem.state = statem.DRAWING
 		else:
 			statem.state = statem.ATTACKING
-	if statem.state == statem.ATTACKING:
+	
+	if statem.state == statem.STAGGERED:
+		pass
+	elif statem.state == statem.ATTACKING:
 		pass
 	elif statem.state == statem.DRAWING:
 		pass
 	else:
-		if is_jump_available and jump_buffer:
-			statem.state = statem.JUMPING
-			jump()
-		elif not is_on_floor() and velocity.y < 0.0:
+		if not is_on_floor() and velocity.y < 0.0:
 			statem.state = statem.FALLING
-		elif Input.is_action_pressed("block"):
+		elif is_on_floor() and Input.is_action_pressed("block"):
 			statem.state = statem.BLOCKING
 		elif is_on_floor() and raw_input != Vector2.ZERO:
 			statem.state = statem.RUNNING
 		else:
 			statem.state = statem.IDLE
+	
+	if is_jump_available and jump_buffer:
+			statem.state = statem.JUMPING
+			jump()
 
 	# states!
-	if statem.state == statem.ATTACKING:
+	if statem.state == statem.STAGGERED:
+		move_speed = 0
+		# current_animation = stagger_animation_name
+	elif statem.state == statem.ATTACKING:
 		move_speed = walk_speed
+		if not is_on_floor():
+			move_speed = 0
 		move_direction = last_movement_direction
 		current_animation = walk_animation_name
 	elif statem.state == statem.JUMPING:
@@ -127,7 +141,6 @@ func _physics_process(delta: float) -> void:
 		# current_animation = jump_animation_name
 	elif statem.state == statem.BLOCKING:
 		move_speed = 0
-		#move_speed = walk_speed
 		current_animation = idle_animation_name
 		#current_animation = block_animation_name
 	elif statem.state == statem.DRAWING:
@@ -142,7 +155,7 @@ func _physics_process(delta: float) -> void:
 		current_animation = idle_animation_name
 		move_speed = run_speed
 	
-	# actual movement velocity
+	# final movement
 	var y_velocity := velocity.y
 	velocity.y = 0.0
 	velocity = velocity.move_toward(move_direction * move_speed, acceleration * delta)
@@ -150,11 +163,8 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector3.ZERO
 	if statem.atk_state != statem.ATK_ACTIVE and statem.atk_state != statem.ATK_STARTUP:
 		velocity.y = y_velocity + get_player_gravity() * delta
-	
 	move_and_slide()
 
 	animation_player.play(current_animation)
-
 	var target_angle := Vector3.BACK.signed_angle_to(last_movement_direction, Vector3.UP)
-
 	player_skin.global_rotation.y = lerp_angle(player_skin.global_rotation.y, target_angle, rotation_speed * delta)

@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://qkbko2sifekr"]
+[gd_scene load_steps=6 format=3 uid="uid://bogo3gha7l7cv"]
 
 [ext_resource type="Script" uid="uid://c1c78npuewamo" path="res://scripts/enemy.gd" id="1_7p1mj"]
+[ext_resource type="Script" uid="uid://bltbd8mxfw6y6" path="res://scenes/state_machine.gd" id="3_5uy6h"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_md0e3"]
 albedo_color = Color(1, 0, 0, 1)
@@ -13,6 +14,9 @@ albedo_color = Color(1, 0, 0, 1)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_7p1mj")
 
+[node name="state_machine" type="Node3D" parent="."]
+script = ExtResource("3_5uy6h")
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 material_override = SubResource("StandardMaterial3D_md0e3")
 mesh = SubResource("CapsuleMesh_4ra3w")
@@ -21,3 +25,5 @@ mesh = SubResource("CapsuleMesh_4ra3w")
 shape = SubResource("CapsuleShape3D_5uy6h")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="enemy_skin" type="Node3D" parent="."]

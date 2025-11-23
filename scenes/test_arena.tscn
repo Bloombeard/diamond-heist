@@ -1,14 +1,14 @@
 [gd_scene load_steps=21 format=3 uid="uid://b8sgotg6oxvuh"]
 
 [ext_resource type="PackedScene" uid="uid://butv4eka18auv" path="res://scenes/player.tscn" id="1_4brrt"]
-[ext_resource type="Script" path="res://scenes/test_arena.gd" id="1_htu68"]
+[ext_resource type="Script" uid="uid://b8lei0hxcl2d5" path="res://scenes/test_arena.gd" id="1_htu68"]
 [ext_resource type="Texture2D" uid="uid://c8arnlq67qi7" path="res://assets/textures/grids/Dark/texture_05.png" id="2_i8g6w"]
 [ext_resource type="Texture2D" uid="uid://c8upf6osvdwx5" path="res://assets/textures/grids/Orange/texture_05.png" id="3_htu68"]
 [ext_resource type="Texture2D" uid="uid://dqgbgrchvfwve" path="res://assets/textures/grids/Green/texture_05.png" id="4_gq0uu"]
 [ext_resource type="Texture2D" uid="uid://does8rpwjdh1r" path="res://assets/textures/grids/Red/texture_05.png" id="5_ica0y"]
-[ext_resource type="Script" path="res://scripts/static_tracking_camera.gd" id="6_i8g6w"]
-[ext_resource type="Script" path="res://scripts/camera_on_rails.gd" id="8_gq0uu"]
-[ext_resource type="PackedScene" path="res://scenes/enemy.tscn" id="9_ica0y"]
+[ext_resource type="Script" uid="uid://calcf0bm026jd" path="res://scripts/static_tracking_camera.gd" id="6_i8g6w"]
+[ext_resource type="Script" uid="uid://dwqmq55dpp5tw" path="res://scripts/camera_on_rails.gd" id="8_gq0uu"]
+[ext_resource type="PackedScene" uid="uid://bogo3gha7l7cv" path="res://scenes/enemy.tscn" id="9_ica0y"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_htu68"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
