@@ -16,8 +16,6 @@ extends Node
 @export var slow_first_active_frame := 20
 @export var slow_first_recovery_frame := 30
 
-var input_direction: Vector2
-var input_buffer: Vector2
 var current_hit := Vector2.ZERO
 var last_hit := Vector2.ZERO
 var slash: Vector2
@@ -30,21 +28,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-	if floor(Input.get_vector("slash_left", "slash_right", "slash_up", "slash_down")) != Vector2.ZERO:
-		input_buffer = floor(Input.get_vector("slash_left", "slash_right", "slash_up", "slash_down"))
-	
-	# only pull from the buffer when idle or in recovery
-	if statem.atk_state == statem.ATK_NONE or statem.atk_state == statem.ATK_RECOVERY:
-		input_direction = input_buffer
-		input_buffer = Vector2.ZERO
-	else:
-		input_direction = Vector2.ZERO
-	
-	if input_direction != Vector2.ZERO:
-		if statem.state == statem.BLOCKING:
-			statem.state = statem.DRAWING
-		else:
-			statem.state = statem.ATTACKING
+	var attack_direction = $"../..".attack_direction
 	
 	# do the hitbox (and slash effects)
 	if statem.atk_state == statem.ATK_ACTIVE and statem.state == statem.ATTACKING:
@@ -56,9 +40,10 @@ func _physics_process(delta: float) -> void:
 		slash_effect.visible = false
 	
 	# slash direction when attacking
-	if statem.state == statem.ATTACKING and statem.atk_state == statem.ATK_NONE:
+	if statem.state == statem.ATTACKING and statem.atk_counter == 1:
 		last_hit = current_hit
-		current_hit = input_direction
+		current_hit = attack_direction
+		
 		if last_hit != current_hit:
 			statem.atk_length = fast_attack_length
 			statem.atk_startup = fast_first_startup_frame
@@ -76,9 +61,9 @@ func _physics_process(delta: float) -> void:
 			slash = current_hit
 		attack_display()
 	# slash direction when blocking
-	elif statem.state == statem.DRAWING and statem.atk_state == statem.ATK_NONE:
+	elif statem.state == statem.DRAWING and statem.atk_counter == 1:
 		last_hit = current_hit
-		current_hit = input_direction
+		current_hit = attack_direction
 		statem.atk_length = fast_attack_length
 		statem.atk_startup = fast_first_startup_frame
 		statem.atk_active = fast_first_active_frame
@@ -91,9 +76,6 @@ func _physics_process(delta: float) -> void:
 		else:
 			slash = current_hit
 		draw_display()
-	
-	if statem.state == statem.BLOCKING:
-		pass
 	
 	# rune pattern processing
 	if Input.is_action_just_released("block") or Input.is_action_just_pressed("block"):

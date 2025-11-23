@@ -1,6 +1,6 @@
 extends Node3D
 
-enum {IDLE, BLOCKING, RUNNING, JUMPING, ATTACKING, DRAWING, STAGGERED}
+enum {IDLE, BLOCKING, RUNNING, JUMPING, FALLING, ATTACKING, DRAWING, STAGGERED}
 enum {ATK_NONE, ATK_STARTUP, ATK_ACTIVE, ATK_RECOVERY}
 
 @onready var state = IDLE
@@ -24,5 +24,7 @@ func _physics_process(delta: float) -> void:
 			atk_state = ATK_RECOVERY
 		elif atk_counter >= atk_length:
 			atk_state = ATK_NONE
-			atk_counter = 0
-			state = IDLE
+			if state == ATTACKING:
+				state = IDLE
+			elif state == DRAWING:
+				state = BLOCKING
