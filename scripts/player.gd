@@ -71,6 +71,7 @@ func _physics_process(delta: float) -> void:
 	move_direction = move_direction.normalized()
 	
 	if Input.is_action_pressed("block"):
+		statem.state = statem.BLOCKING
 		move_speed = walk_speed
 	else:
 		move_speed = run_speed

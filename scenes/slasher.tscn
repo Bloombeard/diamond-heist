@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dru8rednjjldl"]
+[gd_scene load_steps=11 format=3 uid="uid://b5d128yt1cy1w"]
 
 [ext_resource type="Script" uid="uid://dvu1241r73k63" path="res://scripts/slasher.gd" id="1_1mbkm"]
 [ext_resource type="ArrayMesh" uid="uid://cgg4y5jbufu47" path="res://assets/models/slash.obj" id="2_lg7p3"]
