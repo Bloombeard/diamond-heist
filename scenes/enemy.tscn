@@ -1,35 +1,52 @@
-[gd_scene load_steps=7 format=3 uid="uid://bogo3gha7l7cv"]
+[gd_scene load_steps=8 format=3 uid="uid://bogo3gha7l7cv"]
 
 [ext_resource type="Script" uid="uid://c1c78npuewamo" path="res://scripts/enemy.gd" id="1_7p1mj"]
 [ext_resource type="PackedScene" uid="uid://b5d128yt1cy1w" path="res://scenes/slasher.tscn" id="2_4ra3w"]
 [ext_resource type="Script" uid="uid://bltbd8mxfw6y6" path="res://scenes/state_machine.gd" id="3_5uy6h"]
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4ra3w"]
+radius = 0.2
+height = 1.6
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_md0e3"]
-albedo_color = Color(1, 0, 0, 1)
+transparency = 1
+albedo_color = Color(1, 0, 0, 0.23921569)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_4ra3w"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5uy6h"]
 
 [node name="Enemy" type="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_7p1mj")
+stagger_length = 600
+
+[node name="hitbox" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="hitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_4ra3w")
+debug_color = Color(1.1551381e-06, 0.6461219, 0.25173128, 0.41960785)
 
 [node name="state_machine" type="Node3D" parent="."]
 script = ExtResource("3_5uy6h")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 material_override = SubResource("StandardMaterial3D_md0e3")
 mesh = SubResource("CapsuleMesh_4ra3w")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CapsuleShape3D_5uy6h")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 
 [node name="enemy_skin" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
 [node name="Slasher" parent="enemy_skin" instance=ExtResource("2_4ra3w")]
 fast_attack_length = 50
-fast_first_active_frame = 30
-fast_first_recovery_frame = 40
+fast_first_active_frame = 20
+fast_first_recovery_frame = 30

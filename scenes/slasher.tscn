@@ -20,9 +20,11 @@ stencil_flags = 2
 [node name="Slasher" type="Node3D"]
 script = ExtResource("1_1mbkm")
 
-[node name="hitbox" type="Area3D" parent="."]
+[node name="hurtbox" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 0
 
-[node name="hitbox_shape" type="CollisionShape3D" parent="hitbox"]
+[node name="hurtbox_shape" type="CollisionShape3D" parent="hurtbox"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 shape = SubResource("SphereShape3D_lg7p3")
 disabled = true

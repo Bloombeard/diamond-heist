@@ -13,14 +13,21 @@ var stagger_timer := 120
 @export var coyote_time := 0.1
 @export var jump_buffer_time := 0.1
 
+@export_group("Combat")
+@export var armor_value := 3
+@export var stagger_length := 60
+@export var invulnerability_frames := 40
+
 var last_movement_direction := Vector3.BACK
 
 @onready var player_skin: Node3D = %player_skin
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var slasher := $player_skin/Slasher
+@onready var slasher_hurtbox := $player_skin/Slasher/hurtbox
 @onready var attack_direction: Vector2
 @onready var attack_buffer := Vector2.ZERO
 @onready var statem = $state_machine
+@onready var hitbox = $hitbox
 
 @onready var jump_velocity : float = ((2.0 * jump_height) / jump_time_to_peak)
 @onready var jump_gravity : float = ((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak))
@@ -55,6 +62,11 @@ func coyote_timeout() -> void:
 
 func on_jump_buffer_timeout() -> void:
 	jump_buffer = false
+
+func _ready() -> void:
+	slasher_hurtbox.set_collision_layer_value(3, true)
+	statem.stg_length = stagger_length
+	statem.iframes = invulnerability_frames
 
 func _physics_process(delta: float) -> void:	
 	# MOVEMENT, relative to camera
@@ -94,24 +106,7 @@ func _physics_process(delta: float) -> void:
 		coyote_timer_node.stop()
 	
 	# assign states n stuff
-	if Input.is_action_just_pressed("jump"):
-		jump_buffer = true
-		get_tree().create_timer(jump_buffer_time).timeout.connect(on_jump_buffer_timeout)
-	
-	if attack_direction != Vector2.ZERO:
-		statem.atk_counter = 0
-		if statem.state == statem.BLOCKING or statem.state == statem.DRAWING:
-			statem.state = statem.DRAWING
-		else:
-			statem.state = statem.ATTACKING
-	
-	if statem.state == statem.STAGGERED:
-		pass
-	elif statem.state == statem.ATTACKING:
-		pass
-	elif statem.state == statem.DRAWING:
-		pass
-	else:
+	if statem.state < statem.ATTACKING:
 		if not is_on_floor() and velocity.y < 0.0:
 			statem.state = statem.FALLING
 		elif is_on_floor() and Input.is_action_pressed("block"):
@@ -120,10 +115,35 @@ func _physics_process(delta: float) -> void:
 			statem.state = statem.RUNNING
 		else:
 			statem.state = statem.IDLE
+		if Input.is_action_just_pressed("jump"):
+			jump_buffer = true
+			get_tree().create_timer(jump_buffer_time).timeout.connect(on_jump_buffer_timeout)
 	
 	if is_jump_available and jump_buffer:
-			statem.state = statem.JUMPING
-			jump()
+		statem.state = statem.JUMPING
+		jump()
+		
+	if attack_direction != Vector2.ZERO and statem.state != statem.STAGGERED:
+		statem.atk_counter = 0
+		if statem.state == statem.BLOCKING or statem.state == statem.DRAWING:
+			statem.state = statem.DRAWING
+		else:
+			statem.state = statem.ATTACKING
+	
+	if statem.invuln:
+		hitbox.monitoring = false
+	else:
+		hitbox.monitoring = true
+	
+	if hitbox.has_overlapping_areas():
+		statem.invuln = true
+		if armor_value == 0:
+			print("player: ow!")
+			statem.state = statem.STAGGERED
+		else:
+			armor_value -= 1
+			print("player: ", armor_value)
+			statem.stg_counter == statem.stg_length
 
 	# states!
 	if statem.state == statem.STAGGERED:

@@ -1,7 +1,7 @@
 extends Node
 
 @onready var slash_effect = $slash_effect
-@onready var hitbox_shape = $hitbox/hitbox_shape
+@onready var hurtbox_shape = $hurtbox/hurtbox_shape
 @onready var statem = $"../../state_machine"
 
 @export_group("Fast Attack Properties")
@@ -28,15 +28,16 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
+	var hurtbox = $hurtbox
 	var attack_direction = $"../..".attack_direction
 	
-	# do the hitbox (and slash effects)
+	# do the hurbox (and slash effects)
 	if statem.atk_state == statem.ATK_ACTIVE:
-		hitbox_shape.set_deferred("disabled", false)
+		hurtbox_shape.set_deferred("disabled", false)
 		slash_effect.visible = true
 		slash_effect.position.z = 1 + (float(statem.atk_counter)/40)
-	elif statem.atk_state == statem.ATK_RECOVERY or statem.atk_state == statem.ATK_STARTUP:
-		hitbox_shape.set_deferred("disabled", true)
+	elif statem.atk_state == statem.ATK_RECOVERY or statem.atk_state <= statem.ATK_STARTUP:
+		hurtbox_shape.set_deferred("disabled", true)
 		slash_effect.visible = false
 	
 	# slash direction when attacking

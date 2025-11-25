@@ -5,23 +5,32 @@ extends CharacterBody3D
 @export var sight_distance := 20
 @export var acceleration := 200.0
 
+@export_group("Combat")
+@export var armor_value := 1
+@export var stagger_length := 100
+@export var invulnerability_frames := 10
+
 @onready var nav_agent: NavigationAgent3D = $NavigationAgent3D
+@onready var slasher_hurtbox := $enemy_skin/Slasher/hurtbox
 @onready var statem = $state_machine
 @onready var enemy_skin = $enemy_skin
+@onready var hitbox = $hitbox
 
 @onready var player = get_node(player_path)
-@onready var idle_distance = randi_range(3,5)
+@onready var idle_distance = randi_range(3,4)
 @onready var attack_direction = Vector2(1.0,0)
 
 var direction_to_player := Vector3.ZERO
 
 func _ready() -> void:
-	pass
+	slasher_hurtbox.set_collision_layer_value(2, true)
+	statem.stg_length = stagger_length
+	statem.iframes = invulnerability_frames
 	
 func _physics_process(delta: float) -> void:
 	velocity = Vector3.ZERO
 	var current_speed = move_speed
-	var choose_attack = randi_range(0,99)
+	var choose_attack = randi_range(0,300)
 	
 	var target_angle := Vector3.BACK.signed_angle_to(direction_to_player, Vector3.UP)
 	var rotation_speed := 12.0
@@ -30,7 +39,7 @@ func _physics_process(delta: float) -> void:
 	nav_agent.set_target_position(player.global_position)
 	var next_nav_point := nav_agent.get_next_path_position()
 	
-	if statem.state != statem.ATTACKING:
+	if statem.state < statem.ATTACKING:
 		direction_to_player = self.global_position.direction_to(player.global_position)
 		statem.atk_counter = 0
 		if self.global_position.distance_to(player.global_position) <= idle_distance:
@@ -43,17 +52,46 @@ func _physics_process(delta: float) -> void:
 		else:
 			statem.state = statem.IDLE
 	
+	if statem.invuln:
+		hitbox.monitoring = false
+	else:
+		hitbox.monitoring = true
+	
+	if hitbox.has_overlapping_areas():
+		statem.invuln = true
+		if armor_value == 0:
+			print("enemy: eech!")
+			statem.state = statem.STAGGERED
+		else:
+			armor_value -= 1
+			print("enemy: ", armor_value)
+			statem.stg_counter == statem.stg_length
+	
 	# movement
 	var move_direction = (next_nav_point - global_position).normalized()
-	if statem.state == statem.ATTACKING:
+	if statem.state == statem.STAGGERED:
+		current_speed = 0
+	elif statem.state == statem.ATTACKING:
 		move_direction = direction_to_player
+		move_direction.y = 0
 		if statem.atk_state != statem.ATK_RECOVERY:
 			current_speed = move_speed / 6
 		else:
 			current_speed = 0
+		if statem.atk_counter == 1:
+			if idle_distance % 2 == 0:
+				idle_distance += 1
+			else:
+				idle_distance -= 1
 	elif statem.state == statem.RUNNING:
-		if self.global_position.distance_to(player.global_position) <= idle_distance:
+		var distance_to_player = self.global_position.distance_to(player.global_position)
+		if distance_to_player <= idle_distance + 1:
 			current_speed = move_speed / 4
+		
+		if distance_to_player <= idle_distance - 1:
+			move_direction = -direction_to_player
+			move_direction.y = 0
+		elif distance_to_player <= idle_distance:
 			var temp_direction = move_direction
 			move_direction.x = temp_direction.z
 			move_direction.z = temp_direction.x
