@@ -7,7 +7,8 @@ extends CharacterBody3D
 
 @export_group("Combat")
 @export var armor_value := 1
-@export var stagger_length := 100
+@export var stagger_length := 30
+@export var stun_length := 600
 @export var invulnerability_frames := 10
 
 @onready var nav_agent: NavigationAgent3D = $NavigationAgent3D
@@ -61,17 +62,24 @@ func _physics_process(delta: float) -> void:
 	if hitbox.has_overlapping_areas() and statem.state != statem.DEAD:
 		statem.invuln = true
 		if armor_value == 0:
+			statem.stg_length = stun_length
 			print("enemy: eech!")
-			statem.state = statem.STAGGERED
 		else:
 			armor_value -= 1
 			print("enemy: ", armor_value)
-			statem.stg_counter == statem.stg_length
+			statem.stg_length = stagger_length
+		statem.state = statem.STAGGERED
 	
 	# movement
 	var move_direction = (next_nav_point - global_position).normalized()
 	if statem.state >= statem.STAGGERED:
-		current_speed = 0
+		if statem.stg_counter < 10:
+			current_speed = move_speed / 6
+			direction_to_player = self.global_position.direction_to(player.global_position)
+			move_direction = -direction_to_player
+			move_direction.y = 0
+		else:
+			current_speed = 0
 	elif statem.state == statem.ATTACKING:
 		move_direction = direction_to_player
 		move_direction.y = 0
@@ -108,6 +116,12 @@ func _physics_process(delta: float) -> void:
 	else:
 		var bubble = $Bubble
 		match statem.ded_state:
+			statem.DED_BOMB:
+				statem.ded_length = 180
+				if statem.ded_counter == statem.ded_length - 1:
+					# spawn explosion! its a hurtbox
+					# explosion should set targets stagger length to its survival length
+					pass
 			statem.DED_FORCE:
 				statem.ded_length = 6
 				velocity.y = 20
@@ -116,6 +130,17 @@ func _physics_process(delta: float) -> void:
 				bubble.visible = true
 				statem.ded_length = 600
 				velocity.y = 0.5
+			statem.DED_CUBE:
+				# spawn cube! it has collision like bubble
+				# apply velocity using move_direction = -direction_to_player
+				# hurtbox while moving
+				# reeeally long ded_length! but cut it short on wall collision
+				pass
+			statem.DED_LINK:
+				# check for closest nearby target
+				# draw line between this and them
+				# hit them
+				pass
 			statem.DED_NONE:
 				if is_on_floor():
 					bubble.set_deferred("disabled", true)

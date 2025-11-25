@@ -29,7 +29,6 @@ albedo_color = Color(0.56078434, 1, 0.84705883, 0.27450982)
 
 [node name="Enemy" type="CharacterBody3D"]
 script = ExtResource("1_7p1mj")
-stagger_length = 600
 
 [node name="hitbox" type="Area3D" parent="."]
 collision_layer = 4
