@@ -24,6 +24,7 @@ var direction_to_player := Vector3.ZERO
 
 func _ready() -> void:
 	slasher_hurtbox.set_collision_layer_value(2, true)
+	slasher_hurtbox.set_collision_mask_value(2, true)
 	statem.stg_length = stagger_length
 	statem.iframes = invulnerability_frames
 	
@@ -57,7 +58,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		hitbox.monitoring = true
 	
-	if hitbox.has_overlapping_areas():
+	if hitbox.has_overlapping_areas() and statem.state != statem.DEAD:
 		statem.invuln = true
 		if armor_value == 0:
 			print("enemy: eech!")
@@ -69,7 +70,7 @@ func _physics_process(delta: float) -> void:
 	
 	# movement
 	var move_direction = (next_nav_point - global_position).normalized()
-	if statem.state == statem.STAGGERED:
+	if statem.state >= statem.STAGGERED:
 		current_speed = 0
 	elif statem.state == statem.ATTACKING:
 		move_direction = direction_to_player
@@ -102,6 +103,25 @@ func _physics_process(delta: float) -> void:
 	elif statem.state == statem.IDLE:
 		pass
 	
-	velocity = velocity.move_toward(move_direction * current_speed, acceleration * delta)
+	if statem.state != statem.DEAD:
+		velocity = velocity.move_toward(move_direction * current_speed, acceleration * delta)
+	else:
+		var bubble = $Bubble
+		match statem.ded_state:
+			statem.DED_FORCE:
+				statem.ded_length = 6
+				velocity.y = 20
+			statem.DED_BUBBLE:
+				bubble.set_deferred("disabled", false)
+				bubble.visible = true
+				statem.ded_length = 600
+				velocity.y = 0.5
+			statem.DED_NONE:
+				if is_on_floor():
+					bubble.set_deferred("disabled", true)
+					bubble.visible = false
+					velocity = velocity.move_toward(Vector3.ZERO, acceleration * delta)
+				else:
+					velocity = velocity.move_toward(Vector3(0,-20,0), acceleration * delta)
 
 	move_and_slide()

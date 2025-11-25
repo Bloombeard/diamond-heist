@@ -2,6 +2,7 @@ extends Node
 
 @onready var slash_effect = $slash_effect
 @onready var hurtbox_shape = $hurtbox/hurtbox_shape
+@onready var hurtbox = $hurtbox
 @onready var statem = $"../../state_machine"
 
 @export_group("Fast Attack Properties")
@@ -21,6 +22,7 @@ var last_hit := Vector2.ZERO
 var slash: Vector2
 var pattern := Dictionary()
 var pattern_result := "none"
+var rune_target
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -28,7 +30,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-	var hurtbox = $hurtbox
+	
 	var attack_direction = $"../..".attack_direction
 	
 	# do the hurbox (and slash effects)
@@ -76,13 +78,23 @@ func _physics_process(delta: float) -> void:
 			slash = last_hit + current_hit
 		else:
 			slash = current_hit
-		draw_display()
+	# draw on active frames
+	elif statem.state == statem.DRAWING and statem.atk_counter == statem.atk_active + 1:
+		if hurtbox.has_overlapping_areas():
+			rune_target = hurtbox.get_overlapping_areas()[0].get_parent()
+			print(rune_target)
+			draw_display()
 	
 	# rune pattern processing
 	if Input.is_action_just_released("block") or Input.is_action_just_pressed("block") or last_hit == current_hit:
 		if pattern.size() == 4 and pattern.has_all(["vert", "topleft", "topright", "hoz"]):
-			pattern_result = "launch"
-			print("LAUNCH")
+			pattern_result = "force"
+			rune_target.statem.state = rune_target.statem.DEAD
+			rune_target.statem.ded_state = rune_target.statem.DED_FORCE
+		elif pattern.size() == 5 and pattern.has_all(["hoz", "topleft", "topright", "botleft", "botright"]):
+			pattern_result = "bubble"
+			rune_target.statem.state = rune_target.statem.DEAD
+			rune_target.statem.ded_state = rune_target.statem.DED_BUBBLE
 		pattern.clear()
 		current_hit = Vector2(0,0)
 		last_hit = Vector2(0,0)
@@ -112,10 +124,10 @@ func attack_display() -> void:
 func draw_display() -> void:
 	match slash:
 		Vector2(1.0,0), Vector2(-1.0,0):
-			pattern.set("vert", true)
+			pattern.set("hoz", true)
 			$hoz.visible = true
 		Vector2(0,1.0), Vector2(0,-1.0):
-			pattern.set("hoz", true)
+			pattern.set("vert", true)
 			$vert.visible = true
 		Vector2(-1,-1):
 			pattern.set("topleft",true)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bogo3gha7l7cv"]
+[gd_scene load_steps=11 format=3 uid="uid://bogo3gha7l7cv"]
 
 [ext_resource type="Script" uid="uid://c1c78npuewamo" path="res://scripts/enemy.gd" id="1_7p1mj"]
 [ext_resource type="PackedScene" uid="uid://b5d128yt1cy1w" path="res://scenes/slasher.tscn" id="2_4ra3w"]
@@ -15,6 +15,17 @@ albedo_color = Color(1, 0, 0, 0.23921569)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_4ra3w"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5uy6h"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4ra3w"]
+radius = 1.1
+
+[sub_resource type="SphereMesh" id="SphereMesh_5uy6h"]
+radius = 1.1
+height = 2.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c4w8v"]
+transparency = 1
+albedo_color = Color(0.56078434, 1, 0.84705883, 0.27450982)
 
 [node name="Enemy" type="CharacterBody3D"]
 script = ExtResource("1_7p1mj")
@@ -40,6 +51,16 @@ mesh = SubResource("CapsuleMesh_4ra3w")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CapsuleShape3D_5uy6h")
+
+[node name="Bubble" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+visible = false
+shape = SubResource("SphereShape3D_4ra3w")
+disabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Bubble"]
+mesh = SubResource("SphereMesh_5uy6h")
+surface_material_override/0 = SubResource("StandardMaterial3D_c4w8v")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 

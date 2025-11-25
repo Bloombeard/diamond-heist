@@ -65,6 +65,7 @@ func on_jump_buffer_timeout() -> void:
 
 func _ready() -> void:
 	slasher_hurtbox.set_collision_layer_value(3, true)
+	slasher_hurtbox.set_collision_mask_value(3, true)
 	statem.stg_length = stagger_length
 	statem.iframes = invulnerability_frames
 
