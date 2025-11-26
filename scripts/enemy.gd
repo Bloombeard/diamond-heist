@@ -129,8 +129,9 @@ func _physics_process(delta: float) -> void:
 			statem.DED_BUBBLE:
 				bubble.set_deferred("disabled", false)
 				bubble.visible = true
-				statem.ded_length = 600
-				velocity.y = 1
+				statem.ded_length = 1200
+				if statem.ded_counter > 60:
+					velocity.y = 2
 			statem.DED_CUBE:
 				# spawn cube! it has collision like bubble
 				# apply velocity using move_direction = -direction_to_player
