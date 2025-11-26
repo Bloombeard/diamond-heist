@@ -121,6 +121,7 @@ func _physics_process(delta: float) -> void:
 				if statem.ded_counter == statem.ded_length - 1:
 					# spawn explosion! its a hurtbox
 					# explosion should set targets stagger length to its survival length
+					# also maybe set the counter to skip knockback
 					pass
 			statem.DED_FORCE:
 				statem.ded_length = 6
@@ -129,7 +130,7 @@ func _physics_process(delta: float) -> void:
 				bubble.set_deferred("disabled", false)
 				bubble.visible = true
 				statem.ded_length = 600
-				velocity.y = 0.5
+				velocity.y = 1
 			statem.DED_CUBE:
 				# spawn cube! it has collision like bubble
 				# apply velocity using move_direction = -direction_to_player

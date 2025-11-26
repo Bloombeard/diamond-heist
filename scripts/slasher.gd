@@ -82,8 +82,8 @@ func _physics_process(delta: float) -> void:
 	elif statem.state == statem.DRAWING and statem.atk_counter == statem.atk_active + 1:
 		if hurtbox.has_overlapping_areas():
 			rune_target = hurtbox.get_overlapping_areas()[0].get_parent()
-			print(rune_target)
-			draw_display()
+			if rune_target.statem.state == rune_target.statem.STAGGERED:
+				draw_display()
 	
 	# rune pattern processing
 	if Input.is_action_just_released("block") or Input.is_action_just_pressed("block") or last_hit == current_hit:
