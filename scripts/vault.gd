@@ -16,8 +16,8 @@ func change_camera(new_camera: Camera3D) -> void:
 		get_tree().paused = true
 		player.active_movement_camera = new_camera
 		new_camera.make_current()
-	await get_tree().create_timer(camera_switch_input_change_delay).timeout
-	get_tree().paused = false
+		await get_tree().create_timer(camera_switch_input_change_delay).timeout
+		get_tree().paused = false
 	
 func _on_vault_area_body_entered(body: Node3D) -> void:
 	if body == player:

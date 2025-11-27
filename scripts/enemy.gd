@@ -168,6 +168,7 @@ func _physics_process(delta: float) -> void:
 				cube_area.monitorable = false
 				cube.set_deferred("disabled", true)
 				cube.visible = false
+				statem.ded_counter = 0
 				statem.state = statem.STAGGERED
 
 	if not is_on_floor() and statem.ded_state != statem.DED_BUBBLE:

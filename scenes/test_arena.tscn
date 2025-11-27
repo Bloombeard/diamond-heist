@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://b8sgotg6oxvuh"]
+[gd_scene load_steps=24 format=3 uid="uid://b8sgotg6oxvuh"]
 
 [ext_resource type="PackedScene" uid="uid://butv4eka18auv" path="res://scenes/player.tscn" id="1_4brrt"]
 [ext_resource type="Script" uid="uid://b8lei0hxcl2d5" path="res://scripts/test_arena.gd" id="1_htu68"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://bynxesp2yjysf" path="res://scenes/breakable_wall.tscn" id="7_tgj8j"]
 [ext_resource type="Script" uid="uid://dwqmq55dpp5tw" path="res://scripts/camera_on_rails.gd" id="8_gq0uu"]
 [ext_resource type="PackedScene" uid="uid://bogo3gha7l7cv" path="res://scenes/enemy.tscn" id="9_ica0y"]
+[ext_resource type="PackedScene" uid="uid://ctxjia2mwr1rd" path="res://scenes/item_pickup.tscn" id="12_xiblw"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_htu68"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -279,6 +280,29 @@ player_path = NodePath("../../Player")
 [node name="Enemy3" parent="NavigationRegion3D" instance=ExtResource("9_ica0y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.3, 1, -12.400001)
 player_path = NodePath("../../Player")
+
+[node name="ItemPickup" parent="." instance=ExtResource("12_xiblw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6386786, 0.50000113, -4.1030374)
+pickup_type = 2
+
+[node name="ItemPickup2" parent="." instance=ExtResource("12_xiblw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.419526, 0.5000005, -6.0923977)
+pickup_type = 1
+
+[node name="ItemPickup3" parent="." instance=ExtResource("12_xiblw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7570477, 2.05, -2.159764)
+pickup_type = 4
+
+[node name="ItemPickup4" parent="." instance=ExtResource("12_xiblw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.917169, 2.0499995, -7.252451)
+pickup_type = 5
+
+[node name="ItemPickup5" parent="." instance=ExtResource("12_xiblw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.137805, 2.05, -5.7495265)
+pickup_type = 6
+
+[node name="ItemPickup6" parent="." instance=ExtResource("12_xiblw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8019736, 2.0500004, -11.60444)
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

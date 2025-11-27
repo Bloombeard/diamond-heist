@@ -14,7 +14,6 @@ var stagger_timer := 120
 @export var jump_buffer_time := 0.1
 
 @export_group("Combat")
-@export var armor_value := 3
 @export var stagger_length := 60
 @export var invulnerability_frames := 40
 
@@ -120,7 +119,7 @@ func _physics_process(delta: float) -> void:
 			jump_buffer = true
 			get_tree().create_timer(jump_buffer_time).timeout.connect(on_jump_buffer_timeout)
 	
-	if is_jump_available and jump_buffer:
+	if is_jump_available and jump_buffer and PlayerVariables.has_jump:
 		statem.state = statem.JUMPING
 		jump()
 		
@@ -138,12 +137,12 @@ func _physics_process(delta: float) -> void:
 	
 	if hitbox.has_overlapping_areas():
 		statem.invuln = true
-		if armor_value == 0:
+		if PlayerVariables.armor == 0:
 			print("player: ow!")
 			statem.state = statem.STAGGERED
 		else:
-			armor_value -= 1
-			print("player: ", armor_value)
+			PlayerVariables.armor -= 1
+			print("player: ", PlayerVariables.armor)
 			statem.stg_counter == statem.stg_length
 
 	# states!

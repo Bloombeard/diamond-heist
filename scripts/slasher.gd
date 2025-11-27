@@ -82,20 +82,20 @@ func _physics_process(delta: float) -> void:
 	elif statem.state == statem.DRAWING and statem.atk_counter == statem.atk_active + 1:
 		if hurtbox.has_overlapping_areas():
 			rune_target = hurtbox.get_overlapping_areas()[0].get_parent()
-			if rune_target.statem.state == rune_target.statem.STAGGERED:
+			if rune_target.statem.state == rune_target.statem.STAGGERED and PlayerVariables.has_sword:
 				draw_display()
 	
 	# rune pattern processing
 	if Input.is_action_just_released("block") or Input.is_action_just_pressed("block") or last_hit == current_hit:
-		if pattern.size() == 4 and pattern.has_all(["vert", "topleft", "topright", "hoz"]):
+		if pattern.size() == 4 and pattern.has_all(["vert", "topleft", "topright", "hoz"]) and PlayerVariables.has_bubble:
 			pattern_result = "bubble"
 			rune_target.statem.state = rune_target.statem.DEAD
 			rune_target.statem.ded_state = rune_target.statem.DED_BUBBLE
-		elif pattern.size() == 4 and pattern.has_all(["hoz", "vert", "topleft", "botright"]):
+		elif pattern.size() == 4 and pattern.has_all(["hoz", "vert", "topleft", "botright"]) and PlayerVariables.has_bomb:
 			pattern_result = "bomb"
 			rune_target.statem.state = rune_target.statem.DEAD
 			rune_target.statem.ded_state = rune_target.statem.DED_BOMB
-		elif pattern.size() == 4 and pattern.has_all(["hoz", "botleft", "topright", "botright"]):
+		elif pattern.size() == 4 and pattern.has_all(["hoz", "botleft", "topright", "botright"]) and PlayerVariables.has_cube:
 			pattern_result = "cube"
 			rune_target.statem.state = rune_target.statem.DEAD
 			rune_target.statem.ded_state = rune_target.statem.DED_CUBE
