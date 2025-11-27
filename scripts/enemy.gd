@@ -18,7 +18,7 @@ extends CharacterBody3D
 @onready var hitbox = $hitbox
 
 @onready var player = get_node(player_path)
-@onready var idle_distance = randi_range(3,4)
+@onready var idle_distance = randi_range(2,3)
 @onready var attack_direction = Vector2(1.0,0)
 
 var direction_to_player := Vector3.ZERO
@@ -33,7 +33,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	velocity = Vector3.ZERO
 	var current_speed = move_speed
-	var choose_attack = randi_range(0,300)
+	var choose_attack = randi_range(0,99)
 	
 	var target_angle := Vector3.BACK.signed_angle_to(direction_to_player, Vector3.UP)
 	var rotation_speed := 12.0
@@ -86,7 +86,7 @@ func _physics_process(delta: float) -> void:
 	elif statem.state == statem.ATTACKING:
 		move_direction = direction_to_player
 		move_direction.y = 0
-		current_speed = move_speed / 6
+		current_speed = move_speed / 4
 		if statem.atk_counter == 1:
 			if idle_distance % 2 == 0:
 				idle_distance += 1
@@ -136,8 +136,6 @@ func _physics_process(delta: float) -> void:
 				statem.ded_length = 1200
 				if statem.ded_counter > 60:
 					velocity.y = 2
-				if is_on_ceiling():
-					statem.ded_state = statem.DED_NONE
 			statem.DED_CUBE:
 				statem.ded_length = 1200
 				cube_area.monitoring = true
