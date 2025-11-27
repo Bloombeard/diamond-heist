@@ -86,10 +86,7 @@ func _physics_process(delta: float) -> void:
 	elif statem.state == statem.ATTACKING:
 		move_direction = direction_to_player
 		move_direction.y = 0
-		if statem.atk_state != statem.ATK_RECOVERY:
-			current_speed = move_speed / 6
-		else:
-			current_speed = 0
+		current_speed = move_speed / 6
 		if statem.atk_counter == 1:
 			if idle_distance % 2 == 0:
 				idle_distance += 1
@@ -169,6 +166,8 @@ func _physics_process(delta: float) -> void:
 				bomb.visible = false
 				bubble.set_deferred("disabled", true)
 				bubble.visible = false
+				cube_area.monitoring = false
+				cube_area.monitorable = false
 				cube.set_deferred("disabled", true)
 				cube.visible = false
 				statem.state = statem.STAGGERED

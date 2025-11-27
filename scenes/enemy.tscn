@@ -127,6 +127,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_xwavj")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
 [node name="Slasher" parent="enemy_skin" instance=ExtResource("2_4ra3w")]
-fast_attack_length = 50
-fast_first_active_frame = 20
-fast_first_recovery_frame = 30
+fast_attack_length = 80
+fast_first_active_frame = 60
+fast_first_recovery_frame = 65
+slow_attack_length = 40
+slow_first_recovery_frame = 25
