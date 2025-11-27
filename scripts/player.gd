@@ -79,7 +79,7 @@ func _physics_process(delta: float) -> void:
 	move_direction.y = 0.0
 	move_direction = move_direction.normalized()
 	
-	if move_direction != Vector3.ZERO and statem.atk_state != statem.ATK_ACTIVE:
+	if move_direction != Vector3.ZERO and statem.atk_state != statem.ATK_RECOVERY:
 		last_movement_direction = move_direction
 	
 	# ATTACKING
@@ -180,9 +180,7 @@ func _physics_process(delta: float) -> void:
 	var y_velocity := velocity.y
 	velocity.y = 0.0
 	velocity = velocity.move_toward(move_direction * move_speed, acceleration * delta)
-	if statem.atk_state == statem.ATK_RECOVERY:
-		velocity = Vector3.ZERO
-	if statem.atk_state != statem.ATK_ACTIVE and statem.atk_state != statem.ATK_STARTUP:
+	if statem.state != statem.ATTACKING:
 		velocity.y = y_velocity + get_player_gravity() * delta
 	move_and_slide()
 

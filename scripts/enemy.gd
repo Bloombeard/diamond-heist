@@ -22,6 +22,7 @@ extends CharacterBody3D
 @onready var attack_direction = Vector2(1.0,0)
 
 var direction_to_player := Vector3.ZERO
+var move_direction := Vector3.ZERO
 
 func _ready() -> void:
 	slasher_hurtbox.set_collision_layer_value(2, true)
@@ -71,8 +72,10 @@ func _physics_process(delta: float) -> void:
 		statem.state = statem.STAGGERED
 	
 	# movement
-	var move_direction = (next_nav_point - global_position).normalized()
-	if statem.state >= statem.STAGGERED:
+	if statem.state == statem.DEAD:
+		current_speed = move_speed
+		direction_to_player = self.global_position.direction_to(player.global_position)
+	elif statem.state == statem.STAGGERED:
 		if statem.stg_counter < 10:
 			current_speed = move_speed / 6
 			direction_to_player = self.global_position.direction_to(player.global_position)
@@ -93,6 +96,7 @@ func _physics_process(delta: float) -> void:
 			else:
 				idle_distance -= 1
 	elif statem.state == statem.RUNNING:
+		move_direction = (next_nav_point - global_position).normalized()
 		var distance_to_player = self.global_position.distance_to(player.global_position)
 		if distance_to_player <= idle_distance + 1:
 			current_speed = move_speed / 4
@@ -115,14 +119,17 @@ func _physics_process(delta: float) -> void:
 		velocity = velocity.move_toward(move_direction * current_speed, acceleration * delta)
 	else:
 		var bubble = $Bubble
+		var bomb = $Bomb
+		var cube = $Cube
+		var cube_area = $Cube/CubeArea
+		# var link = A Little Purple Indicator
 		match statem.ded_state:
 			statem.DED_BOMB:
-				statem.ded_length = 180
-				if statem.ded_counter == statem.ded_length - 1:
-					# spawn explosion! its a hurtbox
-					# explosion should set targets stagger length to its survival length
-					# also maybe set the counter to skip knockback
-					pass
+				statem.ded_length = 200
+				if statem.ded_counter == statem.ded_length - 20:
+					bomb.monitoring = true
+					bomb.monitorable = true
+					bomb.visible = true
 			statem.DED_FORCE:
 				statem.ded_length = 6
 				velocity.y = 20
@@ -132,23 +139,41 @@ func _physics_process(delta: float) -> void:
 				statem.ded_length = 1200
 				if statem.ded_counter > 60:
 					velocity.y = 2
+				if is_on_ceiling():
+					statem.ded_state = statem.DED_NONE
 			statem.DED_CUBE:
-				# spawn cube! it has collision like bubble
-				# apply velocity using move_direction = -direction_to_player
-				# hurtbox while moving
-				# reeeally long ded_length! but cut it short on wall collision
-				pass
+				statem.ded_length = 1200
+				cube_area.monitoring = true
+				cube_area.monitorable = true
+				cube.set_deferred("disabled", false)
+				cube.visible = true
+				if cube_area.has_overlapping_areas():
+					var collision = cube_area.get_overlapping_areas()
+					for collision_object in collision:
+						if collision_object.get_collision_layer_value(5):
+							statem.ded_state = statem.DED_NONE
+				if statem.ded_counter == 1:
+					move_direction = -direction_to_player
+				elif is_on_wall():
+					move_direction = move_direction.bounce(get_wall_normal())
+				velocity = velocity.move_toward(move_direction * current_speed, acceleration * delta)
+				velocity.y = 0
 			statem.DED_LINK:
 				# check for closest nearby target
 				# draw line between this and them
 				# hit them
 				pass
 			statem.DED_NONE:
-				if is_on_floor():
-					bubble.set_deferred("disabled", true)
-					bubble.visible = false
-					velocity = velocity.move_toward(Vector3.ZERO, acceleration * delta)
-				else:
-					velocity = velocity.move_toward(Vector3(0,-20,0), acceleration * delta)
+				bomb.monitoring = false
+				bomb.monitorable = false
+				bomb.visible = false
+				bubble.set_deferred("disabled", true)
+				bubble.visible = false
+				cube.set_deferred("disabled", true)
+				cube.visible = false
+				statem.state = statem.STAGGERED
+
+	if not is_on_floor() and statem.ded_state != statem.DED_BUBBLE:
+		velocity.y = -20
 
 	move_and_slide()

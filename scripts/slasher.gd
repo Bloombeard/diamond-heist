@@ -88,13 +88,17 @@ func _physics_process(delta: float) -> void:
 	# rune pattern processing
 	if Input.is_action_just_released("block") or Input.is_action_just_pressed("block") or last_hit == current_hit:
 		if pattern.size() == 4 and pattern.has_all(["vert", "topleft", "topright", "hoz"]):
-			pattern_result = "force"
-			rune_target.statem.state = rune_target.statem.DEAD
-			rune_target.statem.ded_state = rune_target.statem.DED_FORCE
-		elif pattern.size() == 5 and pattern.has_all(["hoz", "topleft", "topright", "botleft", "botright"]):
 			pattern_result = "bubble"
 			rune_target.statem.state = rune_target.statem.DEAD
 			rune_target.statem.ded_state = rune_target.statem.DED_BUBBLE
+		elif pattern.size() == 4 and pattern.has_all(["hoz", "vert", "topleft", "botright"]):
+			pattern_result = "bomb"
+			rune_target.statem.state = rune_target.statem.DEAD
+			rune_target.statem.ded_state = rune_target.statem.DED_BOMB
+		elif pattern.size() == 4 and pattern.has_all(["hoz", "botleft", "topright", "botright"]):
+			pattern_result = "cube"
+			rune_target.statem.state = rune_target.statem.DEAD
+			rune_target.statem.ded_state = rune_target.statem.DED_CUBE
 		pattern.clear()
 		current_hit = Vector2(0,0)
 		last_hit = Vector2(0,0)

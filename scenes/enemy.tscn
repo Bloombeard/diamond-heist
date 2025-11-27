@@ -1,8 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://bogo3gha7l7cv"]
+[gd_scene load_steps=18 format=3 uid="uid://bogo3gha7l7cv"]
 
 [ext_resource type="Script" uid="uid://c1c78npuewamo" path="res://scripts/enemy.gd" id="1_7p1mj"]
 [ext_resource type="PackedScene" uid="uid://b5d128yt1cy1w" path="res://scenes/slasher.tscn" id="2_4ra3w"]
-[ext_resource type="Script" uid="uid://bltbd8mxfw6y6" path="res://scenes/state_machine.gd" id="3_5uy6h"]
+[ext_resource type="Script" uid="uid://bltbd8mxfw6y6" path="res://scripts/state_machine.gd" id="3_5uy6h"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4ra3w"]
 radius = 0.2
@@ -16,6 +16,19 @@ albedo_color = Color(1, 0, 0, 0.23921569)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5uy6h"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_4ra3w"]
+size = Vector3(1.5, 2, 1.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_5uy6h"]
+size = Vector3(1.5, 2, 1.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nenq2"]
+transparency = 1
+albedo_color = Color(0.7764706, 1, 1, 0.80784315)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5uy6h"]
+size = Vector3(1.6, 2.1, 1.6)
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_4ra3w"]
 radius = 1.1
 
@@ -26,6 +39,17 @@ height = 2.2
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c4w8v"]
 transparency = 1
 albedo_color = Color(0.56078434, 1, 0.84705883, 0.27450982)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_5uy6h"]
+radius = 4.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_c4w8v"]
+radius = 4.0
+height = 8.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xwavj"]
+transparency = 1
+albedo_color = Color(0.24832866, 0, 0.017882377, 0.78431374)
 
 [node name="Enemy" type="CharacterBody3D"]
 script = ExtResource("1_7p1mj")
@@ -51,6 +75,26 @@ mesh = SubResource("CapsuleMesh_4ra3w")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CapsuleShape3D_5uy6h")
 
+[node name="Cube" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
+shape = SubResource("BoxShape3D_4ra3w")
+disabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cube"]
+mesh = SubResource("BoxMesh_5uy6h")
+surface_material_override/0 = SubResource("StandardMaterial3D_nenq2")
+
+[node name="CubeArea" type="Area3D" parent="Cube"]
+collision_layer = 20
+collision_mask = 20
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cube/CubeArea"]
+shape = SubResource("BoxShape3D_5uy6h")
+debug_color = Color(0.99607843, 0, 0.18039216, 0.78431374)
+
 [node name="Bubble" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 visible = false
@@ -60,6 +104,22 @@ disabled = true
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Bubble"]
 mesh = SubResource("SphereMesh_5uy6h")
 surface_material_override/0 = SubResource("StandardMaterial3D_c4w8v")
+
+[node name="Bomb" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+visible = false
+collision_layer = 12
+collision_mask = 12
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Bomb"]
+shape = SubResource("SphereShape3D_5uy6h")
+debug_color = Color(0.99607843, 0, 0.18039216, 0.78431374)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Bomb"]
+mesh = SubResource("SphereMesh_c4w8v")
+surface_material_override/0 = SubResource("StandardMaterial3D_xwavj")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 
