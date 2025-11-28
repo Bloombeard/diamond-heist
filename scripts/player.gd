@@ -55,6 +55,17 @@ func jump() -> void:
 	jump_buffer = false
 	velocity.y = jump_velocity
 	is_jump_available = false
+
+func dash(move_direction: Vector3) -> void:
+	statem.invuln = true
+	statem.icounter = statem.iframes - 10
+	jump_buffer = false
+	if move_direction != Vector3.ZERO:
+		velocity = move_direction * jump_velocity * 2
+	else:
+		velocity = -last_movement_direction * jump_velocity * 2
+	velocity.y = 0
+	is_jump_available = false
 	
 func coyote_timeout() -> void:
 	is_jump_available = false
@@ -78,7 +89,7 @@ func _physics_process(delta: float) -> void:
 	move_direction.y = 0.0
 	move_direction = move_direction.normalized()
 	
-	if move_direction != Vector3.ZERO and statem.atk_state <= statem.ATK_STARTUP:
+	if move_direction != Vector3.ZERO:
 		last_movement_direction = move_direction
 	
 	# ATTACKING
@@ -98,9 +109,6 @@ func _physics_process(delta: float) -> void:
 		if is_jump_available:
 			if coyote_timer_node.is_stopped():
 				coyote_timer_node.start(coyote_time)
-	elif statem.atk_state == statem.ATK_RECOVERY:
-		if coyote_timer_node.is_stopped():
-			coyote_timer_node.start(coyote_time)
 	else:
 		is_jump_available = true
 		coyote_timer_node.stop()
@@ -109,19 +117,31 @@ func _physics_process(delta: float) -> void:
 	if statem.state < statem.ATTACKING:
 		if not is_on_floor() and velocity.y < 0.0:
 			statem.state = statem.FALLING
-		elif is_on_floor() and Input.is_action_pressed("block"):
-			statem.state = statem.BLOCKING
 		elif is_on_floor() and raw_input != Vector2.ZERO:
 			statem.state = statem.RUNNING
 		else:
 			statem.state = statem.IDLE
+	
+	var jump_or_dash: bool
+	if statem.atk_state == statem.ATK_RECOVERY or statem.atk_state == statem.ATK_NONE:
 		if Input.is_action_just_pressed("jump"):
 			jump_buffer = true
+			jump_or_dash = false
+			get_tree().create_timer(jump_buffer_time).timeout.connect(on_jump_buffer_timeout)
+		elif Input.is_action_just_pressed("block"):
+			jump_buffer = true
+			jump_or_dash = true
 			get_tree().create_timer(jump_buffer_time).timeout.connect(on_jump_buffer_timeout)
 	
-	if is_jump_available and jump_buffer and PlayerVariables.has_jump:
-		statem.state = statem.JUMPING
-		jump()
+	if is_jump_available and jump_buffer:
+		if jump_or_dash and PlayerVariables.has_dash:
+			statem.state = statem.DASHING
+			statem.atk_state = statem.ATK_NONE
+			dash(move_direction)
+		elif PlayerVariables.has_jump:
+			statem.state = statem.JUMPING
+			statem.atk_state = statem.ATK_NONE
+			jump()
 		
 	if attack_direction != Vector2.ZERO and statem.state != statem.STAGGERED:
 		statem.atk_counter = 0
@@ -147,7 +167,7 @@ func _physics_process(delta: float) -> void:
 	# states!
 	if statem.state == statem.STAGGERED:
 		statem.invuln = true
-		statem.icounter = 1
+		statem.icounter = invulnerability_frames / 2
 		move_speed = 0
 		# current_animation = stagger_animation_name
 	elif statem.state == statem.ATTACKING:
@@ -161,10 +181,10 @@ func _physics_process(delta: float) -> void:
 		move_speed = run_speed
 		current_animation = idle_animation_name
 		# current_animation = jump_animation_name
-	elif statem.state == statem.BLOCKING:
-		move_speed = 0
+	elif statem.state == statem.DASHING:
+		move_speed = run_speed
 		current_animation = idle_animation_name
-		#current_animation = block_animation_name
+		# current_animation = jump_animation_name
 	elif statem.state == statem.RUNNING:
 		move_speed = run_speed
 		current_animation = run_animation_name
@@ -178,7 +198,8 @@ func _physics_process(delta: float) -> void:
 	# final movement
 	var y_velocity := velocity.y
 	velocity.y = 0.0
-	velocity = velocity.move_toward(move_direction * move_speed, acceleration * delta)
+	if statem.state != statem.DASHING:
+		velocity = velocity.move_toward(move_direction * move_speed, acceleration * delta)
 	if statem.state != statem.ATTACKING:
 		velocity.y = y_velocity + get_player_gravity() * delta
 	move_and_slide()

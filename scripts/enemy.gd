@@ -160,6 +160,7 @@ func _physics_process(delta: float) -> void:
 				cube_area.monitorable = false
 				cube.set_deferred("disabled", true)
 				cube.visible = false
+				rune_clear()
 				statem.ded_counter = 0
 				statem.state = statem.STAGGERED
 
@@ -210,30 +211,34 @@ func _on_hitbox_area_entered(area: Area3D) -> void:
 					pattern.set("sw",true)
 					$Rune/SW.visible = true
 		if slasher.combo_counter > 1:
-			rune_handling()
+			rune_handling(slasher)
 
-func rune_handling() -> void:
+func rune_handling(slasher) -> void:
 	# rune pattern processing
 	if pattern.size() == 4:
 		if pattern.has_all(["ns", "nw", "ne", "we"]) and PlayerVariables.has_bubble:
 			statem.state = statem.DEAD
 			statem.ded_state = statem.DED_BUBBLE
-			rune_clear()
+			slasher.combo_counter = 0
+			pattern.clear()
 		elif pattern.has_all(["we", "ns", "nw", "se"]) and PlayerVariables.has_bomb:
 			statem.state = statem.DEAD
 			statem.ded_state = statem.DED_BOMB
-			rune_clear()
+			slasher.combo_counter = 0
+			pattern.clear()
 		elif pattern.has_all(["we", "sw", "ne", "se"]) and PlayerVariables.has_cube:
 			statem.state = statem.DEAD
 			statem.ded_state = statem.DED_CUBE
-			rune_clear()
+			slasher.combo_counter = 0
+			pattern.clear()
 		else:
+			pattern.clear()
 			rune_clear()
 	elif pattern.size() > 4:
+		pattern.clear()
 		rune_clear()
 
 func rune_clear() -> void:
-	pattern.clear()
 	$Rune/WE.visible = false
 	$Rune/NS.visible = false
 	$Rune/SW.visible = false

@@ -1,7 +1,11 @@
 extends Node
 
 @onready var slash_effect = $slash_effect
+@onready var spin_effect = $spin_effect
 @onready var hurtbox_shape = $hurtbox/hurtbox_shape
+@onready var spin_shape = $hurtbox/spin_shape
+@onready var current_effect = slash_effect
+@onready var current_shape = hurtbox_shape
 @onready var hurtbox = $hurtbox
 @onready var statem = $"../../state_machine"
 
@@ -48,12 +52,13 @@ func _physics_process(delta: float) -> void:
 	
 	# do the hurbox (and slash effects)
 	if statem.atk_state == statem.ATK_ACTIVE:
-		hurtbox_shape.set_deferred("disabled", false)
-		slash_effect.visible = true
-		slash_effect.position.z = 1 + (float(statem.atk_counter)/40)
+		current_shape.set_deferred("disabled", false)
+		current_effect.visible = true
 	elif statem.atk_state == statem.ATK_RECOVERY or statem.atk_state <= statem.ATK_STARTUP:
 		hurtbox_shape.set_deferred("disabled", true)
+		spin_shape.set_deferred("disabled", true)
 		slash_effect.visible = false
+		spin_effect.visible = false
 	
 	# slash direction when attacking
 	if statem.state == statem.ATTACKING and statem.atk_counter == 1:
@@ -66,13 +71,20 @@ func _physics_process(delta: float) -> void:
 			statem.atk_startup = fast_first_startup_frame
 			statem.atk_active = fast_first_active_frame
 			statem.atk_recovery = fast_first_recovery_frame
-		else:
+			current_shape = hurtbox_shape
+			current_effect = slash_effect
+		elif combo_counter > 0:
 			combo_timer = 0
+			combo_counter = 0
+			last_hit = Vector2.ZERO
+			current_hit = Vector2.ZERO
 			damage = slow_damage + combo_counter
 			statem.atk_length = slow_attack_length
 			statem.atk_startup = slow_first_startup_frame
 			statem.atk_active = slow_first_active_frame
 			statem.atk_recovery = slow_first_recovery_frame
+			current_shape = spin_shape
+			current_effect = spin_effect
 		
 		if combo_timer == 0 or not PlayerVariables.has_sword:
 			last_hit = Vector2.ZERO
@@ -85,7 +97,7 @@ func _physics_process(delta: float) -> void:
 	
 	elif statem.atk_counter == statem.atk_active + 1:
 		if hurtbox.has_overlapping_areas():
-			if combo_history.count(combo_history.back()) < 3:
+			if combo_history.count(combo_history.back()) <= 2:
 				if combo_history.size() == 6:
 					combo_history.erase(0)
 					combo_counter = 6
