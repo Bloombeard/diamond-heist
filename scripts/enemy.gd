@@ -227,6 +227,8 @@ func rune_handling() -> void:
 			statem.state = statem.DEAD
 			statem.ded_state = statem.DED_CUBE
 			rune_clear()
+		else:
+			rune_clear()
 	elif pattern.size() > 4:
 		rune_clear()
 

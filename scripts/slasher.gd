@@ -25,6 +25,7 @@ extends Node
 var combo_timer := 0
 var combo_counter := 0
 var damage: int
+var combo_history := Array()
 
 var current_hit := Vector2.ZERO
 var last_hit := Vector2.ZERO
@@ -82,21 +83,34 @@ func _physics_process(delta: float) -> void:
 			slash = current_hit
 		attack_display()
 	
-	# draw on active frames
 	elif statem.atk_counter == statem.atk_active + 1:
 		if hurtbox.has_overlapping_areas():
-			combo_counter += 1
+			if combo_history.count(combo_history.back()) < 3:
+				if combo_history.size() == 6:
+					combo_history.erase(0)
+					combo_counter = 6
+				else:
+					combo_counter += 1
+			else:
+				combo_history.clear()
+				combo_timer = 0
+				combo_counter = 0
+			print(combo_history)
 	
 
 func attack_display() -> void:
 	match slash:
 		Vector2(1.0,0), Vector2(-1.0,0):
+			combo_history.append("we")
 			slash_effect.rotation_degrees.x = 0
 		Vector2(0,1.0), Vector2(0,-1.0):
+			combo_history.append("ns")
 			slash_effect.rotation_degrees.x = 90
 		Vector2(-1,-1), Vector2(1,1):
+			combo_history.append("nw")
 			slash_effect.rotation_degrees.x = -45
 		Vector2(1,-1), Vector2(-1,1):
+			combo_history.append("ne")
 			slash_effect.rotation_degrees.x = 45
 		Vector2(2.0,0), Vector2(-2.0,0):
 			slash_effect.rotation_degrees.x = 0

@@ -3479,8 +3479,8 @@ fast_attack_length = 20
 fast_first_active_frame = 5
 fast_first_recovery_frame = 10
 slow_attack_length = 40
-slow_first_active_frame = 15
-slow_first_recovery_frame = 20
+slow_first_active_frame = 5
+slow_first_recovery_frame = 15
 
 [node name="mixamo_base" type="Node3D" parent="player_skin"]
 transform = Transform3D(0.9848078, 0, -0.17364796, 0, 1, 0, 0.17364796, 0, 0.9848078, 0, 0, 0)
