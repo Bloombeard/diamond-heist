@@ -138,6 +138,8 @@ func _physics_process(delta: float) -> void:
 	if hitbox.has_overlapping_areas():
 		statem.invuln = true
 		if PlayerVariables.armor == 0:
+			slasher.combo_counter = 0
+			slasher.combo_timer = 0
 			print("player: ow!")
 			statem.state = statem.STAGGERED
 		else:
@@ -147,6 +149,8 @@ func _physics_process(delta: float) -> void:
 
 	# states!
 	if statem.state == statem.STAGGERED:
+		statem.invuln = true
+		statem.icounter = 1
 		move_speed = 0
 		# current_animation = stagger_animation_name
 	elif statem.state == statem.ATTACKING:

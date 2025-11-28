@@ -6,10 +6,13 @@ extends CharacterBody3D
 @export var acceleration := 200.0
 
 @export_group("Combat")
-@export var armor_value := 1
+@export var armor_value := 20
 @export var stagger_length := 30
 @export var stun_length := 600
 @export var invulnerability_frames := 10
+
+var pattern := Dictionary()
+var slasher: Node3D
 
 @onready var nav_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var slasher_hurtbox := $enemy_skin/Slasher/hurtbox
@@ -59,17 +62,6 @@ func _physics_process(delta: float) -> void:
 		hitbox.monitoring = false
 	else:
 		hitbox.monitoring = true
-	
-	if hitbox.has_overlapping_areas() and statem.state != statem.DEAD:
-		statem.invuln = true
-		if armor_value == 0:
-			statem.stg_length = stun_length
-			print("enemy: eech!")
-		else:
-			armor_value -= 1
-			print("enemy: ", armor_value)
-			statem.stg_length = stagger_length
-		statem.state = statem.STAGGERED
 	
 	# movement
 	if statem.state == statem.DEAD:
@@ -175,3 +167,75 @@ func _physics_process(delta: float) -> void:
 		velocity.y = -20
 
 	move_and_slide()
+	
+	if slasher:
+		if slasher.combo_timer == 0:
+			rune_clear()
+
+
+func _on_hitbox_area_entered(area: Area3D) -> void:
+	slasher = area.get_parent()
+	
+	if statem.state != statem.DEAD:
+		statem.invuln = true
+		
+		if armor_value <= 0:
+			statem.stg_length = stun_length
+			print("enemy: eech!")
+		else:
+			print(slasher.damage)
+			armor_value -= slasher.damage
+			print("enemy: ", armor_value)
+			statem.stg_length = stagger_length
+		statem.state = statem.STAGGERED
+	
+		if armor_value <= 0 and PlayerVariables.has_sword:
+			var slash = slasher.slash
+			match slash:
+				Vector2(1.0,0), Vector2(-1.0,0):
+					pattern.set("we", true)
+					$Rune/WE.visible = true
+				Vector2(0,1.0), Vector2(0,-1.0):
+					pattern.set("ns", true)
+					$Rune/NS.visible = true
+				Vector2(-1,-1):
+					pattern.set("nw",true)
+					$Rune/NW.visible = true
+				Vector2(1,-1):
+					pattern.set("ne",true)
+					$Rune/NE.visible = true
+				Vector2(1,1):
+					pattern.set("se",true)
+					$Rune/SE.visible = true
+				Vector2(-1,1):
+					pattern.set("sw",true)
+					$Rune/SW.visible = true
+		rune_handling()
+
+func rune_handling() -> void:
+	# rune pattern processing
+	if pattern.size() == 4:
+		print(pattern)
+		if pattern.has_all(["ns", "nw", "ne", "we"]) and PlayerVariables.has_bubble:
+			statem.state = statem.DEAD
+			statem.ded_state = statem.DED_BUBBLE
+			rune_clear()
+		elif pattern.has_all(["we", "ns", "nw", "sw"]) and PlayerVariables.has_bomb:
+			statem.state = statem.DEAD
+			statem.ded_state = statem.DED_BOMB
+			rune_clear()
+		elif pattern.has_all(["we", "sw", "ne", "se"]) and PlayerVariables.has_cube:
+			statem.state = statem.DEAD
+			statem.ded_state = statem.DED_CUBE
+			rune_clear()
+	elif pattern.size() > 4:
+		rune_clear()
+
+func rune_clear() -> void:
+	pattern.clear()
+	$Rune/WE.visible = false
+	$Rune/NS.visible = false
+	$Rune/SW.visible = false
+	$Rune/SE.visible = false
+	$Rune/NW.visible = false
+	$Rune/NE.visible = false

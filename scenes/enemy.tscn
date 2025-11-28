@@ -1,8 +1,14 @@
-[gd_scene load_steps=18 format=3 uid="uid://bogo3gha7l7cv"]
+[gd_scene load_steps=24 format=3 uid="uid://bogo3gha7l7cv"]
 
 [ext_resource type="Script" uid="uid://c1c78npuewamo" path="res://scripts/enemy.gd" id="1_7p1mj"]
 [ext_resource type="PackedScene" uid="uid://b5d128yt1cy1w" path="res://scenes/slasher.tscn" id="2_4ra3w"]
 [ext_resource type="Script" uid="uid://bltbd8mxfw6y6" path="res://scripts/state_machine.gd" id="3_5uy6h"]
+[ext_resource type="Texture2D" uid="uid://cyai8yluepg72" path="res://assets/textures/slashhoz.png" id="4_ipns3"]
+[ext_resource type="Texture2D" uid="uid://cgtl7fist8a8o" path="res://assets/textures/slashvert.png" id="5_8qclf"]
+[ext_resource type="Texture2D" uid="uid://bn28rpxkish52" path="res://assets/textures/slashbotleft.png" id="6_w8i8w"]
+[ext_resource type="Texture2D" uid="uid://d21ju40jytfpy" path="res://assets/textures/slashbotright.png" id="7_otmr2"]
+[ext_resource type="Texture2D" uid="uid://duar4vvm37gqg" path="res://assets/textures/slashtopleft.png" id="8_wtq4b"]
+[ext_resource type="Texture2D" uid="uid://c6idd4cq8ssis" path="res://assets/textures/slashtopright.png" id="9_j0cyh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4ra3w"]
 radius = 0.2
@@ -86,7 +92,7 @@ mesh = SubResource("BoxMesh_5uy6h")
 surface_material_override/0 = SubResource("StandardMaterial3D_nenq2")
 
 [node name="CubeArea" type="Area3D" parent="Cube"]
-collision_layer = 20
+collision_layer = 16
 collision_mask = 20
 monitoring = false
 monitorable = false
@@ -132,3 +138,50 @@ fast_first_active_frame = 60
 fast_first_recovery_frame = 65
 slow_attack_length = 40
 slow_first_recovery_frame = 25
+
+[node name="Rune" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="WE" type="Sprite3D" parent="Rune"]
+visible = false
+pixel_size = 0.005
+billboard = 1
+no_depth_test = true
+texture = ExtResource("4_ipns3")
+
+[node name="NS" type="Sprite3D" parent="Rune"]
+visible = false
+pixel_size = 0.005
+billboard = 1
+no_depth_test = true
+texture = ExtResource("5_8qclf")
+
+[node name="SW" type="Sprite3D" parent="Rune"]
+visible = false
+pixel_size = 0.005
+billboard = 1
+no_depth_test = true
+texture = ExtResource("6_w8i8w")
+
+[node name="SE" type="Sprite3D" parent="Rune"]
+visible = false
+pixel_size = 0.005
+billboard = 1
+no_depth_test = true
+texture = ExtResource("7_otmr2")
+
+[node name="NW" type="Sprite3D" parent="Rune"]
+visible = false
+pixel_size = 0.005
+billboard = 1
+no_depth_test = true
+texture = ExtResource("8_wtq4b")
+
+[node name="NE" type="Sprite3D" parent="Rune"]
+visible = false
+pixel_size = 0.005
+billboard = 1
+no_depth_test = true
+texture = ExtResource("9_j0cyh")
+
+[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
