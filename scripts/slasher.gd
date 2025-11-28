@@ -19,7 +19,9 @@ extends Node
 @export var slow_first_active_frame := 20
 @export var slow_first_recovery_frame := 30
 
-var combo_length := 120
+@export_group("combo properties")
+@export var combo_length := 120 # set to 0 for enemies
+@export var base_damage := 1
 var combo_timer := 0
 var combo_counter := 0
 var damage: int

@@ -78,7 +78,7 @@ func _physics_process(delta: float) -> void:
 	move_direction.y = 0.0
 	move_direction = move_direction.normalized()
 	
-	if move_direction != Vector3.ZERO and statem.atk_state != statem.ATK_RECOVERY:
+	if move_direction != Vector3.ZERO and statem.atk_state <= statem.ATK_STARTUP:
 		last_movement_direction = move_direction
 	
 	# ATTACKING
@@ -125,10 +125,7 @@ func _physics_process(delta: float) -> void:
 		
 	if attack_direction != Vector2.ZERO and statem.state != statem.STAGGERED:
 		statem.atk_counter = 0
-		if statem.state == statem.BLOCKING or statem.state == statem.DRAWING:
-			statem.state = statem.DRAWING
-		else:
-			statem.state = statem.ATTACKING
+		statem.state = statem.ATTACKING
 	
 	if statem.invuln:
 		hitbox.monitoring = false
@@ -154,8 +151,9 @@ func _physics_process(delta: float) -> void:
 		move_speed = 0
 		# current_animation = stagger_animation_name
 	elif statem.state == statem.ATTACKING:
-		move_speed = walk_speed
-		if not is_on_floor():
+		if statem.atk_state == statem.ATK_STARTUP:
+			move_speed = run_speed * 2
+		else:
 			move_speed = 0
 		move_direction = last_movement_direction
 		current_animation = walk_animation_name
@@ -167,8 +165,6 @@ func _physics_process(delta: float) -> void:
 		move_speed = 0
 		current_animation = idle_animation_name
 		#current_animation = block_animation_name
-	elif statem.state == statem.DRAWING:
-		current_animation = walk_animation_name
 	elif statem.state == statem.RUNNING:
 		move_speed = run_speed
 		current_animation = run_animation_name

@@ -138,6 +138,7 @@ fast_first_active_frame = 60
 fast_first_recovery_frame = 65
 slow_attack_length = 40
 slow_first_recovery_frame = 25
+combo_length = 0
 
 [node name="Rune" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

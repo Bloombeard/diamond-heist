@@ -1,6 +1,6 @@
 extends Node3D
 
-enum {IDLE, BLOCKING, RUNNING, JUMPING, FALLING, ATTACKING, DRAWING, STAGGERED, DEAD}
+enum {IDLE, BLOCKING, RUNNING, JUMPING, FALLING, ATTACKING, STAGGERED, DEAD}
 enum {ATK_NONE, ATK_STARTUP, ATK_ACTIVE, ATK_RECOVERY}
 enum {DED_NONE, DED_FORCE, DED_BOMB, DED_BUBBLE, DED_CUBE, DED_LINK}
 
@@ -25,7 +25,7 @@ var iframes := 40
 var icounter := 0
 
 func _physics_process(delta: float) -> void:
-	if state == ATTACKING or state == DRAWING:
+	if state == ATTACKING:
 		atk_counter += 1
 		
 		if atk_counter == atk_startup:
@@ -36,10 +36,7 @@ func _physics_process(delta: float) -> void:
 			atk_state = ATK_RECOVERY
 		elif atk_counter >= atk_length:
 			atk_state = ATK_NONE
-			if state == ATTACKING:
-				state = IDLE
-			elif state == DRAWING:
-				state = BLOCKING
+			state = IDLE
 	elif state == STAGGERED:
 		atk_state = ATK_NONE
 		atk_counter = 0

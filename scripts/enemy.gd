@@ -183,7 +183,6 @@ func _on_hitbox_area_entered(area: Area3D) -> void:
 			statem.stg_length = stun_length
 			print("enemy: eech!")
 		else:
-			print(slasher.damage)
 			armor_value -= slasher.damage
 			print("enemy: ", armor_value)
 			statem.stg_length = stagger_length
@@ -210,17 +209,17 @@ func _on_hitbox_area_entered(area: Area3D) -> void:
 				Vector2(-1,1):
 					pattern.set("sw",true)
 					$Rune/SW.visible = true
-		rune_handling()
+		if slasher.combo_counter > 1:
+			rune_handling()
 
 func rune_handling() -> void:
 	# rune pattern processing
 	if pattern.size() == 4:
-		print(pattern)
 		if pattern.has_all(["ns", "nw", "ne", "we"]) and PlayerVariables.has_bubble:
 			statem.state = statem.DEAD
 			statem.ded_state = statem.DED_BUBBLE
 			rune_clear()
-		elif pattern.has_all(["we", "ns", "nw", "sw"]) and PlayerVariables.has_bomb:
+		elif pattern.has_all(["we", "ns", "nw", "se"]) and PlayerVariables.has_bomb:
 			statem.state = statem.DEAD
 			statem.ded_state = statem.DED_BOMB
 			rune_clear()
