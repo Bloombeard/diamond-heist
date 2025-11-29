@@ -107,7 +107,6 @@ func _physics_process(delta: float) -> void:
 				combo_history.clear()
 				combo_timer = 0
 				combo_counter = 0
-			print(combo_history)
 	
 
 func attack_display() -> void:

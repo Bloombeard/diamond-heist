@@ -89,7 +89,7 @@ func _physics_process(delta: float) -> void:
 	move_direction.y = 0.0
 	move_direction = move_direction.normalized()
 	
-	if move_direction != Vector3.ZERO:
+	if move_direction != Vector3.ZERO and statem.atk_state <= statem.ATK_STARTUP:
 		last_movement_direction = move_direction
 	
 	# ATTACKING
@@ -128,7 +128,7 @@ func _physics_process(delta: float) -> void:
 			jump_buffer = true
 			jump_or_dash = false
 			get_tree().create_timer(jump_buffer_time).timeout.connect(on_jump_buffer_timeout)
-		elif Input.is_action_just_pressed("block"):
+		elif Input.is_action_just_pressed("dash"):
 			jump_buffer = true
 			jump_or_dash = true
 			get_tree().create_timer(jump_buffer_time).timeout.connect(on_jump_buffer_timeout)
@@ -171,10 +171,7 @@ func _physics_process(delta: float) -> void:
 		move_speed = 0
 		# current_animation = stagger_animation_name
 	elif statem.state == statem.ATTACKING:
-		if statem.atk_state == statem.ATK_STARTUP:
-			move_speed = run_speed * 2
-		else:
-			move_speed = 0
+		move_speed = walk_speed
 		move_direction = last_movement_direction
 		current_animation = walk_animation_name
 	elif statem.state == statem.JUMPING:

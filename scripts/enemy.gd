@@ -168,11 +168,6 @@ func _physics_process(delta: float) -> void:
 		velocity.y = -20
 
 	move_and_slide()
-	
-	if slasher:
-		if slasher.combo_timer == 0:
-			rune_clear()
-
 
 func _on_hitbox_area_entered(area: Area3D) -> void:
 	slasher = area.get_parent()
@@ -210,7 +205,6 @@ func _on_hitbox_area_entered(area: Area3D) -> void:
 				Vector2(-1,1):
 					pattern.set("sw",true)
 					$Rune/SW.visible = true
-		if slasher.combo_counter > 1:
 			rune_handling(slasher)
 
 func rune_handling(slasher) -> void:
@@ -231,10 +225,12 @@ func rune_handling(slasher) -> void:
 			statem.ded_state = statem.DED_CUBE
 			slasher.combo_counter = 0
 			pattern.clear()
-		else:
-			pattern.clear()
-			rune_clear()
-	elif pattern.size() > 4:
+	elif pattern.size() >= 6:
+		pattern.clear()
+		slasher.combo_counter = 0
+		rune_clear()
+	
+	if slasher.combo_counter == 0:
 		pattern.clear()
 		rune_clear()
 

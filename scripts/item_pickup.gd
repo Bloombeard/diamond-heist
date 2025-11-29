@@ -1,6 +1,6 @@
 extends Node3D
 
-enum Pickups {ARMOR, SWORD, JUMP, SPIN, BUBBLE, BOMB, CUBE, LINK}
+enum Pickups {ARMOR, SWORD, JUMP, DASH, SPIN, BUBBLE, BOMB, CUBE, LINK}
 
 @export var pickup_type: Pickups
 
@@ -20,6 +20,9 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 			Pickups.JUMP: 
 				PlayerVariables.has_jump = true
 				print("JUMP")
+			Pickups.DASH:
+				PlayerVariables.has_dash = true
+				print("DASH")
 			Pickups.SPIN:
 				PlayerVariables.has_spin = true
 				print("SPIN")
