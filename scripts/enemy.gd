@@ -10,9 +10,11 @@ extends CharacterBody3D
 @export var stagger_length := 30
 @export var stun_length := 600
 @export var invulnerability_frames := 10
+@export var aggression := 66
 
 var pattern := Dictionary()
 var slasher: Node3D
+var combo_counter: int
 
 @onready var nav_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var slasher_hurtbox := $enemy_skin/Slasher/hurtbox
@@ -36,7 +38,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	velocity = Vector3.ZERO
 	var current_speed = move_speed
-	var choose_attack = randi_range(0,99)
+	var choose_attack = randi_range(0,aggression)
 	
 	var target_angle := Vector3.BACK.signed_angle_to(direction_to_player, Vector3.UP)
 	var rotation_speed := 12.0
@@ -44,6 +46,14 @@ func _physics_process(delta: float) -> void:
 	
 	nav_agent.set_target_position(player.global_position)
 	var next_nav_point := nav_agent.get_next_path_position()
+	
+	if combo_counter == 0:
+		pattern.clear()
+		rune_clear()
+	elif combo_counter == 60:
+		combo_counter = 0
+	else:
+		combo_counter += 1
 	
 	if statem.state < statem.ATTACKING:
 		direction_to_player = self.global_position.direction_to(player.global_position)
@@ -171,6 +181,7 @@ func _physics_process(delta: float) -> void:
 
 func _on_hitbox_area_entered(area: Area3D) -> void:
 	slasher = area.get_parent()
+	combo_counter = 1
 	
 	if statem.state != statem.DEAD:
 		statem.invuln = true
@@ -225,14 +236,6 @@ func rune_handling(slasher) -> void:
 			statem.ded_state = statem.DED_CUBE
 			slasher.combo_counter = 0
 			pattern.clear()
-	elif pattern.size() >= 6:
-		pattern.clear()
-		slasher.combo_counter = 0
-		rune_clear()
-	
-	if slasher.combo_counter == 0:
-		pattern.clear()
-		rune_clear()
 
 func rune_clear() -> void:
 	$Rune/WE.visible = false

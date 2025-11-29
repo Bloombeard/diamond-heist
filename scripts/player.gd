@@ -172,6 +172,8 @@ func _physics_process(delta: float) -> void:
 		# current_animation = stagger_animation_name
 	elif statem.state == statem.ATTACKING:
 		move_speed = walk_speed
+		if statem.atk_state == statem.ATK_RECOVERY:
+			move_speed = 0
 		move_direction = last_movement_direction
 		current_animation = walk_animation_name
 	elif statem.state == statem.JUMPING:
