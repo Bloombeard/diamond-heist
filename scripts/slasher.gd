@@ -97,6 +97,11 @@ func _physics_process(delta: float) -> void:
 	
 	elif statem.atk_counter == statem.atk_active + 1:
 		if hurtbox.has_overlapping_areas():
+			var target = hurtbox.get_overlapping_areas()[0].get_parent()
+			var slasher_owner = $"../.."
+			slasher_owner.last_movement_direction = self.global_position.direction_to(target.global_position)
+			
+			
 			if combo_history.count(combo_history.back()) <= 2:
 				if combo_history.size() == 6:
 					combo_history.erase(0)

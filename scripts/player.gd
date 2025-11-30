@@ -89,7 +89,7 @@ func _physics_process(delta: float) -> void:
 	move_direction.y = 0.0
 	move_direction = move_direction.normalized()
 	
-	if move_direction != Vector3.ZERO and statem.atk_state <= statem.ATK_STARTUP:
+	if move_direction != Vector3.ZERO and statem.state != statem.ATTACKING:
 		last_movement_direction = move_direction
 	
 	# ATTACKING

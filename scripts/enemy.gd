@@ -28,6 +28,7 @@ var combo_counter: int
 
 var direction_to_player := Vector3.ZERO
 var move_direction := Vector3.ZERO
+var last_movement_direction: Vector3
 
 func _ready() -> void:
 	slasher_hurtbox.set_collision_layer_value(2, true)
