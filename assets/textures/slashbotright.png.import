@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bm8djub5otix2"
-path.s3tc="res://.godot/imported/texture_02.png-c48353e4729acde28bdf6158471ae9a7.s3tc.ctex"
+uid="uid://d21ju40jytfpy"
+path.s3tc="res://.godot/imported/slashbotright.png-a28034d7f5b07e6a164cf15ed3308e70.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/textures/grids/Purple/texture_02.png"
-dest_files=["res://.godot/imported/texture_02.png-c48353e4729acde28bdf6158471ae9a7.s3tc.ctex"]
+source_file="res://assets/textures/slashbotright.png"
+dest_files=["res://.godot/imported/slashbotright.png-a28034d7f5b07e6a164cf15ed3308e70.s3tc.ctex"]
 
 [params]
 

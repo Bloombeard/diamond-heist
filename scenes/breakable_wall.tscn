@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://bynxesp2yjysf"]
+
+[ext_resource type="Script" uid="uid://civgem2o8k6kl" path="res://scripts/breakable_wall.gd" id="1_qx4r1"]
+[ext_resource type="Texture2D" uid="uid://bm8djub5otix2" path="res://assets/textures/grids/Purple/texture_02.png" id="2_ba5p1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ba5p1"]
+size = Vector3(8, 4, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_odehn"]
+albedo_texture = ExtResource("2_ba5p1")
+
+[node name="BreakableWall" type="Node3D"]
+script = ExtResource("1_qx4r1")
+
+[node name="hitbox" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="hitbox"]
+shape = SubResource("BoxShape3D_ba5p1")
+debug_color = Color(0, 0.64705884, 0.2509804, 0.41960785)
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+material_override = SubResource("StandardMaterial3D_odehn")
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+size = Vector3(8, 4, 1)

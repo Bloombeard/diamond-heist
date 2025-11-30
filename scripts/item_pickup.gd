@@ -1,0 +1,44 @@
+extends Node3D
+
+enum Pickups {ARMOR, SWORD, JUMP, DASH, SPIN, BUBBLE, BOMB, CUBE, LINK}
+
+@export var pickup_type: Pickups
+
+@onready var player: CharacterBody3D = $"../Player"
+
+func _on_area_3d_body_entered(body: Node3D) -> void:
+	if body == player:
+		queue_free()
+		match pickup_type:
+			Pickups.ARMOR:
+				PlayerVariables.max_armor += 1
+				PlayerVariables.armor = PlayerVariables.max_armor
+				print(PlayerVariables.max_armor)
+			Pickups.SWORD:
+				PlayerVariables.has_sword = true
+				print("SWORD")
+			Pickups.JUMP: 
+				PlayerVariables.has_jump = true
+				print("JUMP")
+			Pickups.DASH:
+				PlayerVariables.has_dash = true
+				print("DASH")
+			Pickups.SPIN:
+				PlayerVariables.has_spin = true
+				print("SPIN")
+			Pickups.BUBBLE:
+				PlayerVariables.has_bubble = true
+				print("BUBBLE")
+			Pickups.BOMB:
+				PlayerVariables.has_bomb = true
+				print("BOMB")
+			Pickups.CUBE:
+				PlayerVariables.has_cube = true
+				print("CUBE")
+			Pickups.LINK:
+				PlayerVariables.has_link = true
+				print("LINK")
+		# i dont know why but this isnt working like it does in level scripts.
+		#get_tree().paused = true
+		#await get_tree().create_timer(2).timeout
+		#get_tree().paused = false
