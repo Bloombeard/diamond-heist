@@ -188,9 +188,11 @@ func _on_hitbox_area_entered(area: Area3D) -> void:
 		statem.invuln = true
 		
 		if armor_value <= 0:
+			$body_hit_sound.play()
 			statem.stg_length = stun_length
 			print("enemy: eech!")
 		else:
+			$armor_hit_sound.play()
 			armor_value -= slasher.damage
 			print("enemy: ", armor_value)
 			statem.stg_length = stagger_length
@@ -221,6 +223,9 @@ func _on_hitbox_area_entered(area: Area3D) -> void:
 
 func rune_handling(slasher) -> void:
 	# rune pattern processing
+	if pattern.size() == 1:
+		$rune_sound.play()
+	
 	if pattern.size() == 4:
 		if pattern.has_all(["ns", "nw", "ne", "we"]) and PlayerVariables.has_bubble:
 			statem.state = statem.DEAD
@@ -239,6 +244,7 @@ func rune_handling(slasher) -> void:
 			pattern.clear()
 
 func rune_clear() -> void:
+	$rune_sound.stop()
 	$Rune/WE.visible = false
 	$Rune/NS.visible = false
 	$Rune/SW.visible = false

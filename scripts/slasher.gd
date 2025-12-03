@@ -96,6 +96,8 @@ func _physics_process(delta: float) -> void:
 		attack_display()
 	
 	elif statem.atk_counter == statem.atk_active + 1:
+		$swing_sound.pitch_scale = randf_range(0.8,1.2)
+		$swing_sound.play()
 		if hurtbox.has_overlapping_areas():
 			var target = hurtbox.get_overlapping_areas()[0].get_parent()
 			var slasher_owner = $"../.."

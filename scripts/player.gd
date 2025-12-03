@@ -138,7 +138,7 @@ func _physics_process(delta: float) -> void:
 			statem.state = statem.DASHING
 			statem.atk_state = statem.ATK_NONE
 			dash(move_direction)
-		elif PlayerVariables.has_jump:
+		elif !jump_or_dash and PlayerVariables.has_jump:
 			statem.state = statem.JUMPING
 			statem.atk_state = statem.ATK_NONE
 			jump()
@@ -155,11 +155,13 @@ func _physics_process(delta: float) -> void:
 	if hitbox.has_overlapping_areas():
 		statem.invuln = true
 		if PlayerVariables.armor == 0:
+			$body_hit_sound.play()
 			slasher.combo_counter = 0
 			slasher.combo_timer = 0
 			print("player: ow!")
 			statem.state = statem.STAGGERED
 		else:
+			$armor_hit_sound.play()
 			PlayerVariables.armor -= 1
 			print("player: ", PlayerVariables.armor)
 			statem.stg_counter == statem.stg_length
@@ -171,26 +173,33 @@ func _physics_process(delta: float) -> void:
 		move_speed = 0
 		# current_animation = stagger_animation_name
 	elif statem.state == statem.ATTACKING:
+		$run_sound.stop()
 		move_speed = walk_speed
 		if statem.atk_state == statem.ATK_RECOVERY:
 			move_speed = 0
 		move_direction = last_movement_direction
 		current_animation = walk_animation_name
 	elif statem.state == statem.JUMPING:
+		$run_sound.stop()
+		$jump_sound.play()
 		move_speed = run_speed
 		current_animation = idle_animation_name
 		# current_animation = jump_animation_name
 	elif statem.state == statem.DASHING:
+		$jump_sound.play()
 		move_speed = run_speed
 		current_animation = idle_animation_name
 		# current_animation = jump_animation_name
 	elif statem.state == statem.RUNNING:
+		if !$run_sound.playing:
+			$run_sound.play()
 		move_speed = run_speed
 		current_animation = run_animation_name
 	elif statem.state == statem.FALLING:
 		move_speed = run_speed
 		current_animation = walk_animation_name
 	else:
+		$run_sound.stop()
 		current_animation = idle_animation_name
 		move_speed = run_speed
 	
