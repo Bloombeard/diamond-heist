@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://bab57487xo37b"]
+[gd_scene load_steps=23 format=3 uid="uid://bab57487xo37b"]
 
 [ext_resource type="Script" uid="uid://du4uc3ndia0o6" path="res://scripts/vault.gd" id="1_5fq5j"]
 [ext_resource type="Texture2D" uid="uid://c8upf6osvdwx5" path="res://assets/textures/grids/Orange/texture_05.png" id="2_5fq5j"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://butv4eka18auv" path="res://scenes/player.tscn" id="5_g0dvk"]
 [ext_resource type="PackedScene" uid="uid://boc7uld8h3ora" path="res://scenes/camera_on_rails.tscn" id="6_5fq5j"]
 [ext_resource type="Script" uid="uid://calcf0bm026jd" path="res://scripts/static_tracking_camera.gd" id="6_skwyo"]
+[ext_resource type="PackedScene" uid="uid://cocuv0btvffdb" path="res://scenes/pause_menu.tscn" id="9_g0dvk"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sgp6g"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -64,6 +65,8 @@ size = Vector3(0.82666016, 2.3504639, 2.2167969)
 
 [node name="Vault" type="Node3D"]
 script = ExtResource("1_5fq5j")
+
+[node name="PauseMenu" parent="." instance=ExtResource("9_g0dvk")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_0wfyh")
