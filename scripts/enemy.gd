@@ -8,7 +8,7 @@ extends CharacterBody3D
 @export_group("Combat")
 @export var armor_value := 20
 @export var stagger_length := 30
-@export var stun_length := 600
+@export var stun_length := 120
 @export var invulnerability_frames := 10
 @export var aggression := 66
 
@@ -137,8 +137,6 @@ func _physics_process(delta: float) -> void:
 				bubble.set_deferred("disabled", false)
 				bubble.visible = true
 				statem.ded_length = 1200
-				if statem.ded_counter > 60:
-					velocity.y = 2
 			statem.DED_CUBE:
 				statem.ded_length = 1200
 				cube_area.monitoring = true
@@ -179,6 +177,8 @@ func _physics_process(delta: float) -> void:
 		velocity.y = -20
 
 	move_and_slide()
+	if statem.ded_state == statem.DED_BUBBLE and statem.ded_counter > 60:
+					global_position.y = global_position.y + 0.07
 
 func _on_hitbox_area_entered(area: Area3D) -> void:
 	slasher = area.get_parent()

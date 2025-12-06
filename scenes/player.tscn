@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=4 uid="uid://butv4eka18auv"]
+[gd_scene load_steps=23 format=4 uid="uid://butv4eka18auv"]
 
 [ext_resource type="Script" uid="uid://cyy1stkegssva" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="PackedScene" uid="uid://b5d128yt1cy1w" path="res://scenes/slasher.tscn" id="2_g2els"]
@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://b145u3nr52ksi" path="res://assets/audio/armor_hit_player.ogg" id="5_tuyoq"]
 [ext_resource type="AudioStream" uid="uid://co1j2pfrbv40u" path="res://assets/audio/body_hit_player.ogg" id="6_fjrip"]
 [ext_resource type="AudioStream" uid="uid://b5s1itm4iq4uq" path="res://assets/audio/jump.ogg" id="6_tuyoq"]
+[ext_resource type="PackedScene" uid="uid://bkk0ysl24tloo" path="res://scenes/heads_up_display.tscn" id="8_smehm"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qhqgy"]
 radius = 0.2
@@ -3994,5 +3995,7 @@ volume_db = -12.0
 max_db = -6.0
 attenuation_filter_cutoff_hz = 20500.0
 parameters/looping = true
+
+[node name="HeadsUpDisplay" parent="." instance=ExtResource("8_smehm")]
 
 [connection signal="timeout" from="Coyote_Timer" to="." method="coyote_timeout"]
