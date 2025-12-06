@@ -1,5 +1,9 @@
 extends Node2D
 
+@onready var startButton := $button_manager/start_button
+
+func _onready() -> void:
+	startButton.grab_focus()
 
 func _on_start_button_pressed() -> void:
 	pass # Replace with function body.

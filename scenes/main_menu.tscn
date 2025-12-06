@@ -15,12 +15,34 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="dev_arena_start_button" type="Button" parent="button_manager"]
+layout_mode = 0
+offset_left = 553.0
+offset_top = 125.0
+offset_right = 643.0
+offset_bottom = 156.0
+focus_neighbor_top = NodePath("../quit_button")
+focus_neighbor_bottom = NodePath("../dev_vault_start_button")
+text = "dev: arena"
+
+[node name="dev_vault_start_button" type="Button" parent="button_manager"]
+layout_mode = 0
+offset_left = 556.0
+offset_top = 184.0
+offset_right = 640.0
+offset_bottom = 215.0
+focus_neighbor_top = NodePath("../dev_arena_start_button")
+focus_neighbor_bottom = NodePath("../start_button")
+text = "dev: vault"
+
 [node name="start_button" type="Button" parent="button_manager"]
 layout_mode = 0
 offset_left = 493.0
 offset_top = 218.0
 offset_right = 693.0
 offset_bottom = 310.0
+focus_neighbor_top = NodePath("../dev_vault_start_button")
+focus_neighbor_bottom = NodePath("../options_button")
 theme_override_font_sizes/font_size = 50
 text = "START
 "
@@ -32,6 +54,8 @@ offset_left = 479.0
 offset_top = 313.0
 offset_right = 707.0
 offset_bottom = 405.0
+focus_neighbor_top = NodePath("../start_button")
+focus_neighbor_bottom = NodePath("../quit_button")
 theme_override_font_sizes/font_size = 50
 text = "OPTIONS
 "
@@ -43,29 +67,15 @@ offset_left = 493.0
 offset_top = 408.0
 offset_right = 693.0
 offset_bottom = 500.0
+focus_neighbor_top = NodePath("../options_button")
+focus_neighbor_bottom = NodePath("../dev_arena_start_button")
 theme_override_font_sizes/font_size = 50
 text = "QUIT
 "
 flat = true
 
-[node name="dev_vault_start_button" type="Button" parent="button_manager"]
-layout_mode = 0
-offset_left = 463.0
-offset_top = 187.0
-offset_right = 547.0
-offset_bottom = 218.0
-text = "dev: vault"
-
-[node name="dev_arena_start_button" type="Button" parent="button_manager"]
-layout_mode = 0
-offset_left = 646.0
-offset_top = 186.0
-offset_right = 736.0
-offset_bottom = 217.0
-text = "dev: arena"
-
+[connection signal="pressed" from="button_manager/dev_arena_start_button" to="." method="_on_dev_arena_start_button_pressed"]
+[connection signal="pressed" from="button_manager/dev_vault_start_button" to="." method="_on_dev_vault_start_button_pressed"]
 [connection signal="pressed" from="button_manager/start_button" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="button_manager/options_button" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="button_manager/quit_button" to="." method="_on_quit_button_pressed"]
-[connection signal="pressed" from="button_manager/dev_vault_start_button" to="." method="_on_dev_vault_start_button_pressed"]
-[connection signal="pressed" from="button_manager/dev_arena_start_button" to="." method="_on_dev_arena_start_button_pressed"]

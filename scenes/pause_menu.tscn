@@ -35,11 +35,14 @@ size_flags_vertical = 4
 [node name="resume_button" type="Button" parent="MarginContainer/VBoxContainer"]
 process_mode = 3
 layout_mode = 2
+focus_neighbor_bottom = NodePath("../quit_button")
 text = "resume"
 flat = true
 
 [node name="quit_button" type="Button" parent="MarginContainer/VBoxContainer"]
+process_mode = 2
 layout_mode = 2
+focus_neighbor_top = NodePath("../resume_button")
 text = "quit to main menu"
 flat = true
 
