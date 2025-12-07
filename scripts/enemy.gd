@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 @export var player_path: NodePath
+@export var music_path: NodePath
 @export var move_speed := 4.0
 @export var sight_distance := 20
 @export var acceleration := 200.0
@@ -23,6 +24,7 @@ var combo_counter: int
 @onready var hitbox = $hitbox
 
 @onready var player = get_node(player_path)
+@onready var music = get_node(music_path)
 @onready var idle_distance = randi_range(2,3)
 @onready var attack_direction = Vector2(1.0,0)
 
@@ -53,6 +55,7 @@ func _physics_process(delta: float) -> void:
 		rune_clear()
 	elif combo_counter == 60:
 		combo_counter = 0
+		music.rune_off()
 	else:
 		combo_counter += 1
 	
@@ -136,9 +139,9 @@ func _physics_process(delta: float) -> void:
 			statem.DED_BUBBLE:
 				bubble.set_deferred("disabled", false)
 				bubble.visible = true
-				statem.ded_length = 1200
+				statem.ded_length = 600
 			statem.DED_CUBE:
-				statem.ded_length = 1200
+				statem.ded_length = 600
 				cube_area.monitoring = true
 				cube_area.monitorable = true
 				cube.set_deferred("disabled", false)
@@ -224,7 +227,7 @@ func _on_hitbox_area_entered(area: Area3D) -> void:
 func rune_handling(slasher) -> void:
 	# rune pattern processing
 	if pattern.size() == 1:
-		$rune_sound.play()
+		music.rune_on()
 	
 	if pattern.size() == 4:
 		if pattern.has_all(["ns", "nw", "ne", "we"]) and PlayerVariables.has_bubble:
@@ -244,7 +247,6 @@ func rune_handling(slasher) -> void:
 			pattern.clear()
 
 func rune_clear() -> void:
-	$rune_sound.stop()
 	$Rune/WE.visible = false
 	$Rune/NS.visible = false
 	$Rune/SW.visible = false

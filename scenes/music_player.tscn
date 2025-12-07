@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://ho8rp6lh2fip"]
+
+[ext_resource type="Script" uid="uid://b45we5jx4sf0g" path="res://scripts/music_player.gd" id="1_ql6qh"]
+[ext_resource type="AudioStream" uid="uid://b6i04iar8p1my" path="res://assets/audio/bgm.ogg" id="2_l7xiw"]
+[ext_resource type="AudioStream" uid="uid://bnxmgb3kucs0m" path="res://assets/audio/rune_hum.ogg" id="3_l7xiw"]
+[ext_resource type="AudioStream" uid="uid://6stitagx37h4" path="res://assets/audio/pickup.ogg" id="4_yalyj"]
+
+[node name="MusicPlayer" type="Node3D" node_paths=PackedStringArray("background_music", "rune_music", "pickup_jingle")]
+script = ExtResource("1_ql6qh")
+background_music = NodePath("music")
+rune_music = NodePath("rune_music")
+pickup_jingle = NodePath("pickup_jingle")
+
+[node name="music" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("2_l7xiw")
+volume_db = -80.0
+autoplay = true
+parameters/looping = true
+
+[node name="rune_music" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("3_l7xiw")
+volume_db = -80.0
+autoplay = true
+parameters/looping = true
+
+[node name="pickup_jingle" type="AudioStreamPlayer" parent="."]
+process_mode = 2
+stream = ExtResource("4_yalyj")
+volume_db = -6.0
