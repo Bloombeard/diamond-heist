@@ -44,6 +44,7 @@ var target_velocity = Vector3.ZERO
 var gravity := -30.0
 var is_jump_available := true
 var jump_buffer := false
+var can_move := true
 
 func get_player_gravity() -> float:
 	if velocity.y > 0.0:
@@ -79,7 +80,7 @@ func _ready() -> void:
 	statem.stg_length = stagger_length
 	statem.iframes = invulnerability_frames
 
-func _physics_process(delta: float) -> void:	
+func _physics_process(delta: float) -> void:		
 	# MOVEMENT, relative to camera
 	var raw_input := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var forward := active_movement_camera.global_basis.z
