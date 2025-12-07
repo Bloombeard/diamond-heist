@@ -226,7 +226,7 @@ func _on_hitbox_area_entered(area: Area3D) -> void:
 
 func rune_handling(slasher) -> void:
 	# rune pattern processing
-	if pattern.size() == 1:
+	if pattern.size() > 0:
 		music.rune_on()
 	
 	if pattern.size() == 4:

@@ -11,4 +11,4 @@ var has_bomb: bool
 var has_cube: bool
 var has_link: bool # not implemented
 
-var music_volume := -12
+var music_volume := -16
