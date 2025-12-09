@@ -1,0 +1,371 @@
+[gd_scene load_steps=20 format=3 uid="uid://cx4fgmdp14gtg"]
+
+[ext_resource type="Script" uid="uid://du4uc3ndia0o6" path="res://scripts/vault.gd" id="1_7r4gi"]
+[ext_resource type="PackedScene" uid="uid://cocuv0btvffdb" path="res://scenes/pause_menu.tscn" id="2_w7kh3"]
+[ext_resource type="PackedScene" uid="uid://brju4w3b4dpj7" path="res://scenes/freezable_bridge.tscn" id="3_w7kh3"]
+[ext_resource type="PackedScene" uid="uid://ctxjia2mwr1rd" path="res://scenes/item_pickup.tscn" id="4_i7141"]
+[ext_resource type="Texture2D" uid="uid://c0rbj02fx21ld" path="res://assets/textures/grids/Light/texture_07.png" id="5_7r4gi"]
+[ext_resource type="Texture2D" uid="uid://does8rpwjdh1r" path="res://assets/textures/grids/Red/texture_05.png" id="5_jhx03"]
+[ext_resource type="Texture2D" uid="uid://djg8y25y06h5n" path="res://assets/textures/grids/Green/texture_09.png" id="6_w7kh3"]
+[ext_resource type="PackedScene" uid="uid://butv4eka18auv" path="res://scenes/player.tscn" id="7_xo05s"]
+[ext_resource type="Script" uid="uid://calcf0bm026jd" path="res://scripts/static_tracking_camera.gd" id="8_dss4m"]
+[ext_resource type="PackedScene" uid="uid://boc7uld8h3ora" path="res://scenes/camera_on_rails.tscn" id="9_7t5mc"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sgp6g"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_o5qli"]
+sky_material = SubResource("ProceduralSkyMaterial_sgp6g")
+
+[sub_resource type="Environment" id="Environment_0wfyh"]
+background_mode = 2
+sky = SubResource("Sky_o5qli")
+tonemap_mode = 2
+sdfgi_enabled = true
+glow_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.644337, 0.675688, 0.724948, 1)
+fog_density = 0.001
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jyhfs"]
+albedo_texture = ExtResource("5_jhx03")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tefeu"]
+albedo_texture = ExtResource("5_7r4gi")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e3hyu"]
+albedo_texture = ExtResource("6_w7kh3")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jyhfs"]
+size = Vector3(13.934551, 15.955597, 18.109253)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5fq5j"]
+size = Vector3(21.977236, 8.087921, 14.983398)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_skwyo"]
+size = Vector3(0.82666016, 2.3504639, 2.2167969)
+
+[node name="Vault" type="Node3D"]
+script = ExtResource("1_7r4gi")
+
+[node name="PauseMenu" parent="." instance=ExtResource("2_w7kh3")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_0wfyh")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.245308, 0.553276, -0.796059, 1.39791e-08, 0.821149, 0.570714, 0.969445, 0.14, -0.201434, -10.6018, 12.7278, 0)
+shadow_enabled = true
+
+[node name="FreezableBridge" parent="." instance=ExtResource("3_w7kh3")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -39.668377, 1.2, 17.450535)
+
+[node name="bomb" parent="." instance=ExtResource("4_i7141")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.7072735, -2.6444407, 17.935751)
+pickup_type = 6
+
+[node name="cube" parent="." instance=ExtResource("4_i7141")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.222916, -2.9781513, -74.79792)
+pickup_type = 7
+
+[node name="vault_complex" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="vault3" type="CSGBox3D" parent="vault_complex"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.660775, -0.80914485, 37.537502)
+size = Vector3(1396.0247, 142.73705, 1003.1641)
+material = SubResource("StandardMaterial3D_jyhfs")
+
+[node name="ROOMv" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.317, 9, -37.189)
+operation = 2
+size = Vector3(13.319, 15, 17.688)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="DOORWAYva" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.2642975, 3.5, -38.274)
+operation = 2
+size = Vector3(3, 4, 2)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="ROOMa" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2337027, 1, -43.01531)
+operation = 2
+size = Vector3(20.993, 11, 14.35)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="BOMBWAYac" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.210703, -3, -34.74122)
+operation = 2
+size = Vector3(5.434, 3, 4.0941796)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="grass" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.210805, -3.1650033, -37.00297)
+size = Vector3(5.4335546, 3.675993, 0.73648477)
+material = SubResource("StandardMaterial3D_e3hyu")
+
+[node name="DOORWAYab" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.096436, 3.9918604, -48.577717)
+operation = 2
+size = Vector3(3, 4, 2)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="vault_jumper" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.021305, -1.4094238, -48.409115)
+size = Vector3(3.501709, 6.8188477, 4.841675)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="vault_jumper2" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.021305, -2.144043, -40.980556)
+size = Vector3(3.501709, 5.3496094, 10.409149)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="vault_jumper3" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.054859, -3.9125977, -47.100266)
+size = Vector3(3.501709, 1.8125, 7.0370445)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="vault_jumper4" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.054859, -3.175293, -38.133636)
+size = Vector3(3.501709, 3.2871094, 7.0370445)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="vault_shallowpit" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0982494, -4.701921, -38.724503)
+operation = 2
+size = Vector3(6.8269963, 0.42773438, 5.7789974)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="vault_shallowpit2" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0982494, -4.701921, -46.923325)
+operation = 2
+size = Vector3(6.8269963, 0.42773438, 6.571994)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="ROOMb" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.822174, 5.5, -47.851032)
+operation = 2
+size = Vector3(18.853348, 7, 24.904116)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="ICEWAYbc" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -30.193771, 4.4506006, -34.07738)
+operation = 2
+size = Vector3(3, 4.9174805, 6.7142944)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="ROOMc" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.148271, 2.27417, -19.992062)
+operation = 2
+size = Vector3(40.103474, 13.54834, 26.03473)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="c_jumper" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.312542, -1.409424, -30.461555)
+size = Vector3(8.25238, 6.8188477, 6.0892944)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="c_jumper2" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.312542, -1.409424, -9.546692)
+size = Vector3(8.25238, 6.8188477, 6.0892944)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="ICEWAYcf" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -30.193771, 4.4506006, -5.6163864)
+operation = 2
+size = Vector3(3, 4.9174805, 6.7142944)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="pedestal" type="CSGCylinder3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.1027174, -3.6690073, -19.663355)
+radius = 1.9003906
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="BOMBWAYbd" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.046394, 3.5, -61.254303)
+operation = 2
+size = Vector3(5.434, 3, 2.62)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="ROOMd" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.054451, 2.27417, -75.47591)
+operation = 2
+size = Vector3(13.845804, 13.54834, 26.03473)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="d_jumper3" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.030136, -1.409424, -86.22475)
+size = Vector3(8.25238, 6.8188477, 6.0892944)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="d_jumper4" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.030136, -1.409424, -65.30989)
+size = Vector3(8.25238, 6.8188477, 6.0892944)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="BOMBWAYac2" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.442513, -3, -88.091415)
+operation = 2
+size = Vector3(5.434, 3, 4.0941796)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="ROOMe" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.368732, 2.27417, -102.68144)
+operation = 2
+size = Vector3(19.217243, 13.54834, 26.03473)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="ICEWAYde" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -20.92757, 4.4506006, -89.34812)
+operation = 2
+size = Vector3(3, 4.9174805, 6.7142944)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="pedestal2" type="CSGCylinder3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.540276, -3.6690073, -112.3618)
+radius = 1.9003906
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="e_jumper" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.240097, 0.3167113, -92.87693)
+size = Vector3(20.04305, 3.3665771, 7.2966003)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="e_jumper2" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.504724, -3.2973404, -110.694824)
+size = Vector3(8.572307, 3.4125214, 10.647324)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="e_jumper3" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.594922, -0.4332832, -100.54715)
+size = Vector3(2.5509062, 1.4132919, 3.8140326)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="e_jumper4" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.452763, -1.2554628, -96.18585)
+size = Vector3(5.617717, 6.5109253, 13.221428)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="ROOMf" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.187244, 9.235352, 4.5090103)
+operation = 2
+size = Vector3(31.22477, 14.529297, 17.762945)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="ROOMh" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.772751, 13, 4.525463)
+operation = 2
+size = Vector3(40.719242, 7, 13.315212)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="guyshole" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 32.079514, 11.499999, -4.9576263)
+operation = 2
+size = Vector3(5.8461914, 4, 6.714)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="ICEWAYhi" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 14.1087, 11.5, -3.1315155)
+operation = 2
+size = Vector3(3, 4, 6.714)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="ROOMv4" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.581814, 9, -15.066513)
+operation = 2
+size = Vector3(13.135782, 15, 20.992128)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="i_jumper3" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.791863, 7.9885864, -27.10372)
+size = Vector3(8.25238, 3.0228271, 6.0892944)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="i_jumper4" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.791863, 5.3569336, -6.188858)
+size = Vector3(8.25238, 8.286133, 6.0892944)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="DOORWAYiv" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 14.1087, 11.5, -26.939547)
+operation = 2
+size = Vector3(3, 4, 2)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="ROOMg" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.22594, 2.27417, 4.7575836)
+operation = 2
+size = Vector3(20.247791, 13.54834, 17.439346)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="BOMBWAYfg" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -36.846733, 3.5, 6.2700844)
+operation = 2
+size = Vector3(5.434, 3, 2.62)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="pedestal3" type="CSGCylinder3D" parent="vault_complex/vault3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.31173, -3.6690073, 4.7483826)
+radius = 1.9003906
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="DOORWAYvj" type="CSGBox3D" parent="vault_complex/vault3"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 17.980494, 47.702126, -38.041)
+operation = 2
+size = Vector3(8.355469, 64.78589, 7.034851)
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="ItemPickup" parent="vault_complex" instance=ExtResource("4_i7141")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -57.71118, -2.9781523, 42.342117)
+pickup_type = 5
+
+[node name="Player" parent="." instance=ExtResource("7_xo05s")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.739437, 0.68270636, 7.298099e-07)
+
+[node name="hallway_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(-0.6659867, 0.5582364, -0.4948069, 0.03967631, 0.6888816, 0.7237873, 0.74490774, 0.46240056, -0.48093477, -10.366768, 4.6975546, -10.529995)
+script = ExtResource("8_dss4m")
+target = NodePath("../Player")
+
+[node name="vault_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(-0.8642046, -0.17474686, 0.47181997, 0, 0.93774956, 0.34731215, -0.5031407, 0.30014873, -0.81040746, 11.581349, 6.0930195, -7.5658383)
+script = ExtResource("8_dss4m")
+target = NodePath("../Player")
+
+[node name="outside_follow_camera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("9_7t5mc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3651495, 0)
+target = NodePath("../Player")
+
+[node name="vault_area" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2479479, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="vault_area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.650072, 6.6877594, 0.3303833)
+shape = SubResource("BoxShape3D_jyhfs")
+
+[node name="hallway_area" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.076374, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="hallway_area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.027449608, -1.2217993, -5.1783066)
+shape = SubResource("BoxShape3D_5fq5j")
+
+[node name="outside_area" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.711834, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="outside_area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3473434, 1.1886638, 0)
+shape = SubResource("BoxShape3D_skwyo")
+
+[connection signal="body_entered" from="vault_area" to="." method="_on_vault_area_body_entered"]
+[connection signal="body_entered" from="vault_area" to="Player" method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="vault_area" to="." method="_on_vault_area_body_exited"]
+[connection signal="body_exited" from="vault_area" to="Player" method="_on_area_3d_body_exited"]
+[connection signal="body_entered" from="hallway_area" to="." method="_on_hallway_area_body_entered"]
+[connection signal="body_entered" from="hallway_area" to="Player" method="_on_hallway_area_body_entered"]
+[connection signal="body_entered" from="outside_area" to="." method="_on_outside_area_body_entered"]
+[connection signal="body_entered" from="outside_area" to="Player" method="_on_outside_area_body_entered"]
