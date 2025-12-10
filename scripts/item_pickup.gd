@@ -2,9 +2,12 @@ extends Node3D
 
 enum Pickups {ARMOR, SWORD, JUMP, DASH, SPIN, BUBBLE, BOMB, CUBE, LINK}
 
+signal play_dialog(dialog_to_play)
+
 @export var pickup_type: Pickups
 
 @onready var player: CharacterBody3D = $"../Player"
+@onready var dialog_system: Control = $DialogSystem
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if body == player:
@@ -16,6 +19,7 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 				print(PlayerVariables.max_armor)
 			Pickups.SWORD:
 				PlayerVariables.has_sword = true
+				play_dialog.emit("SWORD_INTRO")
 				print("SWORD")
 			Pickups.JUMP: 
 				PlayerVariables.has_jump = true
