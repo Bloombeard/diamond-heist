@@ -2,7 +2,7 @@ extends CharacterBody3D
 
 @export var player_path: NodePath
 @export var move_speed := 4.0
-@export var sight_distance := 20
+@export var sight_distance := 10
 @export var acceleration := 200.0
 
 @export_group("Combat")
