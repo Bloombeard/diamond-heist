@@ -20,7 +20,6 @@ var stagger_timer := 120
 var last_movement_direction := Vector3.BACK
 
 @onready var player_skin: Node3D = %player_skin
-#@onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var animation_player: AnimationPlayer = $player_skin/Main_16_Actions/AnimationPlayer
 @onready var slasher := $player_skin/Slasher
 @onready var slasher_hurtbox := $player_skin/Slasher/hurtbox
