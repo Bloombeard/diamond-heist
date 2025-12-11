@@ -21,6 +21,7 @@ var combo_counter: int
 @onready var statem = $state_machine
 @onready var enemy_skin = $enemy_skin
 @onready var hitbox = $hitbox
+@onready var animation_player: AnimationPlayer = $"enemy_skin/2nd_Skeleton_Animations/AnimationPlayer"
 
 @onready var player = get_node(player_path)
 @onready var idle_distance = randi_range(2,3)
@@ -29,6 +30,12 @@ var combo_counter: int
 var direction_to_player := Vector3.ZERO
 var move_direction := Vector3.ZERO
 var last_movement_direction: Vector3
+
+var attack_animation_name = "Skeleton_2_Attack"
+var run_animation_name = "Skeleton_2_Running"
+var idle_animation_name = "Skeleton_2_Idle"
+var stagger_animation_name = "Skeleton_2_Stagger"
+var current_animation = idle_animation_name
 
 func _ready() -> void:
 	slasher_hurtbox.set_collision_layer_value(2, true)
@@ -62,12 +69,16 @@ func _physics_process(delta: float) -> void:
 		if self.global_position.distance_to(player.global_position) <= idle_distance:
 			if choose_attack == 0:
 				statem.state = statem.ATTACKING
+				current_animation = attack_animation_name
 			else:
 				statem.state = statem.RUNNING
+				current_animation = run_animation_name
 		elif self.global_position.distance_to(player.global_position) <= sight_distance:
 			statem.state = statem.RUNNING
+			current_animation = run_animation_name
 		else:
 			statem.state = statem.IDLE
+			current_animation = idle_animation_name
 	
 	if statem.invuln:
 		hitbox.monitoring = false
@@ -172,9 +183,15 @@ func _physics_process(delta: float) -> void:
 				rune_clear()
 				statem.ded_counter = 0
 				statem.state = statem.STAGGERED
+				current_animation = stagger_animation_name
 
 	if not is_on_floor() and statem.ded_state != statem.DED_BUBBLE:
 		velocity.y = -20
+
+	if current_animation == attack_animation_name:
+		animation_player.play_section(current_animation, 1.0)
+	else:
+		animation_player.play(current_animation)
 
 	move_and_slide()
 	if statem.ded_state == statem.DED_BUBBLE and statem.ded_counter > 60:
@@ -197,6 +214,7 @@ func _on_hitbox_area_entered(area: Area3D) -> void:
 			print("enemy: ", armor_value)
 			statem.stg_length = stagger_length
 		statem.state = statem.STAGGERED
+		current_animation = stagger_animation_name
 	
 		if armor_value <= 0 and PlayerVariables.has_sword:
 			var slash = slasher.slash
