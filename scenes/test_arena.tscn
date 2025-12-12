@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://b8sgotg6oxvuh"]
+[gd_scene load_steps=26 format=3 uid="uid://b8sgotg6oxvuh"]
 
 [ext_resource type="PackedScene" uid="uid://butv4eka18auv" path="res://scenes/player.tscn" id="1_4brrt"]
 [ext_resource type="Script" uid="uid://b8lei0hxcl2d5" path="res://scripts/test_arena.gd" id="1_htu68"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://dwqmq55dpp5tw" path="res://scripts/camera_on_rails.gd" id="8_gq0uu"]
 [ext_resource type="PackedScene" uid="uid://bogo3gha7l7cv" path="res://scenes/enemy.tscn" id="9_ica0y"]
 [ext_resource type="PackedScene" uid="uid://ctxjia2mwr1rd" path="res://scenes/item_pickup.tscn" id="12_xiblw"]
+[ext_resource type="PackedScene" uid="uid://ho8rp6lh2fip" path="res://scenes/music_player.tscn" id="14_edgg4"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_htu68"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -275,14 +276,17 @@ material = SubResource("StandardMaterial3D_edgg4")
 [node name="Enemy" parent="NavigationRegion3D" instance=ExtResource("9_ica0y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25736332, 1, 8.070816)
 player_path = NodePath("../../Player")
+music_path = NodePath("../../MusicPlayer")
 
 [node name="Enemy2" parent="NavigationRegion3D" instance=ExtResource("9_ica0y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.9, 1, -8.1)
 player_path = NodePath("../../Player")
+music_path = NodePath("../../MusicPlayer")
 
 [node name="Enemy3" parent="NavigationRegion3D" instance=ExtResource("9_ica0y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.3, 1, -12.400001)
 player_path = NodePath("../../Player")
+music_path = NodePath("../../MusicPlayer")
 
 [node name="ItemPickup" parent="." instance=ExtResource("12_xiblw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.269053, 0.50000113, -3.5686562)
@@ -310,6 +314,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8019736, 2.0500004, -11.604
 [node name="ItemPickup7" parent="." instance=ExtResource("12_xiblw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2999744, 0.5000002, -4.7567997)
 pickup_type = 3
+
+[node name="MusicPlayer" parent="." node_paths=PackedStringArray("player") instance=ExtResource("14_edgg4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7764395, 0)
+player = NodePath("../Player")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
