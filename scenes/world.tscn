@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://cx4fgmdp14gtg"]
+[gd_scene load_steps=35 format=3 uid="uid://cx4fgmdp14gtg"]
 
 [ext_resource type="Script" uid="uid://dj7bu4r5pgtf1" path="res://scripts/world.gd" id="1_w7kh3"]
 [ext_resource type="PackedScene" uid="uid://cocuv0btvffdb" path="res://scenes/pause_menu.tscn" id="2_w7kh3"]
@@ -12,6 +12,9 @@
 [ext_resource type="Script" uid="uid://calcf0bm026jd" path="res://scripts/static_tracking_camera.gd" id="8_dss4m"]
 [ext_resource type="PackedScene" uid="uid://boc7uld8h3ora" path="res://scenes/camera_on_rails.tscn" id="9_7t5mc"]
 [ext_resource type="PackedScene" uid="uid://bogo3gha7l7cv" path="res://scenes/enemy.tscn" id="12_q5onr"]
+[ext_resource type="PackedScene" uid="uid://b22582wx84sjy" path="res://assets/models/level_objects/indoor floors/indoor_floor.fbx" id="13_jhx03"]
+[ext_resource type="PackedScene" uid="uid://d4mlu6xtpi1y4" path="res://assets/models/level_objects/indoor walls/pillar_indoor_wall.fbx" id="14_xo05s"]
+[ext_resource type="PackedScene" uid="uid://f2bci73a4kne" path="res://assets/models/level_objects/indoor walls/pillar_indoor_arch.fbx" id="15_dss4m"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sgp6g"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -29,19 +32,6 @@ glow_enabled = true
 fog_enabled = true
 fog_light_color = Color(0.644337, 0.675688, 0.724948, 1)
 fog_density = 0.001
-
-[sub_resource type="NavigationMesh" id="NavigationMesh_q5onr"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jyhfs"]
-albedo_texture = ExtResource("5_jhx03")
-uv1_triplanar = true
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e3hyu"]
-albedo_texture = ExtResource("6_w7kh3")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tefeu"]
-albedo_texture = ExtResource("5_7r4gi")
-uv1_triplanar = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jyhfs"]
 size = Vector3(13.934551, 15.955597, 18.109253)
@@ -78,6 +68,21 @@ size = Vector3(23.993591, 5.1835747, 17.594389)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lakw3"]
 size = Vector3(11.242538, 7.010221, 10.160114)
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_q5onr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jyhfs"]
+albedo_texture = ExtResource("5_jhx03")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e3hyu"]
+albedo_texture = ExtResource("6_w7kh3")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tefeu"]
+transparency = 1
+albedo_color = Color(1, 0, 1, 0.49803922)
+albedo_texture = ExtResource("5_7r4gi")
+uv1_triplanar = true
 
 [node name="Vault" type="Node3D"]
 script = ExtResource("1_w7kh3")
@@ -120,6 +125,148 @@ pickup_type = 7
 [node name="bubble" parent="." instance=ExtResource("4_i7141")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41.184208, 2.9688778, 53.599297)
 pickup_type = 5
+
+[node name="Player" parent="." instance=ExtResource("7_xo05s")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 9.71755, 0.68270636, 0.861825)
+
+[node name="vault_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(-0.8642046, -0.17474686, 0.47181997, 0, 0.93774956, 0.34731215, -0.5031407, 0.30014873, -0.81040746, 11.581349, 6.0930195, -7.5658383)
+script = ExtResource("8_dss4m")
+target = NodePath("../Player")
+
+[node name="vault_area" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2479479, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="vault_area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.650072, 6.6877594, 0.3303833)
+shape = SubResource("BoxShape3D_jyhfs")
+
+[node name="rooma_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(-0.6659867, 0.5582364, -0.4948069, 0.03967631, 0.6888816, 0.7237873, 0.74490774, 0.46240056, -0.48093477, -10.366768, 4.6975546, -10.529995)
+script = ExtResource("8_dss4m")
+target = NodePath("../Player")
+
+[node name="rooma_area" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.076374, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="rooma_area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.187747, -0.029904842, -5.4018784)
+shape = SubResource("BoxShape3D_w7kh3")
+
+[node name="roomb_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -43.393295, 4.6975546, -10.529995)
+script = ExtResource("8_dss4m")
+target = NodePath("../Player")
+
+[node name="roomb_area" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.628677, 5.3225517, -8.582151)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="roomb_area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.43964, -1.2217994, -1.7824497)
+shape = SubResource("BoxShape3D_5fq5j")
+
+[node name="roomc_follow_camera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("9_7t5mc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.14054, 1.511136, 17.91)
+target = NodePath("../Player")
+
+[node name="roomc_area" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.711834, 0, 18.018497)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="roomc_area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9000015, 1.1886638, -0.34715462)
+shape = SubResource("BoxShape3D_skwyo")
+
+[node name="roomd_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -40.189617, 1.0549049, -38.199295)
+script = ExtResource("8_dss4m")
+target = NodePath("../Player")
+
+[node name="roomd_area" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.425, 5.3225517, -37.184044)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="roomd_area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8928604, -7.057485, -0.5711899)
+shape = SubResource("BoxShape3D_jhx03")
+
+[node name="roome_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -31.14742, 1.0549049, -77.6229)
+script = ExtResource("8_dss4m")
+target = NodePath("../Player")
+
+[node name="roome_area" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.425, 5.3225517, -64.583496)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="roome_area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4552689, -12.353299, -0.27435303)
+shape = SubResource("BoxShape3D_o8fc1")
+
+[node name="roomf_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.14742, 6.3352966, 39.719124)
+script = ExtResource("8_dss4m")
+target = NodePath("../Player")
+
+[node name="roomf_area" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.425, 5.3225517, 44.76908)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="roomf_area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0625134, -2.1891532, -6.706753)
+shape = SubResource("BoxShape3D_e3hyu")
+
+[node name="roomg_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -51.468246, 4.886834, 52.79784)
+script = ExtResource("8_dss4m")
+target = NodePath("../Player")
+
+[node name="roomg_area" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44.914368, 5.3225517, 54.609333)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="roomg_area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.432228, -1.2217994, -1.7440605)
+shape = SubResource("BoxShape3D_q5onr")
+
+[node name="roomh_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.146568, 12.382349, 39.719124)
+script = ExtResource("8_dss4m")
+target = NodePath("../Player")
+
+[node name="roomh_areah" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.3262367, 10.083643, 44.76908)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="roomh_areah"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5016289, 0.6569958, -5.4899063)
+shape = SubResource("BoxShape3D_xo05s")
+
+[node name="roomj_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 17.404854, 9.989862, 20.826298)
+script = ExtResource("8_dss4m")
+target = NodePath("../Player")
+
+[node name="roomj_area" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.37312, 10.083643, 21.331106)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="roomj_area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2774944, -2.1420918, 1.1245518)
+shape = SubResource("BoxShape3D_dss4m")
+
+[node name="ItemPickup" parent="." instance=ExtResource("4_i7141")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.7821245, 1.190855, 0.66369486)
+pickup_type = 1
+
+[node name="roome_camera2" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -40.095272, 4.41724, -67.35455)
+script = ExtResource("8_dss4m")
+target = NodePath("../Player")
+
+[node name="roome_area2" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.425, 5.3225517, -64.583496)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="roome_area2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9096413, -1.660907, 3.869522)
+shape = SubResource("BoxShape3D_7t5mc")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="roome_area2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.285168, -4.3468037, -9.348274)
+shape = SubResource("BoxShape3D_lakw3")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavigationMesh_q5onr")
@@ -179,15 +326,15 @@ size = Vector3(5.4335546, 3.675993, 0.73648477)
 material = SubResource("StandardMaterial3D_e3hyu")
 
 [node name="ROOMv" type="CSGBox3D" parent="NavigationRegion3D/vault_complex/vault3"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.317, 9, -37.189)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.322775, 9, -37.189)
 operation = 2
-size = Vector3(13.319, 15, 17.688)
+size = Vector3(13.307449, 15, 17.688)
 material = SubResource("StandardMaterial3D_tefeu")
 
 [node name="DOORWAYva" type="CSGBox3D" parent="NavigationRegion3D/vault_complex/vault3"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.2642975, 3.5, -38.274)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.2642975, 3.5, -38.320385)
 operation = 2
-size = Vector3(3, 4, 2)
+size = Vector3(3, 4, 2.2392578)
 material = SubResource("StandardMaterial3D_tefeu")
 
 [node name="ROOMa" type="CSGBox3D" parent="NavigationRegion3D/vault_complex/vault3"]
@@ -407,147 +554,38 @@ operation = 2
 size = Vector3(8.355469, 64.78589, 7.034851)
 material = SubResource("StandardMaterial3D_tefeu")
 
-[node name="Player" parent="." instance=ExtResource("7_xo05s")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 9.71755, 0.68270636, 0.861825)
+[node name="world_models" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15270782, 0)
 
-[node name="vault_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(-0.8642046, -0.17474686, 0.47181997, 0, 0.93774956, 0.34731215, -0.5031407, 0.30014873, -0.81040746, 11.581349, 6.0930195, -7.5658383)
-script = ExtResource("8_dss4m")
-target = NodePath("../Player")
+[node name="indoor_floor" parent="world_models" instance=ExtResource("13_jhx03")]
+transform = Transform3D(4.2457533, 0, 0, 0, 1.0000005, 0, 0, 0, 4.9000673, 7.195795, 0.79373896, -0.40008545)
 
-[node name="vault_area" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2479479, 0)
+[node name="pillar_indoor_wall" parent="world_models" instance=ExtResource("14_xo05s")]
+transform = Transform3D(1.789358, 0, 0, 0, 1.3591903, 0, 0, 0, 1, 1.5596957, 4.133093, 10.036195)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="vault_area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.650072, 6.6877594, 0.3303833)
-shape = SubResource("BoxShape3D_jyhfs")
+[node name="pillar_indoor_wall2" parent="world_models" instance=ExtResource("14_xo05s")]
+transform = Transform3D(1.789358, 0, 0, 0, 1.3591903, 0, 0, 0, 1, 7.620616, 4.133093, 10.036195)
 
-[node name="rooma_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(-0.6659867, 0.5582364, -0.4948069, 0.03967631, 0.6888816, 0.7237873, 0.74490774, 0.46240056, -0.48093477, -10.366768, 4.6975546, -10.529995)
-script = ExtResource("8_dss4m")
-target = NodePath("../Player")
+[node name="pillar_indoor_wall3" parent="world_models" instance=ExtResource("14_xo05s")]
+transform = Transform3D(-9.381057e-08, 0, 1, 0, 1.3591902, 0, -2.1461356, 0, -4.371139e-08, 15.333851, 4.133093, 9.1172)
 
-[node name="rooma_area" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.076374, 0, 0)
+[node name="pillar_indoor_wall4" parent="world_models" instance=ExtResource("14_xo05s")]
+transform = Transform3D(-9.8082644e-08, 0, -1, 0, 1.3591902, 0, 2.2438693, 0, -4.371139e-08, 15.3395, 4.133093, -8.317078)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="rooma_area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.187747, -0.029904842, -5.4018784)
-shape = SubResource("BoxShape3D_w7kh3")
+[node name="pillar_indoor_wall5" parent="world_models" instance=ExtResource("14_xo05s")]
+transform = Transform3D(1.789358, 0, 0, 0, 1.3591903, 0, 0, 0, 1, 1.5596957, 4.133093, -9.527455)
 
-[node name="roomb_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(-4.3711385e-08, 0, -1, 0, 0.99999994, 0, 0.99999994, 0, -4.371139e-08, -43.393295, 4.6975546, -10.529995)
-script = ExtResource("8_dss4m")
-target = NodePath("../Player")
+[node name="pillar_indoor_wall6" parent="world_models" instance=ExtResource("14_xo05s")]
+transform = Transform3D(1.789358, 0, 0, 0, 1.3591903, 0, 0, 0, 1, 7.620616, 4.133093, -9.527455)
 
-[node name="roomb_area" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.628677, 5.3225517, -8.582151)
+[node name="pillar_indoor_arch" parent="world_models" instance=ExtResource("15_dss4m")]
+transform = Transform3D(-7.821532e-08, 0, 1, 0, 1.3591903, 0, -1.789358, 0, -4.371139e-08, -0.003, 4.133, 2.817983)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="roomb_area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.43964, -1.2217994, -1.7824497)
-shape = SubResource("BoxShape3D_5fq5j")
+[node name="pillar_indoor_wall7" parent="world_models" instance=ExtResource("14_xo05s")]
+transform = Transform3D(-9.8082644e-08, 0, -1.9785562, 0, 1.3591902, 0, 2.2438693, 0, -8.6485436e-08, 0.021259308, 4.133093, -13.100567)
 
-[node name="roomc_follow_camera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("9_7t5mc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.14054, 1.511136, 17.91)
-target = NodePath("../Player")
-
-[node name="roomc_area" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.711834, 0, 18.018497)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="roomc_area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9000015, 1.1886638, -0.34715462)
-shape = SubResource("BoxShape3D_skwyo")
-
-[node name="roomd_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -40.189617, 1.0549049, -38.199295)
-script = ExtResource("8_dss4m")
-target = NodePath("../Player")
-
-[node name="roomd_area" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.425, 5.3225517, -37.184044)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="roomd_area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8928604, -7.057485, -0.5711899)
-shape = SubResource("BoxShape3D_jhx03")
-
-[node name="roome_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -31.14742, 1.0549049, -77.6229)
-script = ExtResource("8_dss4m")
-target = NodePath("../Player")
-
-[node name="roome_area" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.425, 5.3225517, -64.583496)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="roome_area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4552689, -12.353299, -0.27435303)
-shape = SubResource("BoxShape3D_o8fc1")
-
-[node name="roomf_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.14742, 6.3352966, 39.719124)
-script = ExtResource("8_dss4m")
-target = NodePath("../Player")
-
-[node name="roomf_area" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.425, 5.3225517, 44.76908)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="roomf_area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0625134, -2.1891532, -6.706753)
-shape = SubResource("BoxShape3D_e3hyu")
-
-[node name="roomg_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -51.468246, 4.886834, 52.79784)
-script = ExtResource("8_dss4m")
-target = NodePath("../Player")
-
-[node name="roomg_area" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44.914368, 5.3225517, 54.609333)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="roomg_area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.432228, -1.2217994, -1.7440605)
-shape = SubResource("BoxShape3D_q5onr")
-
-[node name="roomh_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.146568, 12.382349, 39.719124)
-script = ExtResource("8_dss4m")
-target = NodePath("../Player")
-
-[node name="roomh_areah" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.3262367, 10.083643, 44.76908)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="roomh_areah"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5016289, 0.6569958, -5.4899063)
-shape = SubResource("BoxShape3D_xo05s")
-
-[node name="roomj_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 17.404854, 9.989862, 20.826298)
-script = ExtResource("8_dss4m")
-target = NodePath("../Player")
-
-[node name="roomj_area" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.37312, 10.083643, 21.331106)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="roomj_area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2774944, -2.1420918, 1.1245518)
-shape = SubResource("BoxShape3D_dss4m")
-
-[node name="ItemPickup" parent="." instance=ExtResource("4_i7141")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.7821245, 1.190855, 0.66369486)
-pickup_type = 1
-
-[node name="roome_camera2" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -40.095272, 4.41724, -67.35455)
-script = ExtResource("8_dss4m")
-target = NodePath("../Player")
-
-[node name="roome_area2" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.425, 5.3225517, -64.583496)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="roome_area2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9096413, -1.660907, 3.869522)
-shape = SubResource("BoxShape3D_7t5mc")
-
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="roome_area2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.285168, -4.3468037, -9.348274)
-shape = SubResource("BoxShape3D_lakw3")
+[node name="pillar_indoor_wall8" parent="world_models" instance=ExtResource("14_xo05s")]
+transform = Transform3D(-8.118995e-08, 0, 1.9785562, 0, 1.3591902, 0, -1.8574096, 0, -8.6485436e-08, 0.021259308, 4.133093, 10.323996)
 
 [connection signal="body_entered" from="vault_area" to="." method="_on_vault_area_body_entered"]
 [connection signal="body_entered" from="vault_area" to="Player" method="_on_area_3d_body_entered"]
