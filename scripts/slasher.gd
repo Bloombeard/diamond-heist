@@ -8,6 +8,9 @@ extends Node
 @onready var current_shape = hurtbox_shape
 @onready var hurtbox = $hurtbox
 @onready var statem = $"../../state_machine"
+@onready var animation_player: AnimationPlayer = $"../Main_16_Actions/AnimationPlayer"
+
+@export var is_player: bool
 
 @export_group("Fast Attack Properties")
 @export var fast_damage := 1
@@ -35,6 +38,13 @@ var current_hit := Vector2.ZERO
 var last_hit := Vector2.ZERO
 var slash: Vector2
 var rune_target
+
+var se_to_nw_animation_name = "1 SE_NW Slash"
+var nw_to_se_animation_name = "1 NW_SE Slash"
+var w_to_e_animation_name = "W_E Slash"
+var n_to_s_animation_name = "S_N Attack"
+var ne_to_sw_animation_name = "NE_SW Slash"
+var sw_to_ne_animation_name = "1 SW_NE Slash"
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
@@ -121,15 +131,27 @@ func attack_display() -> void:
 		Vector2(1.0,0), Vector2(-1.0,0):
 			combo_history.append("we")
 			slash_effect.rotation_degrees.x = 0
+			if is_player:
+				animation_player.stop()
+				animation_player.play_section(w_to_e_animation_name, 0.1)
 		Vector2(0,1.0), Vector2(0,-1.0):
 			combo_history.append("ns")
 			slash_effect.rotation_degrees.x = 90
+			if is_player:
+				animation_player.stop()
+				animation_player.play_section(n_to_s_animation_name, 0.3)
 		Vector2(-1,-1), Vector2(1,1):
 			combo_history.append("nw")
 			slash_effect.rotation_degrees.x = -45
+			if is_player:
+				animation_player.stop()
+				animation_player.play_section(ne_to_sw_animation_name, 0.15)
 		Vector2(1,-1), Vector2(-1,1):
 			combo_history.append("ne")
 			slash_effect.rotation_degrees.x = 45
+			if is_player:
+				animation_player.stop()
+				animation_player.play(nw_to_se_animation_name)
 		Vector2(2.0,0), Vector2(-2.0,0):
 			slash_effect.rotation_degrees.x = 0
 		Vector2(0,2.0), Vector2(0,-2.0):

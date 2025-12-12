@@ -20,7 +20,7 @@ var stagger_timer := 120
 var last_movement_direction := Vector3.BACK
 
 @onready var player_skin: Node3D = %player_skin
-@onready var animation_player: AnimationPlayer = %AnimationPlayer
+@onready var animation_player: AnimationPlayer = $player_skin/Main_16_Actions/AnimationPlayer
 @onready var slasher := $player_skin/Slasher
 @onready var slasher_hurtbox := $player_skin/Slasher/hurtbox
 @onready var attack_direction: Vector2
@@ -33,13 +33,17 @@ var last_movement_direction := Vector3.BACK
 @onready var fall_gravity : float = ((-2.0 * jump_height) / (jump_time_to_descend * jump_time_to_descend))
 @onready var coyote_timer_node: Timer = $Coyote_Timer
 
+var walk_animation_name := "walking"
+var run_animation_name := "Running"
+var idle_animation_name := "Idle"
+var stagger_animation_name := "Stagger"
+var jump_animation_name := "Jump"
+var falling_animation_name := "Falling_Pose"
+var current_animation := idle_animation_name
+
 var active_movement_camera: Camera3D
 var rotation_speed := 12.0
 var move_speed := run_speed
-var walk_animation_name := "walking"
-var run_animation_name := "running"
-var idle_animation_name := "idle"
-var current_animation := "idle"
 var target_velocity = Vector3.ZERO
 var gravity := -30.0
 var is_jump_available := true
@@ -116,7 +120,9 @@ func _physics_process(delta: float) -> void:
 	
 	# assign states n stuff
 	if statem.state < statem.ATTACKING:
-		if not is_on_floor() and velocity.y < 0.0:
+		if not is_on_floor() and velocity.y > 0.0:
+			statem.state = statem.JUMPING
+		elif not is_on_floor() and velocity.y < 0.0:
 			statem.state = statem.FALLING
 		elif is_on_floor() and raw_input != Vector2.ZERO:
 			statem.state = statem.RUNNING
@@ -172,7 +178,7 @@ func _physics_process(delta: float) -> void:
 		statem.invuln = true
 		statem.icounter = invulnerability_frames / 2
 		move_speed = 0
-		# current_animation = stagger_animation_name
+		current_animation = stagger_animation_name
 	elif statem.state == statem.ATTACKING:
 		$run_sound.stop()
 		move_speed = walk_speed
@@ -184,13 +190,12 @@ func _physics_process(delta: float) -> void:
 		$run_sound.stop()
 		$jump_sound.play()
 		move_speed = run_speed
-		current_animation = idle_animation_name
-		# current_animation = jump_animation_name
+		current_animation = jump_animation_name
 	elif statem.state == statem.DASHING:
 		$jump_sound.play()
 		move_speed = run_speed
 		current_animation = idle_animation_name
-		# current_animation = jump_animation_name
+		#current_animation = jump_animation_name
 	elif statem.state == statem.RUNNING:
 		if !$run_sound.playing:
 			$run_sound.play()
@@ -198,7 +203,7 @@ func _physics_process(delta: float) -> void:
 		current_animation = run_animation_name
 	elif statem.state == statem.FALLING:
 		move_speed = run_speed
-		current_animation = walk_animation_name
+		current_animation = falling_animation_name
 	else:
 		$run_sound.stop()
 		current_animation = idle_animation_name
@@ -213,6 +218,9 @@ func _physics_process(delta: float) -> void:
 		velocity.y = y_velocity + get_player_gravity() * delta
 	move_and_slide()
 
-	animation_player.play(current_animation)
+	if current_animation == jump_animation_name:
+		animation_player.play_section(current_animation, 0.33)
+	else:
+		animation_player.play(current_animation)
 	var target_angle := Vector3.BACK.signed_angle_to(last_movement_direction, Vector3.UP)
 	player_skin.global_rotation.y = lerp_angle(player_skin.global_rotation.y, target_angle, rotation_speed * delta)
