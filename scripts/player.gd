@@ -188,7 +188,8 @@ func _physics_process(delta: float) -> void:
 		current_animation = walk_animation_name
 	elif statem.state == statem.JUMPING:
 		$run_sound.stop()
-		$jump_sound.play()
+		if is_on_floor():
+			$jump_sound.play()
 		move_speed = run_speed
 		current_animation = jump_animation_name
 	elif statem.state == statem.DASHING:
