@@ -132,21 +132,25 @@ func attack_display() -> void:
 			combo_history.append("we")
 			slash_effect.rotation_degrees.x = 0
 			if is_player:
-				animation_player.play(w_to_e_animation_name)
+				animation_player.stop()
+				animation_player.play_section(w_to_e_animation_name, 0.1)
 		Vector2(0,1.0), Vector2(0,-1.0):
 			combo_history.append("ns")
 			slash_effect.rotation_degrees.x = 90
 			if is_player:
-				animation_player.play(n_to_s_animation_name)
+				animation_player.stop()
+				animation_player.play_section(n_to_s_animation_name, 0.3)
 		Vector2(-1,-1), Vector2(1,1):
 			combo_history.append("nw")
 			slash_effect.rotation_degrees.x = -45
 			if is_player:
-				animation_player.play(ne_to_sw_animation_name)
+				animation_player.stop()
+				animation_player.play_section(ne_to_sw_animation_name, 0.15)
 		Vector2(1,-1), Vector2(-1,1):
 			combo_history.append("ne")
 			slash_effect.rotation_degrees.x = 45
 			if is_player:
+				animation_player.stop()
 				animation_player.play(nw_to_se_animation_name)
 		Vector2(2.0,0), Vector2(-2.0,0):
 			slash_effect.rotation_degrees.x = 0
