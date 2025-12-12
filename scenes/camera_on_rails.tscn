@@ -4,15 +4,17 @@
 
 [sub_resource type="Curve3D" id="Curve3D_7cqpm"]
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -2.241619, 0, -15.79621, 0, 0, 0, 0, 0, 0, -19.744015, 0, -16.009005, 0.34579277, 0, -16.997011, -0.34579277, 0, 16.997011, -31.926535, 0, -0.049371827, 0, 0, 0, 0, 0, 0, -19.93021, 0, 16.06986, 0, 0, 0, 0, 0, 0, -0.6190529, 0, 16.04326),
-"tilts": PackedFloat32Array(0, 0, 0, 0, 0)
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.405, -3, 0, 0, 0, 0, 0, 0, 0, 25, -4, 0),
+"tilts": PackedFloat32Array(0, 0, 0)
 }
-point_count = 5
+point_count = 3
 
 [node name="CameraOnRails" type="Path3D"]
 curve = SubResource("Curve3D_7cqpm")
 script = ExtResource("1_o801y")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="."]
+transform = Transform3D(-4.3711303e-08, 0.99100626, -0.13378544, 0, 0.13378584, 0.9910032, 0.99999803, 4.3318256e-08, -5.847947e-09, 0, 0, 0)
 
 [node name="Camera3D" type="Camera3D" parent="PathFollow3D"]
+transform = Transform3D(1.000002, 1.4210855e-14, -8.881784e-16, -3.5527137e-15, 1.0000039, -2.533267e-16, 4.440892e-16, -2.533275e-16, 1.000007, 0, -8, 2)
