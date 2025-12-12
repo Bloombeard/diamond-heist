@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 @export var player_path: NodePath
+@export var music_path: NodePath
 @export var move_speed := 4.0
 @export var sight_distance := 10
 @export var acceleration := 200.0
@@ -21,14 +22,22 @@ var combo_counter: int
 @onready var statem = $state_machine
 @onready var enemy_skin = $enemy_skin
 @onready var hitbox = $hitbox
+@onready var animation_player: AnimationPlayer = $"enemy_skin/2nd_Skeleton_Animations/AnimationPlayer"
 
 @onready var player = get_node(player_path)
+@onready var music = get_node(music_path)
 @onready var idle_distance = randi_range(2,3)
 @onready var attack_direction = Vector2(1.0,0)
 
 var direction_to_player := Vector3.ZERO
 var move_direction := Vector3.ZERO
 var last_movement_direction: Vector3
+
+var attack_animation_name = "Skeleton_2_Attack"
+var run_animation_name = "Skeleton_2_Running"
+var idle_animation_name = "Skeleton_2_Idle"
+var stagger_animation_name = "Skeleton_2_Stagger"
+var current_animation = idle_animation_name
 
 func _ready() -> void:
 	slasher_hurtbox.set_collision_layer_value(2, true)
@@ -53,6 +62,7 @@ func _physics_process(delta: float) -> void:
 		rune_clear()
 	elif combo_counter == 60:
 		combo_counter = 0
+		music.rune_off()
 	else:
 		combo_counter += 1
 	
@@ -62,12 +72,16 @@ func _physics_process(delta: float) -> void:
 		if self.global_position.distance_to(player.global_position) <= idle_distance:
 			if choose_attack == 0:
 				statem.state = statem.ATTACKING
+				current_animation = attack_animation_name
 			else:
 				statem.state = statem.RUNNING
+				current_animation = run_animation_name
 		elif self.global_position.distance_to(player.global_position) <= sight_distance:
 			statem.state = statem.RUNNING
+			current_animation = run_animation_name
 		else:
 			statem.state = statem.IDLE
+			current_animation = idle_animation_name
 	
 	if statem.invuln:
 		hitbox.monitoring = false
@@ -136,9 +150,9 @@ func _physics_process(delta: float) -> void:
 			statem.DED_BUBBLE:
 				bubble.set_deferred("disabled", false)
 				bubble.visible = true
-				statem.ded_length = 1200
+				statem.ded_length = 600
 			statem.DED_CUBE:
-				statem.ded_length = 1200
+				statem.ded_length = 600
 				cube_area.monitoring = true
 				cube_area.monitorable = true
 				cube.set_deferred("disabled", false)
@@ -172,9 +186,15 @@ func _physics_process(delta: float) -> void:
 				rune_clear()
 				statem.ded_counter = 0
 				statem.state = statem.STAGGERED
+				current_animation = stagger_animation_name
 
 	if not is_on_floor() and statem.ded_state != statem.DED_BUBBLE:
 		velocity.y = -20
+
+	if current_animation == attack_animation_name:
+		animation_player.play_section(current_animation, 1.0)
+	else:
+		animation_player.play(current_animation)
 
 	move_and_slide()
 	if statem.ded_state == statem.DED_BUBBLE and statem.ded_counter > 60:
@@ -197,6 +217,7 @@ func _on_hitbox_area_entered(area: Area3D) -> void:
 			print("enemy: ", armor_value)
 			statem.stg_length = stagger_length
 		statem.state = statem.STAGGERED
+		current_animation = stagger_animation_name
 	
 		if armor_value <= 0 and PlayerVariables.has_sword:
 			var slash = slasher.slash
@@ -223,8 +244,8 @@ func _on_hitbox_area_entered(area: Area3D) -> void:
 
 func rune_handling(slasher) -> void:
 	# rune pattern processing
-	if pattern.size() == 1:
-		$rune_sound.play()
+	if pattern.size() > 0:
+		music.rune_on()
 	
 	if pattern.size() == 4:
 		if pattern.has_all(["ns", "nw", "ne", "we"]) and PlayerVariables.has_bubble:
@@ -244,7 +265,6 @@ func rune_handling(slasher) -> void:
 			pattern.clear()
 
 func rune_clear() -> void:
-	$rune_sound.stop()
 	$Rune/WE.visible = false
 	$Rune/NS.visible = false
 	$Rune/SW.visible = false

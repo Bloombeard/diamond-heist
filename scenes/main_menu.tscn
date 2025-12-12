@@ -5,6 +5,11 @@
 [node name="MainMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 0
+offset_left = 262.0
+offset_top = 262.0
+offset_right = 262.0
+offset_bottom = 262.0
+scale = Vector2(0.46256462, 0.46256462)
 script = ExtResource("1_l6cm7")
 
 [node name="button_manager" type="Control" parent="."]
@@ -19,10 +24,10 @@ grow_vertical = 2
 
 [node name="dev_arena_start_button" type="Button" parent="button_manager"]
 layout_mode = 0
-offset_left = 888.0
-offset_top = 166.0
-offset_right = 978.0
-offset_bottom = 197.0
+offset_left = 442.99994
+offset_top = -421.99994
+offset_right = 533.0
+offset_bottom = -390.99994
 scale = Vector2(3.3190937, 3.3190937)
 focus_neighbor_top = NodePath("../quit_button")
 focus_neighbor_bottom = NodePath("../dev_vault_start_button")
@@ -30,10 +35,10 @@ text = "dev: arena"
 
 [node name="dev_vault_start_button" type="Button" parent="button_manager"]
 layout_mode = 0
-offset_left = 903.00006
-offset_top = 322.0
-offset_right = 987.00006
-offset_bottom = 353.0
+offset_left = 458.0
+offset_top = -265.99994
+offset_right = 542.0
+offset_bottom = -234.99994
 scale = Vector2(3.3190937, 3.3190937)
 focus_neighbor_top = NodePath("../dev_arena_start_button")
 focus_neighbor_bottom = NodePath("../start_button")
@@ -41,10 +46,10 @@ text = "dev: vault"
 
 [node name="start_button" type="Button" parent="button_manager"]
 layout_mode = 0
-offset_left = 701.0
-offset_top = 425.99997
-offset_right = 901.0011
-offset_bottom = 518.0
+offset_left = 255.99994
+offset_top = -161.99998
+offset_right = 456.00104
+offset_bottom = -69.99997
 scale = Vector2(3.3190937, 3.3190937)
 focus_neighbor_top = NodePath("../dev_vault_start_button")
 focus_neighbor_bottom = NodePath("../load_button")
@@ -55,10 +60,10 @@ flat = true
 
 [node name="load_button" type="Button" parent="button_manager"]
 layout_mode = 0
-offset_left = 643.00006
-offset_top = 656.00006
-offset_right = 871.00006
-offset_bottom = 748.00006
+offset_left = 198.0
+offset_top = 68.00009
+offset_right = 499.0
+offset_bottom = 160.00009
 scale = Vector2(3.3190937, 3.3190937)
 focus_neighbor_top = NodePath("../start_button")
 focus_neighbor_bottom = NodePath("../quit_button")
@@ -69,10 +74,10 @@ flat = true
 
 [node name="quit_button" type="Button" parent="button_manager"]
 layout_mode = 0
-offset_left = 698.0
-offset_top = 913.00006
-offset_right = 898.0
-offset_bottom = 1005.00006
+offset_left = 252.99994
+offset_top = 325.0001
+offset_right = 452.99994
+offset_bottom = 417.0001
 scale = Vector2(3.3190937, 3.3190937)
 focus_neighbor_top = NodePath("../load_button")
 focus_neighbor_bottom = NodePath("../dev_arena_start_button")
