@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://b8sgotg6oxvuh"]
+[gd_scene load_steps=27 format=3 uid="uid://b8sgotg6oxvuh"]
 
 [ext_resource type="PackedScene" uid="uid://butv4eka18auv" path="res://scenes/player.tscn" id="1_4brrt"]
 [ext_resource type="Script" uid="uid://b8lei0hxcl2d5" path="res://scripts/test_arena.gd" id="1_htu68"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://bogo3gha7l7cv" path="res://scenes/enemy.tscn" id="9_ica0y"]
 [ext_resource type="PackedScene" uid="uid://ctxjia2mwr1rd" path="res://scenes/item_pickup.tscn" id="12_xiblw"]
 [ext_resource type="PackedScene" uid="uid://ho8rp6lh2fip" path="res://scenes/music_player.tscn" id="14_edgg4"]
+[ext_resource type="PackedScene" uid="uid://bgu1m4mwgsrt8" path="res://scenes/weak_enemy.tscn" id="15_2vrmx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_htu68"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -285,6 +286,11 @@ music_path = NodePath("../../MusicPlayer")
 
 [node name="Enemy3" parent="NavigationRegion3D" instance=ExtResource("9_ica0y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.3, 1, -12.400001)
+player_path = NodePath("../../Player")
+music_path = NodePath("../../MusicPlayer")
+
+[node name="WeakEnemy" parent="NavigationRegion3D" instance=ExtResource("15_2vrmx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.013115, -0.31773263, 12.498236)
 player_path = NodePath("../../Player")
 music_path = NodePath("../../MusicPlayer")
 
