@@ -9581,6 +9581,12 @@ transform = Transform3D(0.008317301, 0.0056285392, -0.03316717, -0.07232069, -0.
 mesh = SubResource("ArrayMesh_no2u5")
 skeleton = NodePath("")
 
+[node name="OmniLight3D4" type="OmniLight3D" parent="enemy_skin/2nd_Skeleton_Animations/rig_002/Skeleton3D/DEF-hand_L/Cube_099"]
+transform = Transform3D(13.72923, 2.2649765e-06, -4.2915344e-06, -2.3841858e-07, -7.9610896, 22.237316, 2.3841858e-06, -27.946701, -10.005088, 0.21500015, 2.1501417, 0.07065487)
+light_color = Color(1, 0.23467764, 0.35381994, 1)
+omni_range = 12.0
+omni_attenuation = 1.5
+
 [node name="Cube_023" type="MeshInstance3D" parent="enemy_skin/2nd_Skeleton_Animations/rig_002/Skeleton3D"]
 mesh = SubResource("ArrayMesh_p18w2")
 skin = SubResource("Skin_ot0dw")
