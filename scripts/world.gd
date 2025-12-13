@@ -16,8 +16,8 @@ extends Node3D
 @onready var player: CharacterBody3D = $Player
 
 func _ready() -> void:
-	hallway_camera.make_current()
-	player.active_movement_camera = hallway_camera
+	vault_camera.make_current()
+	player.active_movement_camera = vault_camera
 
 func change_camera(new_camera: Camera3D) -> void:
 	if new_camera != player.active_movement_camera:

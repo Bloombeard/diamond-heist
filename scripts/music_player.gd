@@ -7,7 +7,7 @@ extends Node3D
 
 @onready var muted := -80
 
-var current_music
+var current_music = "regular"
 
 func _ready() -> void:
 	rune_off()

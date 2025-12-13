@@ -7,6 +7,6 @@ frequency = 0.0036
 noise = SubResource("FastNoiseLite_qatqi")
 
 [resource]
-albedo_color = Color(0.54896253, 0.5489626, 0.5489625, 1)
+albedo_color = Color(0.7647059, 0.7647059, 0.7647059, 1)
 normal_scale = -0.11
 normal_texture = SubResource("NoiseTexture2D_u6ssx")
