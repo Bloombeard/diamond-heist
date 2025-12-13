@@ -3,7 +3,7 @@ extends CharacterBody3D
 @export var player_path: NodePath
 @export var music_path: NodePath
 @export var move_speed := 4.0
-@export var sight_distance := 20
+@export var sight_distance := 8
 @export var acceleration := 200.0
 
 @export_group("Combat")
@@ -26,7 +26,7 @@ var combo_counter: int
 
 @onready var player = get_node(player_path)
 @onready var music = get_node(music_path)
-@onready var idle_distance = randi_range(2,3)
+@onready var idle_distance = randi_range(4,5)
 @onready var attack_direction = Vector2(1.0,0)
 
 var direction_to_player := Vector3.ZERO
@@ -77,8 +77,9 @@ func _physics_process(delta: float) -> void:
 				statem.state = statem.RUNNING
 				current_animation = run_animation_name
 		elif self.global_position.distance_to(player.global_position) <= sight_distance:
-			statem.state = statem.RUNNING
-			current_animation = run_animation_name
+			if abs(self.global_position.y - player.global_position.y) < 1:
+				statem.state = statem.RUNNING
+				current_animation = run_animation_name
 		else:
 			statem.state = statem.IDLE
 			current_animation = idle_animation_name
@@ -210,11 +211,9 @@ func _on_hitbox_area_entered(area: Area3D) -> void:
 		if armor_value <= 0:
 			$body_hit_sound.play()
 			statem.stg_length = stun_length
-			print("enemy: eech!")
 		else:
 			$armor_hit_sound.play()
 			armor_value -= slasher.damage
-			print("enemy: ", armor_value)
 			statem.stg_length = stagger_length
 		statem.state = statem.STAGGERED
 		current_animation = stagger_animation_name

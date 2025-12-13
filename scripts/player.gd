@@ -165,12 +165,10 @@ func _physics_process(delta: float) -> void:
 			$body_hit_sound.play()
 			slasher.combo_counter = 0
 			slasher.combo_timer = 0
-			print("player: ow!")
 			statem.state = statem.STAGGERED
 		else:
 			$armor_hit_sound.play()
 			PlayerVariables.armor -= 1
-			print("player: ", PlayerVariables.armor)
 			statem.stg_counter == statem.stg_length
 
 	# states!
@@ -182,13 +180,14 @@ func _physics_process(delta: float) -> void:
 	elif statem.state == statem.ATTACKING:
 		$run_sound.stop()
 		move_speed = walk_speed
-		if statem.atk_state == statem.ATK_RECOVERY:
+		if statem.atk_state == statem.ATK_RECOVERY or !is_on_floor():
 			move_speed = 0
 		move_direction = last_movement_direction
 		current_animation = walk_animation_name
 	elif statem.state == statem.JUMPING:
 		$run_sound.stop()
-		$jump_sound.play()
+		if is_on_floor():
+			$jump_sound.play()
 		move_speed = run_speed
 		current_animation = jump_animation_name
 	elif statem.state == statem.DASHING:

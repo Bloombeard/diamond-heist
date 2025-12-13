@@ -12,7 +12,6 @@ signal play_dialog(dialog_to_play)
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if body == player:
-		queue_free()
 		match pickup_type:
 			Pickups.ARMOR:
 				PlayerVariables.max_armor += 1
@@ -44,8 +43,11 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 				PlayerVariables.has_link = true
 				print("LINK")
 		
-		music_player.play_jingle()
-		get_tree().paused = true
-		# await get_tree().create_timer(1).timeout
-		get_tree().paused = false
-		music_player.stop_jingle()
+		if(pickup_type != Pickups.SWORD):
+			music_player.play_jingle()
+			$Area3D.queue_free()
+			$CSGSphere3D.queue_free()
+			$OmniLight3D.queue_free()
+			await get_tree().create_timer(3).timeout
+			music_player.stop_jingle()
+		queue_free()

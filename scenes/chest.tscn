@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2pqhsfu81wki"]
+
+[ext_resource type="PackedScene" uid="uid://cath8qce1aoxu" path="res://assets/models/level_objects/sadie_objects/chest12122025.fbx" id="1_oii8l"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oii8l"]
+size = Vector3(0.02020508, 0.025600586, 0.023520507)
+
+[node name="chest12122025" instance=ExtResource("1_oii8l")]
+
+[node name="CollisionShape3D" parent="chest /StaticBody3D" index="0"]
+transform = Transform3D(0.9999999, -2.9802322e-07, 1.1937118e-12, 5.9604645e-08, 0.9999995, 7.460699e-12, 4.803269e-12, -5.3290705e-15, 0.99994904, -0.00015137112, 0.0005932612, 0.00060302985)
+shape = SubResource("BoxShape3D_oii8l")
