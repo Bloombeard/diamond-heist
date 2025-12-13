@@ -1409,7 +1409,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7764395, 0)
 player = NodePath("../Player")
 
 [node name="BreakableWall" parent="." instance=ExtResource("3_e3hyu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.604728, -5.9236894, 3.146511)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.604728, -5.9236894, 2.8839207)
 
 [node name="BreakableWall2" parent="." instance=ExtResource("3_e3hyu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.560385, 0.3972795, -23.883202)
@@ -2585,7 +2585,7 @@ skeleton = NodePath("")
 surface_material_override/0 = ExtResource("16_dss4m")
 
 [node name="rock wall 25" type="MeshInstance3D" parent="world_models"]
-transform = Transform3D(-517.35474, 2.4495257e-05, 2.3006785e-12, 0, -1.2247629e-05, 602.0558, 4.5228586e-05, 280.19308, 2.6316693e-05, -15.3942175, 2.7322552, 31.8358)
+transform = Transform3D(-517.35474, 2.4495257e-05, 3.0470702e-12, 0, -1.2247629e-05, 797.37616, 4.5228586e-05, 280.19308, 3.485442e-05, -15.3942175, 5.2730446, 31.8358)
 mesh = SubResource("ArrayMesh_2lf6f")
 skeleton = NodePath("")
 surface_material_override/0 = ExtResource("16_dss4m")
@@ -2902,6 +2902,54 @@ mesh = SubResource("ArrayMesh_2lf6f")
 skeleton = NodePath("")
 surface_material_override/0 = ExtResource("16_dss4m")
 
+[node name="rock wall 48" type="MeshInstance3D" parent="world_models"]
+transform = Transform3D(1175.2567, 0, 0, 0, 316.35883, 0, 0, 0, 956.6544, -26.462467, 7.2644997, 19.180624)
+mesh = SubResource("ArrayMesh_7iits")
+skeleton = NodePath("")
+surface_material_override/0 = ExtResource("16_dss4m")
+
+[node name="rock wall 49" type="MeshInstance3D" parent="world_models"]
+transform = Transform3D(-7.4849305, 0, 955.86115, 27.623886, 316.0824, 0.45266125, -660.18744, 13.22567, -10.81822, -36.19256, 8.046778, -9.790157)
+mesh = SubResource("ArrayMesh_7iits")
+skeleton = NodePath("")
+surface_material_override/0 = ExtResource("16_dss4m")
+
+[node name="rock wall 50" type="MeshInstance3D" parent="world_models"]
+transform = Transform3D(-552.5886, 31.070585, 37.9951, 22.662542, 743.3152, -21.803082, -21.52114, -15.047957, -998.5428, -32.424393, 9.489221, -37.849434)
+mesh = SubResource("ArrayMesh_7iits")
+skeleton = NodePath("")
+surface_material_override/0 = ExtResource("16_dss4m")
+
+[node name="rock wall 51" type="MeshInstance3D" parent="world_models"]
+transform = Transform3D(3.0760755e-05, 1.7796619e-12, -999.5032, 6.152151e-05, -465.71292, 0, -703.72406, -4.071392e-05, -4.368967e-05, -32.416527, 8.2599325, -64.99121)
+mesh = SubResource("ArrayMesh_7iits")
+skeleton = NodePath("")
+surface_material_override/0 = ExtResource("16_dss4m")
+
+[node name="rock wall 52" type="MeshInstance3D" parent="world_models"]
+transform = Transform3D(1175.2567, 0, 0, 0, 70.449036, 0, 0, 0, 956.6544, -48.593285, 5.9655056, 48.289898)
+mesh = SubResource("ArrayMesh_7iits")
+skeleton = NodePath("")
+surface_material_override/0 = ExtResource("16_dss4m")
+
+[node name="rock wall 53" type="MeshInstance3D" parent="world_models"]
+transform = Transform3D(1503.4629, 0, 0, 0, 428.44226, 0, 0, 0, 344.28674, 2.1912136, 16.566277, 39.179157)
+mesh = SubResource("ArrayMesh_7iits")
+skeleton = NodePath("")
+surface_material_override/0 = ExtResource("16_dss4m")
+
+[node name="pillar indoor wall23" type="MeshInstance3D" parent="world_models"]
+transform = Transform3D(-1.2143758e-05, -220.97339, -1.5008392e-05, 0, -9.659053e-06, 343.352, -277.8168, 9.659053e-06, 6.5603767e-13, -24.3221, 14.054805, 42.747982)
+mesh = SubResource("ArrayMesh_7t5mc")
+skeleton = NodePath("")
+surface_material_override/0 = ExtResource("14_o8fc1")
+
+[node name="rock wall 54" type="MeshInstance3D" parent="world_models"]
+transform = Transform3D(-7.582802, 0, 797.81256, 27.985086, 582.8346, 0.37781513, -668.81976, 24.387241, -9.029462, -10.309158, 8.8330765, -9.777126)
+mesh = SubResource("ArrayMesh_7iits")
+skeleton = NodePath("")
+surface_material_override/0 = ExtResource("16_dss4m")
+
 [node name="vault_clutter" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.007867813, 0.019339561, -0.013031006)
 
@@ -3056,7 +3104,7 @@ transform = Transform3D(0.690567, 0, -0.7232686, 0, 0.9999998, 0, 0.7232686, 0, 
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.007867813, 0.019339561, -0.013031006)
 
 [node name="group 9" type="MeshInstance3D" parent="misc_clutter"]
-transform = Transform3D(143.94138, -42.20051, -1.844642e-06, 41.121067, 140.2595, -33.709484, 9.483719, 32.34793, 146.16315, -37.053886, 3.9789245, -23.33406)
+transform = Transform3D(143.94138, -42.20051, -1.844642e-06, 41.121067, 140.2595, -33.709484, 9.483719, 32.34793, 146.16315, -34.67003, 3.9789245, -23.33406)
 mesh = SubResource("ArrayMesh_817gm")
 skeleton = NodePath("")
 surface_material_override/0 = ExtResource("17_2lf6f")
@@ -3080,7 +3128,7 @@ omni_range = 6.0
 omni_attenuation = 0.5
 
 [node name="OmniLight3D7" type="OmniLight3D" parent="misc_clutter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.05881, 4.079768, -22.276747)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.76423, 4.079768, -22.276747)
 light_color = Color(0.33013365, 0.6936093, 0.95032185, 1)
 omni_range = 6.0
 omni_attenuation = 0.5
