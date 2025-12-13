@@ -77,8 +77,10 @@ func _physics_process(delta: float) -> void:
 				statem.state = statem.RUNNING
 				current_animation = run_animation_name
 		elif self.global_position.distance_to(player.global_position) <= sight_distance:
-			statem.state = statem.RUNNING
-			current_animation = run_animation_name
+			if abs(self.global_position.y - player.global_position.y) < 0.1:
+				print("Height")
+				statem.state = statem.RUNNING
+				current_animation = run_animation_name
 		else:
 			statem.state = statem.IDLE
 			current_animation = idle_animation_name
@@ -127,7 +129,7 @@ func _physics_process(delta: float) -> void:
 			else:
 				move_direction.z = -move_direction.z
 	elif statem.state == statem.IDLE:
-		pass
+		current_speed = 0
 	
 	if statem.state != statem.DEAD:
 		velocity = velocity.move_toward(move_direction * current_speed, acceleration * delta)

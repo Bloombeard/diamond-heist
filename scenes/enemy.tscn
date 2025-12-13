@@ -1,10 +1,11 @@
-[gd_scene load_steps=49 format=4 uid="uid://bogo3gha7l7cv"]
+[gd_scene load_steps=50 format=4 uid="uid://bogo3gha7l7cv"]
 
 [ext_resource type="Script" uid="uid://c1c78npuewamo" path="res://scripts/enemy.gd" id="1_7p1mj"]
 [ext_resource type="PackedScene" uid="uid://b5d128yt1cy1w" path="res://scenes/slasher.tscn" id="2_4ra3w"]
 [ext_resource type="Script" uid="uid://bltbd8mxfw6y6" path="res://scripts/state_machine.gd" id="3_5uy6h"]
 [ext_resource type="Texture2D" uid="uid://cyai8yluepg72" path="res://assets/textures/slashhoz.png" id="4_ipns3"]
 [ext_resource type="Texture2D" uid="uid://cgtl7fist8a8o" path="res://assets/textures/slashvert.png" id="5_8qclf"]
+[ext_resource type="Material" uid="uid://clk3d05tvl564" path="res://assets/materials/crystal.tres" id="5_s1ycm"]
 [ext_resource type="Texture2D" uid="uid://bn28rpxkish52" path="res://assets/textures/slashbotleft.png" id="6_w8i8w"]
 [ext_resource type="Texture2D" uid="uid://d21ju40jytfpy" path="res://assets/textures/slashbotright.png" id="7_otmr2"]
 [ext_resource type="Texture2D" uid="uid://duar4vvm37gqg" path="res://assets/textures/slashtopleft.png" id="8_wtq4b"]
@@ -7711,6 +7712,7 @@ _data = {
 }
 
 [node name="Enemy" type="CharacterBody3D"]
+transform = Transform3D(1.3, 0, 0, 0, 1.3, 0, 0, 0, 1.3, 0, 0, 0)
 script = ExtResource("1_7p1mj")
 
 [node name="hitbox" type="Area3D" parent="."]
@@ -7790,12 +7792,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.8960367, 0)
 
 [node name="Cube_134" type="MeshInstance3D" parent="enemy_skin/2nd_Skeleton_Animations"]
+visible = false
 mesh = SubResource("ArrayMesh_562ay")
 skeleton = NodePath("")
 
-[node name="Point_005" type="OmniLight3D" parent="enemy_skin/2nd_Skeleton_Animations"]
+[node name="OmniLight3D" type="OmniLight3D" parent="enemy_skin/2nd_Skeleton_Animations"]
 transform = Transform3D(-1, 1.629207e-07, -1.629207e-07, -1.629207e-07, 0, 1, 1.629207e-07, 1, 0, 0, 1.468661, 0)
-light_color = Color(0.35680288, 0.54990745, 0.11049163, 1)
+light_color = Color(0.49468392, 0.44337976, 0.6669304, 1)
 light_energy = 0.7957747
 omni_range = 4096.0
 omni_attenuation = 2.0
@@ -9580,16 +9583,18 @@ bone_idx = 144
 transform = Transform3D(0.008317301, 0.0056285392, -0.03316717, -0.07232069, -0.00075114076, -0.0039603664, -0.0024105848, 0.04195549, 0.004378638, 0.053003088, 0.1790012, 0.12786254)
 mesh = SubResource("ArrayMesh_no2u5")
 skeleton = NodePath("")
+surface_material_override/3 = ExtResource("5_s1ycm")
 
 [node name="OmniLight3D4" type="OmniLight3D" parent="enemy_skin/2nd_Skeleton_Animations/rig_002/Skeleton3D/DEF-hand_L/Cube_099"]
 transform = Transform3D(13.72923, 2.2649765e-06, -4.2915344e-06, -2.3841858e-07, -7.9610896, 22.237316, 2.3841858e-06, -27.946701, -10.005088, 0.21500015, 2.1501417, 0.07065487)
 light_color = Color(1, 0.23467764, 0.35381994, 1)
-omni_range = 12.0
+omni_range = 6.0
 omni_attenuation = 1.5
 
 [node name="Cube_023" type="MeshInstance3D" parent="enemy_skin/2nd_Skeleton_Animations/rig_002/Skeleton3D"]
 mesh = SubResource("ArrayMesh_p18w2")
 skin = SubResource("Skin_ot0dw")
+surface_material_override/3 = ExtResource("5_s1ycm")
 
 [node name="WGT-rig_002_spine_fk" type="Node3D" parent="enemy_skin/2nd_Skeleton_Animations"]
 transform = Transform3D(0.15221946, 0, 0, 0, -0.03799996, -0.14740002, 0, 0.14740004, -0.037999958, 0, 1.1573, -0.017200015)

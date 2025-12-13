@@ -13,6 +13,9 @@ albedo_color = Color(2.2106607, 1.6373681, 0, 0.8117647)
 process_mode = 3
 script = ExtResource("1_lgqak")
 
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_color = Color(1, 0.7914605, 0.37329882, 1)
+
 [node name="Area3D" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
