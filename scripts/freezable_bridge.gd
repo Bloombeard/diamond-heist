@@ -8,4 +8,4 @@ func _physics_process(delta: float) -> void:
 		hitbox.monitoring = false
 		hitbox.monitorable = false
 		bridge.use_collision = true
-		bridge.visible = true
+		$crystal_bridge.visible = true
