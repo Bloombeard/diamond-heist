@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://bm8djub5otix2" path="res://assets/textures/grids/Purple/texture_02.png" id="2_rt050"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ba5p1"]
-size = Vector3(18, 2, 10)
+size = Vector3(18, 14.180664, 10)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1l31h"]
 resource_name = "Material"
@@ -77,6 +77,7 @@ collision_layer = 16
 collision_mask = 16
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="hitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6.090332, 0)
 shape = SubResource("BoxShape3D_ba5p1")
 debug_color = Color(0, 0.64705884, 0.2509804, 0.41960785)
 

@@ -14,6 +14,7 @@ radius = 1.8
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u7d34"]
 shading_mode = 0
+albedo_color = Color(0.61338997, 0.6133903, 0.61339027, 1)
 grow_amount = -0.368
 stencil_flags = 2
 

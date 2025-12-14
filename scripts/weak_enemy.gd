@@ -150,9 +150,9 @@ func _physics_process(delta: float) -> void:
 			statem.DED_BUBBLE:
 				bubble.set_deferred("disabled", false)
 				bubble.visible = true
-				statem.ded_length = 180
+				statem.ded_length = 240
 			statem.DED_CUBE:
-				statem.ded_length = 300
+				statem.ded_length = 420
 				cube_area.monitoring = true
 				cube_area.monitorable = true
 				cube.set_deferred("disabled", false)

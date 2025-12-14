@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://cf08701cnsaax" path="res://scenes/camera_on_rails_e.tscn" id="11_munwf"]
 [ext_resource type="PackedScene" uid="uid://bogo3gha7l7cv" path="res://scenes/enemy.tscn" id="12_q5onr"]
 [ext_resource type="Material" uid="uid://062r7sx52fm" path="res://assets/materials/rock_smooth.tres" id="14_o8fc1"]
+[ext_resource type="PackedScene" uid="uid://cmbpqv8barn4j" path="res://scenes/skull_enemy.tscn" id="14_ts3gi"]
 [ext_resource type="PackedScene" uid="uid://ho8rp6lh2fip" path="res://scenes/music_player.tscn" id="15_xo05s"]
 [ext_resource type="PackedScene" uid="uid://bm58bwr0me2g7" path="res://assets/models/level_objects/sadie_objects/crate12122025.fbx" id="16_7t5mc"]
 [ext_resource type="Material" uid="uid://dsogmtvw8yamm" path="res://assets/materials/rock.tres" id="16_dss4m"]
@@ -39,8 +40,13 @@ sky_material = SubResource("ProceduralSkyMaterial_sgp6g")
 [sub_resource type="Environment" id="Environment_0wfyh"]
 background_mode = 1
 sky = SubResource("Sky_o5qli")
+ambient_light_source = 1
+reflected_light_source = 1
 tonemap_mode = 2
 fog_light_color = Color(0, 0, 0, 1)
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.03
+volumetric_fog_albedo = Color(0.76143086, 0.8513024, 0.8137883, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_37qwj"]
 size = Vector3(17.413086, 1, 20.642578)
@@ -1334,7 +1340,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_jvopa")
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_d46x8"]
-height = 0.011926269
+height = 0.011334228
 radius = 0.01
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0u2nf"]
@@ -1451,7 +1457,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41.184208, 3.161861, 53.7033
 pickup_type = 5
 
 [node name="armor2" parent="." instance=ExtResource("4_i7141")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.57202, 3.9960191, -71.92553)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.57202, 3.1809757, -71.92553)
 
 [node name="armor" parent="." instance=ExtResource("4_i7141")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.44963, 10.37747, 38.019833)
@@ -1460,7 +1466,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.44963, 10.37747, 38.019833
 transform = Transform3D(-1.2644258, 0, -0.80698675, 0, 1.5, 0, 0.80698675, 0, -1.2644258, 5.9225936, 0.68746495, 7.531827)
 
 [node name="vault_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(-0.8642046, -0.17474686, 0.47181997, 0, 0.93774956, 0.34731215, -0.5031407, 0.30014873, -0.81040746, 11.581349, 6.0930195, -7.5658383)
+transform = Transform3D(-1.6320893, -0.21482855, 0.25162107, 0, 1.1528413, 0.18522121, -0.9502038, 0.36899388, -0.43218943, 11.581349, 6.0930195, -7.5658383)
 current = true
 script = ExtResource("8_dss4m")
 target = NodePath("../Player")
@@ -1502,7 +1508,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.43964, -1.2217994, -1.78244
 shape = SubResource("BoxShape3D_5fq5j")
 
 [node name="roomc_follow_camera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("9_7t5mc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.14054, 1.511136, 17.91)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.626236, 1.511136, 17.91)
 target = NodePath("../Player")
 
 [node name="roomc_area" type="Area3D" parent="."]
@@ -1726,6 +1732,31 @@ music_path = NodePath("../../MusicPlayer")
 
 [node name="WeakEnemy8" parent="enemies" instance=ExtResource("11_ctatt")]
 transform = Transform3D(-0.52396226, 0, 1.4055119, 0, 1.5, 0, -1.4055119, 0, -0.52396226, -30.6855, 1.5399146, -53.57488)
+player_path = NodePath("../../Player")
+music_path = NodePath("../../MusicPlayer")
+
+[node name="WeakEnemy19" parent="enemies" instance=ExtResource("11_ctatt")]
+transform = Transform3D(-0.52396226, 0, 1.4055119, 0, 1.5, 0, -1.4055119, 0, -0.52396226, -33.107628, -5.12169, -66.142204)
+player_path = NodePath("../../Player")
+music_path = NodePath("../../MusicPlayer")
+
+[node name="SkullEnemy" parent="enemies" instance=ExtResource("14_ts3gi")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -14.211749, -6.269731, -0.9634148)
+player_path = NodePath("../../Player")
+music_path = NodePath("../../MusicPlayer")
+
+[node name="SkullEnemy2" parent="enemies" instance=ExtResource("14_ts3gi")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -25.571775, -1.6542029, -74.87869)
+player_path = NodePath("../../Player")
+music_path = NodePath("../../MusicPlayer")
+
+[node name="SkullEnemy3" parent="enemies" instance=ExtResource("14_ts3gi")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 12.168106, 7.0053635, 27.080639)
+player_path = NodePath("../../Player")
+music_path = NodePath("../../MusicPlayer")
+
+[node name="SkullEnemy4" parent="enemies" instance=ExtResource("14_ts3gi")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -7.8470173, -4.640086, 13.861183)
 player_path = NodePath("../../Player")
 music_path = NodePath("../../MusicPlayer")
 
@@ -3337,7 +3368,7 @@ transform = Transform3D(1.0000002, 3.0387307e-20, 0, 0, -4.371141e-08, -1.000000
 shape = SubResource("CylinderShape3D_d46x8")
 
 [node name="pilar3segmentB 4" type="MeshInstance3D" parent="misc_clutter"]
-transform = Transform3D(1.3926602e-05, -96.09711, 2.870076e-12, 4.642201e-06, 1.8361133e-13, -751.0593, 106.20118, 1.2601612e-05, 3.2829845e-05, -43.604385, -1.1865127, -71.83922)
+transform = Transform3D(1.3926602e-05, -96.09711, 2.870076e-12, 4.642201e-06, 1.8361133e-13, -751.0593, 106.20118, 1.2601612e-05, 3.2829845e-05, -43.604385, -2.5602837, -71.83922)
 mesh = SubResource("ArrayMesh_4wdv8")
 skeleton = NodePath("")
 surface_material_override/0 = ExtResource("14_o8fc1")
@@ -3345,11 +3376,11 @@ surface_material_override/0 = ExtResource("14_o8fc1")
 [node name="StaticBody3D" type="StaticBody3D" parent="misc_clutter/pilar3segmentB 4"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="misc_clutter/pilar3segmentB 4/StaticBody3D"]
-transform = Transform3D(1.0000002, 3.0387307e-20, 0, 0, -4.371141e-08, -1.0000002, 0, 1.0000013, -4.371145e-08, 0, -0.04389155, -0.00020139432)
+transform = Transform3D(1.0000002, 0, 0, 0, -4.371103e-08, -1.0000002, 0, 1.0000013, -4.371145e-08, 0, -0.04389152, 9.462645e-05)
 shape = SubResource("CylinderShape3D_d46x8")
 
 [node name="pillar7segemts 2" type="MeshInstance3D" parent="misc_clutter"]
-transform = Transform3D(0, -100, -1.8423776e-05, -2.9802322e-06, 0, 618.19934, -100, 2.9802322e-06, 0, -44.368065, -2.1158347, -68.960556)
+transform = Transform3D(0, -100, -1.8423776e-05, -2.9802322e-06, 0, 618.19934, -100, 2.9802322e-06, 0, -44.368065, -2.5993245, -67.984055)
 mesh = SubResource("ArrayMesh_d46x8")
 skeleton = NodePath("")
 
@@ -3374,12 +3405,12 @@ surface_material_override/0 = ExtResource("14_o8fc1")
 [node name="decals" type="Node3D" parent="."]
 
 [node name="bubble_decal" type="Sprite3D" parent="decals"]
-transform = Transform3D(0.6449999, 0, 0, 0, -2.819384e-08, -0.64499986, 0, 0.64499986, -2.819384e-08, 6.514879, 0.64045, 0.050495625)
+transform = Transform3D(0.6449999, 0, 0, 0, -2.819384e-08, -0.64499986, 0, 0.64499986, -2.819384e-08, 6.514879, 0.7182274, 0.050495625)
 shaded = true
 texture = ExtResource("21_7iits")
 
 [node name="bubble_decal2" type="Sprite3D" parent="decals"]
-transform = Transform3D(0.62, 0, 0, 0, 0.62, 0, 0, 0, 0.62, -43.48114, 4.539083, 61.34148)
+transform = Transform3D(0.62, 0, 0, 0, 0.62, 0, 0, 0, 0.62, -43.48114, 4.3915143, 61.339775)
 shaded = true
 texture = ExtResource("21_7iits")
 
@@ -3388,7 +3419,7 @@ transform = Transform3D(-3.6936125e-08, 0, 0.845, 0, 0.845, 0, -0.845, 0, -3.693
 shaded = true
 texture = ExtResource("22_oo54l")
 
-[node name="bomb_decal2" type="Sprite3D" parent="decals"]
+[node name="block_decal" type="Sprite3D" parent="decals"]
 transform = Transform3D(-3.6936125e-08, 0, -0.845, 0, 0.845, 0, 0.845, 0, -3.6936125e-08, -21.39909, 4.4017954, -54.566036)
 shaded = true
 texture = ExtResource("23_kpybi")
