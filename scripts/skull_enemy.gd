@@ -11,22 +11,19 @@ extends CharacterBody3D
 @export var stagger_length := 30
 @export var stun_length := 120
 @export var invulnerability_frames := 10
-@export var aggression := 66
 
 var pattern := Dictionary()
 var slasher: Node3D
 var combo_counter: int
 
 @onready var nav_agent: NavigationAgent3D = $NavigationAgent3D
-@onready var slasher_hurtbox := $enemy_skin/Slasher/hurtbox
 @onready var statem = $state_machine
 @onready var enemy_skin = $enemy_skin
 @onready var hitbox = $hitbox
-@onready var animation_player: AnimationPlayer = $"enemy_skin/1st_Skeleton_Animations/AnimationPlayer"
 
 @onready var player = get_node(player_path)
 @onready var music = get_node(music_path)
-@onready var idle_distance = randi_range(4,5)
+@onready var idle_distance = 2
 @onready var attack_direction = Vector2(1.0,0)
 
 var direction_to_player := Vector3.ZERO
@@ -40,20 +37,19 @@ var stagger_animation_name = "Skeleton_stagger"
 var current_animation = idle_animation_name
 
 func _ready() -> void:
-	slasher_hurtbox.set_collision_layer_value(2, true)
-	slasher_hurtbox.set_collision_mask_value(2, true)
 	statem.stg_length = stagger_length
 	statem.iframes = invulnerability_frames
 	
 func _physics_process(delta: float) -> void:
 	velocity = Vector3.ZERO
 	var current_speed = move_speed
-	var choose_attack = randi_range(0,aggression)
 	
 	var target_angle := Vector3.BACK.signed_angle_to(direction_to_player, Vector3.UP)
+	if statem.state == statem.RUNNING:
+		target_angle += randf_range(-0.1, 0.1)
 	var rotation_speed := 12.0
 	enemy_skin.global_rotation.y = lerp_angle(enemy_skin.global_rotation.y, target_angle, rotation_speed * delta)
-	
+	enemy_skin.look_at(player.global_position + Vector3(randf_range(-0.2, 0.2), randf_range(-0.2, 0.2), randf_range(-0.2, 0.2)), Vector3.UP, true)
 	nav_agent.set_target_position(player.global_position)
 	var next_nav_point := nav_agent.get_next_path_position()
 	
@@ -66,17 +62,10 @@ func _physics_process(delta: float) -> void:
 	else:
 		combo_counter += 1
 	
-	if statem.state < statem.ATTACKING:
-		direction_to_player = self.global_position.direction_to(player.global_position)
-		statem.atk_counter = 0
-		if self.global_position.distance_to(player.global_position) <= idle_distance:
-			if choose_attack == 0:
-				statem.state = statem.ATTACKING
-				current_animation = attack_animation_name
-			else:
-				statem.state = statem.RUNNING
-				current_animation = run_animation_name
-		elif self.global_position.distance_to(player.global_position) <= sight_distance:
+	direction_to_player = self.global_position.direction_to(player.global_position)
+	statem.atk_counter = 0
+	if statem.state != statem.STAGGERED and statem.state != statem.DEAD:
+		if self.global_position.distance_to(player.global_position) <= sight_distance:
 			statem.state = statem.RUNNING
 			current_animation = run_animation_name
 		else:
@@ -93,24 +82,9 @@ func _physics_process(delta: float) -> void:
 		current_speed = move_speed
 		direction_to_player = self.global_position.direction_to(player.global_position)
 	elif statem.state == statem.STAGGERED:
-		if statem.stg_counter < 10:
-			current_speed = move_speed / 6
-			direction_to_player = self.global_position.direction_to(player.global_position)
-			move_direction = -direction_to_player
-			move_direction.y = 0
-		else:
-			current_speed = 0
-	elif statem.state == statem.ATTACKING:
-		move_direction = direction_to_player
-		move_direction.y = 0
-		current_speed = move_speed / 4
-		if statem.atk_counter == 1:
-			if idle_distance % 2 == 0:
-				idle_distance += 1
-			else:
-				idle_distance -= 1
+		current_speed = 0
 	elif statem.state == statem.RUNNING:
-		move_direction = (next_nav_point - global_position).normalized()
+		move_direction = direction_to_player
 		var distance_to_player = self.global_position.distance_to(player.global_position)
 		if distance_to_player <= idle_distance + 1:
 			current_speed = move_speed / 4
@@ -144,9 +118,6 @@ func _physics_process(delta: float) -> void:
 					bomb.monitoring = true
 					bomb.monitorable = true
 					bomb.visible = true
-			statem.DED_FORCE:
-				statem.ded_length = 6
-				velocity.y = 20
 			statem.DED_BUBBLE:
 				bubble.set_deferred("disabled", false)
 				bubble.visible = true
@@ -167,12 +138,6 @@ func _physics_process(delta: float) -> void:
 				elif is_on_wall():
 					move_direction = move_direction.bounce(get_wall_normal())
 				velocity = velocity.move_toward(move_direction * current_speed, acceleration * delta)
-				velocity.y = 0
-			statem.DED_LINK:
-				# check for closest nearby target
-				# draw line between this and them
-				# hit them
-				pass
 			statem.DED_NONE:
 				bomb.monitoring = false
 				bomb.monitorable = false
@@ -189,16 +154,8 @@ func _physics_process(delta: float) -> void:
 				armor_value = 5
 				current_animation = stagger_animation_name
 
-	if not is_on_floor() and statem.ded_state != statem.DED_BUBBLE:
-		velocity.y = -20
-
-	if current_animation == attack_animation_name:
-		animation_player.play_section(current_animation, 0.65)
-	else:
-		animation_player.play(current_animation)
-
 	move_and_slide()
-	if statem.ded_state == statem.DED_BUBBLE and statem.ded_counter > 60:
+	if statem.ded_state == statem.DED_BUBBLE and statem.ded_counter > 120:
 					global_position.y = global_position.y + 0.07
 
 func _on_hitbox_area_entered(area: Area3D) -> void:

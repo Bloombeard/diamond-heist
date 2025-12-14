@@ -1720,7 +1720,22 @@ player_path = NodePath("../../Player")
 music_path = NodePath("../../MusicPlayer")
 
 [node name="SkullEnemy" parent="enemies" instance=ExtResource("14_ts3gi")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6015368, 3.029842, -1.4655434)
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -14.211749, -6.269731, -0.9634148)
+player_path = NodePath("../../Player")
+music_path = NodePath("../../MusicPlayer")
+
+[node name="SkullEnemy2" parent="enemies" instance=ExtResource("14_ts3gi")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -25.571775, -1.6542029, -74.87869)
+player_path = NodePath("../../Player")
+music_path = NodePath("../../MusicPlayer")
+
+[node name="SkullEnemy3" parent="enemies" instance=ExtResource("14_ts3gi")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 12.168106, 7.0053635, 27.080639)
+player_path = NodePath("../../Player")
+music_path = NodePath("../../MusicPlayer")
+
+[node name="SkullEnemy4" parent="enemies" instance=ExtResource("14_ts3gi")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -7.8470173, -4.640086, 13.861183)
 player_path = NodePath("../../Player")
 music_path = NodePath("../../MusicPlayer")
 
