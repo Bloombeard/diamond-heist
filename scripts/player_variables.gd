@@ -1,6 +1,6 @@
 extends Node
 
-var max_armor := 2
+var max_armor := 4
 var armor := max_armor
 var has_sword: bool
 var has_jump := true

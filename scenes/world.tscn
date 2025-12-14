@@ -38,8 +38,13 @@ sky_material = SubResource("ProceduralSkyMaterial_sgp6g")
 [sub_resource type="Environment" id="Environment_0wfyh"]
 background_mode = 1
 sky = SubResource("Sky_o5qli")
+ambient_light_source = 1
+reflected_light_source = 1
 tonemap_mode = 2
 fog_light_color = Color(0, 0, 0, 1)
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.03
+volumetric_fog_albedo = Color(0.76143086, 0.8513024, 0.8137883, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jyhfs"]
 size = Vector3(13.934551, 15.955597, 18.109253)
@@ -1451,7 +1456,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.44963, 10.37747, 38.019833
 transform = Transform3D(-1.2644258, 0, -0.80698675, 0, 1.5, 0, 0.80698675, 0, -1.2644258, 5.8962297, 0.97505856, 7.4647856)
 
 [node name="vault_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(-0.8642046, -0.17474686, 0.47181997, 0, 0.93774956, 0.34731215, -0.5031407, 0.30014873, -0.81040746, 11.581349, 6.0930195, -7.5658383)
+transform = Transform3D(-1.6320893, -0.21482855, 0.25162107, 0, 1.1528413, 0.18522121, -0.9502038, 0.36899388, -0.43218943, 11.581349, 6.0930195, -7.5658383)
 current = true
 script = ExtResource("8_dss4m")
 target = NodePath("../Player")
