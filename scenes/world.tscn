@@ -1,10 +1,11 @@
-[gd_scene load_steps=151 format=4 uid="uid://cx4fgmdp14gtg"]
+[gd_scene load_steps=153 format=4 uid="uid://cx4fgmdp14gtg"]
 
 [ext_resource type="Script" uid="uid://dj7bu4r5pgtf1" path="res://scripts/world.gd" id="1_w7kh3"]
 [ext_resource type="PackedScene" uid="uid://cocuv0btvffdb" path="res://scenes/pause_menu.tscn" id="2_w7kh3"]
 [ext_resource type="PackedScene" uid="uid://bynxesp2yjysf" path="res://scenes/breakable_wall.tscn" id="3_e3hyu"]
 [ext_resource type="PackedScene" path="res://scenes/dialogue_system.tscn" id="3_ts3gi"]
 [ext_resource type="PackedScene" uid="uid://brju4w3b4dpj7" path="res://scenes/freezable_bridge.tscn" id="3_w7kh3"]
+[ext_resource type="PackedScene" uid="uid://cnenq5yfumo4h" path="res://scenes/end_menu.tscn" id="4_0nbtd"]
 [ext_resource type="PackedScene" uid="uid://ctxjia2mwr1rd" path="res://scenes/item_pickup.tscn" id="4_i7141"]
 [ext_resource type="Texture2D" uid="uid://c0rbj02fx21ld" path="res://assets/textures/grids/Light/texture_07.png" id="5_7r4gi"]
 [ext_resource type="Texture2D" uid="uid://does8rpwjdh1r" path="res://assets/textures/grids/Red/texture_05.png" id="5_jhx03"]
@@ -40,6 +41,9 @@ background_mode = 1
 sky = SubResource("Sky_o5qli")
 tonemap_mode = 2
 fog_light_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_37qwj"]
+size = Vector3(17.413086, 1, 20.642578)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jyhfs"]
 size = Vector3(13.934551, 15.955597, 18.109253)
@@ -1407,6 +1411,8 @@ script = ExtResource("1_w7kh3")
 [node name="DialogSystem" parent="." instance=ExtResource("3_ts3gi")]
 process_mode = 3
 
+[node name="EndMenu" parent="." instance=ExtResource("4_0nbtd")]
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_0wfyh")
 
@@ -1451,13 +1457,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.57202, 3.9960191, -71.925
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.44963, 10.37747, 38.019833)
 
 [node name="Player" parent="." instance=ExtResource("7_xo05s")]
-transform = Transform3D(-1.2644258, 0, -0.80698675, 0, 1.5, 0, 0.80698675, 0, -1.2644258, -39.53454, 1.0576258, 33.683464)
+transform = Transform3D(-1.2644258, 0, -0.80698675, 0, 1.5, 0, 0.80698675, 0, -1.2644258, 5.9225936, 0.68746495, 7.531827)
 
 [node name="vault_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
 transform = Transform3D(-0.8642046, -0.17474686, 0.47181997, 0, 0.93774956, 0.34731215, -0.5031407, 0.30014873, -0.81040746, 11.581349, 6.0930195, -7.5658383)
 current = true
 script = ExtResource("8_dss4m")
 target = NodePath("../Player")
+
+[node name="finish_line_area" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="finish_line_area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.8976803, 15.12197, 0)
+shape = SubResource("BoxShape3D_37qwj")
 
 [node name="vault_area" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2479479, 0)
@@ -3381,9 +3393,11 @@ transform = Transform3D(-3.6936125e-08, 0, -0.845, 0, 0.845, 0, 0.845, 0, -3.693
 shaded = true
 texture = ExtResource("23_kpybi")
 
+[connection signal="trigger_end_menu" from="DialogSystem" to="EndMenu" method="_on_dialog_system_trigger_end_menu"]
 [connection signal="play_dialog" from="bomb" to="DialogSystem" method="_on_item_pickup_play_dialog"]
 [connection signal="play_dialog" from="cube" to="DialogSystem" method="_on_item_pickup_play_dialog"]
 [connection signal="play_dialog" from="bubble" to="DialogSystem" method="_on_item_pickup_play_dialog"]
+[connection signal="body_entered" from="finish_line_area" to="DialogSystem" method="_on_finish_line_area_body_entered"]
 [connection signal="body_entered" from="vault_area" to="." method="_on_vault_area_body_entered"]
 [connection signal="body_entered" from="vault_area" to="Player" method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="vault_area" to="." method="_on_vault_area_body_exited"]
@@ -3399,4 +3413,5 @@ texture = ExtResource("23_kpybi")
 [connection signal="body_entered" from="roomg_area" to="." method="_on_roomg_area_body_entered"]
 [connection signal="body_entered" from="roomh_areah" to="." method="_on_roomh_areah_body_entered"]
 [connection signal="body_entered" from="roomj_area" to="." method="_on_roomh_areah_2_body_entered"]
+[connection signal="play_dialog" from="ItemPickup" to="DialogSystem" method="_on_item_pickup_play_dialog"]
 [connection signal="body_entered" from="roome_area2" to="." method="_on_roome_area_2_body_entered"]
