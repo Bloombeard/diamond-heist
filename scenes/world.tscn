@@ -1,8 +1,9 @@
-[gd_scene load_steps=150 format=4 uid="uid://cx4fgmdp14gtg"]
+[gd_scene load_steps=151 format=4 uid="uid://cx4fgmdp14gtg"]
 
 [ext_resource type="Script" uid="uid://dj7bu4r5pgtf1" path="res://scripts/world.gd" id="1_w7kh3"]
 [ext_resource type="PackedScene" uid="uid://cocuv0btvffdb" path="res://scenes/pause_menu.tscn" id="2_w7kh3"]
 [ext_resource type="PackedScene" uid="uid://bynxesp2yjysf" path="res://scenes/breakable_wall.tscn" id="3_e3hyu"]
+[ext_resource type="PackedScene" path="res://scenes/dialogue_system.tscn" id="3_ts3gi"]
 [ext_resource type="PackedScene" uid="uid://brju4w3b4dpj7" path="res://scenes/freezable_bridge.tscn" id="3_w7kh3"]
 [ext_resource type="PackedScene" uid="uid://ctxjia2mwr1rd" path="res://scenes/item_pickup.tscn" id="4_i7141"]
 [ext_resource type="Texture2D" uid="uid://c0rbj02fx21ld" path="res://assets/textures/grids/Light/texture_07.png" id="5_7r4gi"]
@@ -1402,6 +1403,9 @@ shadow_mesh = SubResource("ArrayMesh_ui0w8")
 script = ExtResource("1_w7kh3")
 
 [node name="PauseMenu" parent="." instance=ExtResource("2_w7kh3")]
+
+[node name="DialogSystem" parent="." instance=ExtResource("3_ts3gi")]
+process_mode = 3
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_0wfyh")
@@ -3377,6 +3381,9 @@ transform = Transform3D(-3.6936125e-08, 0, -0.845, 0, 0.845, 0, 0.845, 0, -3.693
 shaded = true
 texture = ExtResource("23_kpybi")
 
+[connection signal="play_dialog" from="bomb" to="DialogSystem" method="_on_item_pickup_play_dialog"]
+[connection signal="play_dialog" from="cube" to="DialogSystem" method="_on_item_pickup_play_dialog"]
+[connection signal="play_dialog" from="bubble" to="DialogSystem" method="_on_item_pickup_play_dialog"]
 [connection signal="body_entered" from="vault_area" to="." method="_on_vault_area_body_entered"]
 [connection signal="body_entered" from="vault_area" to="Player" method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="vault_area" to="." method="_on_vault_area_body_exited"]

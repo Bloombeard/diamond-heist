@@ -21,7 +21,7 @@ func _input(_event: InputEvent) -> void:
 		if animation_player.is_playing():
 			animation_player.stop()
 			dialog_text.visible_ratio = 1.0
-		elif active_line_index <= total_lines:
+		elif active_line_index < total_lines:
 			active_line_index += 1
 			play_line_of_dialog()
 		else:
@@ -38,6 +38,7 @@ func play_line_of_dialog() -> void:
 	animation_player.play("scroll")
 
 func toggle_dialog() -> void:
+	get_tree().paused = !is_dialog_active
 	dialog_text.visible = !dialog_text.visible
 	background.visible = !background.visible
 	speaker_name.visible = !speaker_name.visible
