@@ -14,26 +14,32 @@ grow_vertical = 2
 scale = Vector2(1, 1.0006549)
 script = ExtResource("1_fpl1s")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-process_mode = 3
+[node name="play_again_button" type="Button" parent="."]
 layout_mode = 0
-offset_left = 181.0
-offset_top = 523.657
-offset_right = 989.0
-offset_bottom = 615.5968
-color = Color(0, 0, 0, 0.5529412)
+offset_left = 596.0
+offset_top = 536.6485
+offset_right = 895.0
+offset_bottom = 613.6485
+focus_neighbor_left = NodePath("../quit_button")
+focus_neighbor_right = NodePath("../quit_button")
+theme_override_font_sizes/font_size = 50
+text = "PLAY AGAIN"
 
-[node name="Label" type="Label" parent="."]
-process_mode = 3
+[node name="quit_button" type="Button" parent="."]
 layout_mode = 0
-offset_left = 190.0
-offset_top = 510.66556
-offset_right = 972.0
-offset_bottom = 643.2427
-theme_override_font_sizes/font_size = 75
-text = "PRESS START TO PLAY"
+offset_left = 307.0
+offset_top = 535.64923
+offset_right = 435.0
+offset_bottom = 612.64923
+focus_neighbor_left = NodePath("../play_again_button")
+focus_neighbor_right = NodePath("../play_again_button")
+theme_override_font_sizes/font_size = 50
+text = "QUIT"
 
 [node name="DiamondHeistCredits" type="Sprite2D" parent="."]
 position = Vector2(578.719, 286.19467)
 scale = Vector2(0.64018595, 0.64018595)
 texture = ExtResource("2_albv7")
+
+[connection signal="pressed" from="play_again_button" to="." method="_on_play_again_button_pressed"]
+[connection signal="pressed" from="quit_button" to="." method="_on_quit_button_pressed"]
