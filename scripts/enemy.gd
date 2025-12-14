@@ -77,9 +77,8 @@ func _physics_process(delta: float) -> void:
 				statem.state = statem.RUNNING
 				current_animation = run_animation_name
 		elif self.global_position.distance_to(player.global_position) <= sight_distance:
-			if abs(self.global_position.y - player.global_position.y) < 0.1:
-				statem.state = statem.RUNNING
-				current_animation = run_animation_name
+			statem.state = statem.RUNNING
+			current_animation = run_animation_name
 		else:
 			statem.state = statem.IDLE
 			current_animation = idle_animation_name
@@ -140,7 +139,7 @@ func _physics_process(delta: float) -> void:
 		# var link = A Little Purple Indicator
 		match statem.ded_state:
 			statem.DED_BOMB:
-				statem.ded_length = 200
+				statem.ded_length = 120
 				if statem.ded_counter == statem.ded_length - 20:
 					bomb.monitoring = true
 					bomb.monitorable = true
@@ -151,9 +150,9 @@ func _physics_process(delta: float) -> void:
 			statem.DED_BUBBLE:
 				bubble.set_deferred("disabled", false)
 				bubble.visible = true
-				statem.ded_length = 600
+				statem.ded_length = 180
 			statem.DED_CUBE:
-				statem.ded_length = 600
+				statem.ded_length = 300
 				cube_area.monitoring = true
 				cube_area.monitorable = true
 				cube.set_deferred("disabled", false)
@@ -187,6 +186,7 @@ func _physics_process(delta: float) -> void:
 				rune_clear()
 				statem.ded_counter = 0
 				statem.state = statem.STAGGERED
+				armor_value = 10
 				current_animation = stagger_animation_name
 
 	if not is_on_floor() and statem.ded_state != statem.DED_BUBBLE:

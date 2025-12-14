@@ -3,12 +3,12 @@ extends Node3D
 @export var camera_switch_input_change_delay := 1
 
 @onready var vault_camera: Camera3D = $vault_camera
-@onready var hallway_camera: Camera3D = $rooma_camera
+@onready var hallway_camera: Camera3D = $rooma_camera/PathFollow3D/Camera3D
 @onready var roomb_camera: Camera3D = $roomb_camera
-@onready var roomd_camera: Camera3D = $roomd_camera
+@onready var roomd_camera: Camera3D = $roomd_camera/PathFollow3D/Camera3D
 @onready var roome_camera: Camera3D = $roome_camera
 @onready var roome_camera2: Camera3D = $roome_camera2
-@onready var roomf_camera: Camera3D = $roomf_camera
+@onready var roomf_camera: Camera3D = $roomf_camera/PathFollow3D/Camera3D
 @onready var roomg_camera: Camera3D = $roomg_camera
 @onready var roomh_camera: Camera3D = $roomh_camera
 @onready var roomj_camera: Camera3D = $roomj_camera

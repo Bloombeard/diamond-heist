@@ -1,4 +1,4 @@
-[gd_scene load_steps=148 format=4 uid="uid://cx4fgmdp14gtg"]
+[gd_scene load_steps=150 format=4 uid="uid://cx4fgmdp14gtg"]
 
 [ext_resource type="Script" uid="uid://dj7bu4r5pgtf1" path="res://scripts/world.gd" id="1_w7kh3"]
 [ext_resource type="PackedScene" uid="uid://cocuv0btvffdb" path="res://scenes/pause_menu.tscn" id="2_w7kh3"]
@@ -10,7 +10,9 @@
 [ext_resource type="PackedScene" uid="uid://butv4eka18auv" path="res://scenes/player.tscn" id="7_xo05s"]
 [ext_resource type="Script" uid="uid://calcf0bm026jd" path="res://scripts/static_tracking_camera.gd" id="8_dss4m"]
 [ext_resource type="PackedScene" uid="uid://boc7uld8h3ora" path="res://scenes/camera_on_rails.tscn" id="9_7t5mc"]
+[ext_resource type="PackedScene" uid="uid://c6s4kusps546i" path="res://scenes/camera_on_rails_a.tscn" id="9_xgqkh"]
 [ext_resource type="PackedScene" uid="uid://dwfag0gr31g0n" path="res://scenes/weak_enemy.tscn" id="11_ctatt"]
+[ext_resource type="PackedScene" uid="uid://cf08701cnsaax" path="res://scenes/camera_on_rails_e.tscn" id="11_munwf"]
 [ext_resource type="PackedScene" uid="uid://bogo3gha7l7cv" path="res://scenes/enemy.tscn" id="12_q5onr"]
 [ext_resource type="Material" uid="uid://062r7sx52fm" path="res://assets/materials/rock_smooth.tres" id="14_o8fc1"]
 [ext_resource type="PackedScene" uid="uid://ho8rp6lh2fip" path="res://scenes/music_player.tscn" id="15_xo05s"]
@@ -57,16 +59,16 @@ size = Vector3(32.902332, 19.759293, 26.614899)
 size = Vector3(32.902332, 5.3434467, 25.882137)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_e3hyu"]
-size = Vector3(32.902332, 6.1532135, 10.858604)
+size = Vector3(31.46728, 6.1532135, 10.858604)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_q5onr"]
-size = Vector3(32.902332, 8.087921, 24.138609)
+size = Vector3(20.189999, 8.087921, 31.63659)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xo05s"]
-size = Vector3(44.231552, 4.33033, 8.424908)
+size = Vector3(46.874973, 3.838993, 8.424908)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dss4m"]
-size = Vector3(18.955105, 16.406708, 21.79092)
+size = Vector3(18.955105, 16.406708, 20.937946)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7t5mc"]
 size = Vector3(23.993591, 5.1835747, 17.594389)
@@ -1445,7 +1447,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.57202, 3.9960191, -71.925
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.44963, 10.37747, 38.019833)
 
 [node name="Player" parent="." instance=ExtResource("7_xo05s")]
-transform = Transform3D(-1.2644258, 0, -0.80698675, 0, 1.5, 0, 0.80698675, 0, -1.2644258, 6.0477576, 0.68270636, 7.5563793)
+transform = Transform3D(-1.2644258, 0, -0.80698675, 0, 1.5, 0, 0.80698675, 0, -1.2644258, -39.53454, 1.0576258, 33.683464)
 
 [node name="vault_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
 transform = Transform3D(-0.8642046, -0.17474686, 0.47181997, 0, 0.93774956, 0.34731215, -0.5031407, 0.30014873, -0.81040746, 11.581349, 6.0930195, -7.5658383)
@@ -1460,10 +1462,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2479479, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.650072, 6.6877594, 0.3303833)
 shape = SubResource("BoxShape3D_jyhfs")
 
-[node name="rooma_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(-0.6659867, 0.5582364, -0.4948069, 0.03967631, 0.6888816, 0.7237873, 0.74490774, 0.46240056, -0.48093477, -11.392911, 2.5403547, -12.072171)
-size = 0.05
-script = ExtResource("8_dss4m")
+[node name="rooma_camera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("9_xgqkh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.0337, 1.0642433, -12.072171)
 target = NodePath("../Player")
 
 [node name="rooma_area" type="Area3D" parent="."]
@@ -1496,9 +1496,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.711834, 0, 18.018497)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9000015, 1.1886638, -0.34715462)
 shape = SubResource("BoxShape3D_skwyo")
 
-[node name="roomd_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -40.189617, 1.0549049, -38.199295)
-script = ExtResource("8_dss4m")
+[node name="roomd_camera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("9_xgqkh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.897236, 0, -38.19706)
 target = NodePath("../Player")
 
 [node name="roomd_area" type="Area3D" parent="."]
@@ -1509,7 +1508,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8928604, -7.057485, -0.5711
 shape = SubResource("BoxShape3D_jhx03")
 
 [node name="roome_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -32.61804, -0.996732, -78.21164)
+transform = Transform3D(-0.99310124, 0, -0.1172601, 0, 1, 0, 0.1172601, 0, -0.99310124, -38.05674, -1.2828408, -77.84786)
 script = ExtResource("8_dss4m")
 target = NodePath("../Player")
 
@@ -1520,16 +1519,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.425, 5.3225517, -64.58349
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4552689, -12.353299, -0.27435303)
 shape = SubResource("BoxShape3D_o8fc1")
 
-[node name="roomf_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.14742, 5.0079813, 40.294765)
-script = ExtResource("8_dss4m")
+[node name="roomf_camera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("11_munwf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.708313, 4.5401673, 36.33845)
 target = NodePath("../Player")
 
 [node name="roomf_area" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.425, 5.3225517, 44.76908)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="roomf_area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0625134, -2.1891532, -6.706753)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7800407, -2.1891532, -6.706753)
 shape = SubResource("BoxShape3D_e3hyu")
 
 [node name="roomg_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
@@ -1541,11 +1539,11 @@ target = NodePath("../Player")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44.914368, 5.3225517, 54.609333)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="roomg_area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.432228, -1.2217994, -1.7440605)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.788395, -1.2217994, -5.4930496)
 shape = SubResource("BoxShape3D_q5onr")
 
 [node name="roomh_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.146568, 12.382349, 39.719124)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2477689, 12.382349, 39.719124)
 script = ExtResource("8_dss4m")
 target = NodePath("../Player")
 
@@ -1553,7 +1551,7 @@ target = NodePath("../Player")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.3262367, 10.083643, 44.76908)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="roomh_areah"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5016289, 0.6569958, -5.4899063)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8233395, 0.9026642, -5.4899063)
 shape = SubResource("BoxShape3D_xo05s")
 
 [node name="roomj_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
@@ -1565,7 +1563,7 @@ target = NodePath("../Player")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.37312, 10.083643, 21.331106)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="roomj_area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2774944, -2.1420918, 1.1245518)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2774944, -2.1420918, 0.6980629)
 shape = SubResource("BoxShape3D_dss4m")
 
 [node name="ItemPickup" parent="." instance=ExtResource("4_i7141")]
@@ -1636,7 +1634,7 @@ player_path = NodePath("../../Player")
 music_path = NodePath("../../MusicPlayer")
 
 [node name="WeakEnemy5" parent="enemies" instance=ExtResource("11_ctatt")]
-transform = Transform3D(1.4974763, 0, -0.08697331, 0, 1.5, 0, 0.08697331, 0, 1.4974763, -11.383894, -5.531659, 20.323765)
+transform = Transform3D(1.4974763, 0, -0.08697331, 0, 1.5, 0, 0.08697331, 0, 1.4974763, -18.876816, -5.531659, 21.859772)
 player_path = NodePath("../../Player")
 music_path = NodePath("../../MusicPlayer")
 
@@ -2765,7 +2763,7 @@ skeleton = NodePath("")
 surface_material_override/0 = ExtResource("14_o8fc1")
 
 [node name="rock wall 39" type="MeshInstance3D" parent="world_models"]
-transform = Transform3D(517.35474, 0, 0, 0, -1.4927529e-05, 438.07092, 0, -341.50208, -1.9148689e-05, 19.533686, 10.271634, 10.440602)
+transform = Transform3D(517.35474, 0, 0, 0, -1.4927529e-05, 438.07092, 0, -341.50208, -1.9148689e-05, 19.533686, 7.7122526, 10.440602)
 mesh = SubResource("ArrayMesh_2lf6f")
 skeleton = NodePath("")
 surface_material_override/0 = ExtResource("16_dss4m")
@@ -2839,10 +2837,10 @@ light_color = Color(0.7179723, 0.69487596, 0.94419837, 1)
 omni_range = 16.0
 
 [node name="OmniLight3D16" type="OmniLight3D" parent="world_models"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.453941, 11.817747, 20.684732)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.453941, 11.494594, 20.684732)
 light_color = Color(0.7179723, 0.69487596, 0.94419837, 1)
 light_energy = 0.5
-omni_range = 16.0
+omni_range = 12.0
 
 [node name="OmniLight3D17" type="OmniLight3D" parent="world_models"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.3150325, 10.789768, 8.9493475)

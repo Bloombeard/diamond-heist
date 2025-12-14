@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6s4kusps546i"]
+
+[ext_resource type="Script" uid="uid://dwqmq55dpp5tw" path="res://scripts/camera_on_rails.gd" id="1_o84mm"]
+
+[sub_resource type="Curve3D" id="Curve3D_o84mm"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -5, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[node name="CameraOnRails" type="Path3D"]
+curve = SubResource("Curve3D_o84mm")
+script = ExtResource("1_o84mm")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="."]
+transform = Transform3D(-4.3711303e-08, 0.99999493, 4.371101e-08, 0, -4.3711168e-08, 0.9999914, 0.99999803, 4.3711168e-08, 1.9106692e-15, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="PathFollow3D"]
+transform = Transform3D(1.0000019, 0, 0, -3.5527137e-15, 1.000005, 3.5527137e-15, 0, -3.5527137e-15, 1.0000086, 0, 0, 4)
