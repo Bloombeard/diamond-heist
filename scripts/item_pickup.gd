@@ -32,12 +32,15 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 				print("SPIN")
 			Pickups.BUBBLE:
 				PlayerVariables.has_bubble = true
+				play_dialog.emit("BUBBLE_PICKUP_DIALOG")
 				print("BUBBLE")
 			Pickups.BOMB:
 				PlayerVariables.has_bomb = true
+				play_dialog.emit("BOMB_PICKUP_DIALOG")
 				print("BOMB")
 			Pickups.CUBE:
 				PlayerVariables.has_cube = true
+				play_dialog.emit("ICE_BRIDGE_PICKUP_DIALOG")
 				print("CUBE")
 			Pickups.LINK:
 				PlayerVariables.has_link = true
