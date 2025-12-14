@@ -57,6 +57,7 @@ func toggle_dialog() -> void:
 func _on_finish_line_area_body_entered(body: Node3D) -> void:
 	if body == player:
 		toggle_dialog()
+		active_line_index = 0
 		dialog_text_array = DialogConstants.YOU_WIN_DIALOG
 		total_lines = DialogConstants.YOU_WIN_DIALOG.size() - 1
 		is_finish_line_dialog = true

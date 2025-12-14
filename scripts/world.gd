@@ -18,6 +18,11 @@ extends Node3D
 func _ready() -> void:
 	vault_camera.make_current()
 	player.active_movement_camera = vault_camera
+	PlayerVariables.has_bomb = false
+	PlayerVariables.has_bubble = false
+	PlayerVariables.has_cube = false
+	PlayerVariables.max_armor = 4
+	PlayerVariables.armor = PlayerVariables.max_armor
 
 func change_camera(new_camera: Camera3D) -> void:
 	if new_camera != player.active_movement_camera:

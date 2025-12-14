@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cnenq5yfumo4h"]
 
-[ext_resource type="Script" uid="uid://b88fv1no2l88d" path="res://scripts/end_menu.gd" id="1_fpl1s"]
+[ext_resource type="Script" path="res://scripts/end_menu.gd" id="1_fpl1s"]
 [ext_resource type="Texture2D" uid="uid://dm435od2l3gt3" path="res://assets/diamond-heist-credits.png" id="2_albv7"]
 
 [node name="EndMenu" type="Control"]
@@ -15,6 +15,7 @@ scale = Vector2(1, 1.0006549)
 script = ExtResource("1_fpl1s")
 
 [node name="play_again_button" type="Button" parent="."]
+process_mode = 3
 layout_mode = 0
 offset_left = 596.0
 offset_top = 536.6485
@@ -26,6 +27,7 @@ theme_override_font_sizes/font_size = 50
 text = "PLAY AGAIN"
 
 [node name="quit_button" type="Button" parent="."]
+process_mode = 3
 layout_mode = 0
 offset_left = 307.0
 offset_top = 535.64923
