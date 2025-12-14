@@ -1335,7 +1335,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_jvopa")
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_d46x8"]
-height = 0.011926269
+height = 0.011334228
 radius = 0.01
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0u2nf"]
@@ -1447,7 +1447,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41.184208, 3.161861, 53.7033
 pickup_type = 5
 
 [node name="armor2" parent="." instance=ExtResource("4_i7141")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.57202, 3.9960191, -71.92553)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.57202, 3.1809757, -71.92553)
 
 [node name="armor" parent="." instance=ExtResource("4_i7141")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.44963, 10.37747, 38.019833)
@@ -3352,7 +3352,7 @@ transform = Transform3D(1.0000002, 3.0387307e-20, 0, 0, -4.371141e-08, -1.000000
 shape = SubResource("CylinderShape3D_d46x8")
 
 [node name="pilar3segmentB 4" type="MeshInstance3D" parent="misc_clutter"]
-transform = Transform3D(1.3926602e-05, -96.09711, 2.870076e-12, 4.642201e-06, 1.8361133e-13, -751.0593, 106.20118, 1.2601612e-05, 3.2829845e-05, -43.604385, -1.1865127, -71.83922)
+transform = Transform3D(1.3926602e-05, -96.09711, 2.870076e-12, 4.642201e-06, 1.8361133e-13, -751.0593, 106.20118, 1.2601612e-05, 3.2829845e-05, -43.604385, -2.5602837, -71.83922)
 mesh = SubResource("ArrayMesh_4wdv8")
 skeleton = NodePath("")
 surface_material_override/0 = ExtResource("14_o8fc1")
@@ -3360,11 +3360,11 @@ surface_material_override/0 = ExtResource("14_o8fc1")
 [node name="StaticBody3D" type="StaticBody3D" parent="misc_clutter/pilar3segmentB 4"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="misc_clutter/pilar3segmentB 4/StaticBody3D"]
-transform = Transform3D(1.0000002, 3.0387307e-20, 0, 0, -4.371141e-08, -1.0000002, 0, 1.0000013, -4.371145e-08, 0, -0.04389155, -0.00020139432)
+transform = Transform3D(1.0000002, 0, 0, 0, -4.371103e-08, -1.0000002, 0, 1.0000013, -4.371145e-08, 0, -0.04389152, 9.462645e-05)
 shape = SubResource("CylinderShape3D_d46x8")
 
 [node name="pillar7segemts 2" type="MeshInstance3D" parent="misc_clutter"]
-transform = Transform3D(0, -100, -1.8423776e-05, -2.9802322e-06, 0, 618.19934, -100, 2.9802322e-06, 0, -44.368065, -2.1158347, -68.960556)
+transform = Transform3D(0, -100, -1.8423776e-05, -2.9802322e-06, 0, 618.19934, -100, 2.9802322e-06, 0, -44.368065, -2.5993245, -67.984055)
 mesh = SubResource("ArrayMesh_d46x8")
 skeleton = NodePath("")
 
