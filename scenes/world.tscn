@@ -1,4 +1,4 @@
-[gd_scene load_steps=150 format=4 uid="uid://cx4fgmdp14gtg"]
+[gd_scene load_steps=151 format=4 uid="uid://cx4fgmdp14gtg"]
 
 [ext_resource type="Script" uid="uid://dj7bu4r5pgtf1" path="res://scripts/world.gd" id="1_w7kh3"]
 [ext_resource type="PackedScene" uid="uid://cocuv0btvffdb" path="res://scenes/pause_menu.tscn" id="2_w7kh3"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://cf08701cnsaax" path="res://scenes/camera_on_rails_e.tscn" id="11_munwf"]
 [ext_resource type="PackedScene" uid="uid://bogo3gha7l7cv" path="res://scenes/enemy.tscn" id="12_q5onr"]
 [ext_resource type="Material" uid="uid://062r7sx52fm" path="res://assets/materials/rock_smooth.tres" id="14_o8fc1"]
+[ext_resource type="PackedScene" uid="uid://cmbpqv8barn4j" path="res://scenes/skull_enemy.tscn" id="14_ts3gi"]
 [ext_resource type="PackedScene" uid="uid://ho8rp6lh2fip" path="res://scenes/music_player.tscn" id="15_xo05s"]
 [ext_resource type="PackedScene" uid="uid://bm58bwr0me2g7" path="res://assets/models/level_objects/sadie_objects/crate12122025.fbx" id="16_7t5mc"]
 [ext_resource type="Material" uid="uid://dsogmtvw8yamm" path="res://assets/materials/rock.tres" id="16_dss4m"]
@@ -1447,7 +1448,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.57202, 3.9960191, -71.925
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.44963, 10.37747, 38.019833)
 
 [node name="Player" parent="." instance=ExtResource("7_xo05s")]
-transform = Transform3D(-1.2644258, 0, -0.80698675, 0, 1.5, 0, 0.80698675, 0, -1.2644258, -39.53454, 1.0576258, 33.683464)
+transform = Transform3D(-1.2644258, 0, -0.80698675, 0, 1.5, 0, 0.80698675, 0, -1.2644258, 5.8962297, 0.97505856, 7.4647856)
 
 [node name="vault_camera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
 transform = Transform3D(-0.8642046, -0.17474686, 0.47181997, 0, 0.93774956, 0.34731215, -0.5031407, 0.30014873, -0.81040746, 11.581349, 6.0930195, -7.5658383)
@@ -1486,7 +1487,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.43964, -1.2217994, -1.78244
 shape = SubResource("BoxShape3D_5fq5j")
 
 [node name="roomc_follow_camera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("9_7t5mc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.14054, 1.511136, 17.91)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.626236, 1.511136, 17.91)
 target = NodePath("../Player")
 
 [node name="roomc_area" type="Area3D" parent="."]
@@ -1710,6 +1711,16 @@ music_path = NodePath("../../MusicPlayer")
 
 [node name="WeakEnemy8" parent="enemies" instance=ExtResource("11_ctatt")]
 transform = Transform3D(-0.52396226, 0, 1.4055119, 0, 1.5, 0, -1.4055119, 0, -0.52396226, -30.6855, 1.5399146, -53.57488)
+player_path = NodePath("../../Player")
+music_path = NodePath("../../MusicPlayer")
+
+[node name="WeakEnemy19" parent="enemies" instance=ExtResource("11_ctatt")]
+transform = Transform3D(-0.52396226, 0, 1.4055119, 0, 1.5, 0, -1.4055119, 0, -0.52396226, -33.107628, -5.12169, -66.142204)
+player_path = NodePath("../../Player")
+music_path = NodePath("../../MusicPlayer")
+
+[node name="SkullEnemy" parent="enemies" instance=ExtResource("14_ts3gi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6015368, 3.029842, -1.4655434)
 player_path = NodePath("../../Player")
 music_path = NodePath("../../MusicPlayer")
 
@@ -3358,12 +3369,12 @@ surface_material_override/0 = ExtResource("14_o8fc1")
 [node name="decals" type="Node3D" parent="."]
 
 [node name="bubble_decal" type="Sprite3D" parent="decals"]
-transform = Transform3D(0.6449999, 0, 0, 0, -2.819384e-08, -0.64499986, 0, 0.64499986, -2.819384e-08, 6.514879, 0.64045, 0.050495625)
+transform = Transform3D(0.6449999, 0, 0, 0, -2.819384e-08, -0.64499986, 0, 0.64499986, -2.819384e-08, 6.514879, 0.7182274, 0.050495625)
 shaded = true
 texture = ExtResource("21_7iits")
 
 [node name="bubble_decal2" type="Sprite3D" parent="decals"]
-transform = Transform3D(0.62, 0, 0, 0, 0.62, 0, 0, 0, 0.62, -43.48114, 4.539083, 61.34148)
+transform = Transform3D(0.62, 0, 0, 0, 0.62, 0, 0, 0, 0.62, -43.48114, 4.3915143, 61.339775)
 shaded = true
 texture = ExtResource("21_7iits")
 
@@ -3372,7 +3383,7 @@ transform = Transform3D(-3.6936125e-08, 0, 0.845, 0, 0.845, 0, -0.845, 0, -3.693
 shaded = true
 texture = ExtResource("22_oo54l")
 
-[node name="bomb_decal2" type="Sprite3D" parent="decals"]
+[node name="block_decal" type="Sprite3D" parent="decals"]
 transform = Transform3D(-3.6936125e-08, 0, -0.845, 0, 0.845, 0, 0.845, 0, -3.6936125e-08, -21.39909, 4.4017954, -54.566036)
 shaded = true
 texture = ExtResource("23_kpybi")
