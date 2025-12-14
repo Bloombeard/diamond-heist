@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://cnenq5yfumo4h"]
+
+[ext_resource type="Script" uid="uid://b88fv1no2l88d" path="res://scripts/end_menu.gd" id="1_fpl1s"]
+[ext_resource type="Texture2D" uid="uid://dm435od2l3gt3" path="res://assets/diamond-heist-credits.png" id="2_albv7"]
+
+[node name="EndMenu" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1, 1.0006549)
+script = ExtResource("1_fpl1s")
+
+[node name="play_again_button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 596.0
+offset_top = 536.6485
+offset_right = 895.0
+offset_bottom = 613.6485
+focus_neighbor_left = NodePath("../quit_button")
+focus_neighbor_right = NodePath("../quit_button")
+theme_override_font_sizes/font_size = 50
+text = "PLAY AGAIN"
+
+[node name="quit_button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 307.0
+offset_top = 535.64923
+offset_right = 435.0
+offset_bottom = 612.64923
+focus_neighbor_left = NodePath("../play_again_button")
+focus_neighbor_right = NodePath("../play_again_button")
+theme_override_font_sizes/font_size = 50
+text = "QUIT"
+
+[node name="DiamondHeistCredits" type="Sprite2D" parent="."]
+position = Vector2(578.719, 286.19467)
+scale = Vector2(0.64018595, 0.64018595)
+texture = ExtResource("2_albv7")
+
+[connection signal="pressed" from="play_again_button" to="." method="_on_play_again_button_pressed"]
+[connection signal="pressed" from="quit_button" to="." method="_on_quit_button_pressed"]
